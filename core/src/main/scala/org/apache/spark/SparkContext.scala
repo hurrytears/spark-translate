@@ -73,25 +73,31 @@ import org.apache.spark.util.logging.DriverLogger
 /**
  * Main entry point for Spark functionality. A SparkContext represents the connection to a Spark
  * cluster, and can be used to create RDDs, accumulators and broadcast variables on that cluster.
- *
  * @note Only one `SparkContext` should be active per JVM. You must `stop()` the
  *   active `SparkContext` before creating a new one.
  * @param config a Spark Config object describing the application configuration. Any settings in
  *   this config overrides the default configs as well as system properties.
- */
+  * Spark功能的核心。SparkContext作为集群的会话终端，可以用来创建RDD、累加器和广播变量。
+  * 注意：每个JVM上只能启动一个SparkContext，如果要启动下一个，必须先关停上一个。
+  * 参数Config：一个spark应用的配置对象，这个对象的么个属性都会覆盖系统默认的属性
+  */
 class SparkContext(config: SparkConf) extends Logging {
 
   // The call site where this SparkContext was constructed.
+    // 暂时理解为记录SparkContext的程序调用位置
   private val creationSite: CallSite = Utils.getCallSite()
 
   if (!config.get(EXECUTOR_ALLOW_SPARK_CONTEXT)) {
     // In order to prevent SparkContext from being created in executors.
+      // 防止sparkcontext被二次创建
     SparkContext.assertOnDriver()
   }
 
   // In order to prevent multiple SparkContexts from being active at the same time, mark this
   // context as having started construction.
   // NOTE: this must be placed at the beginning of the SparkContext constructor.
+    // 为防止同时存在两个sparkcontext，标记当前sparkcontext为已构造
+    // 注意：这个必须放在Sparkcontext构造代码的前面
   SparkContext.markPartiallyConstructed(this)
 
   val startTime = System.currentTimeMillis()
