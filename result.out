@@ -1,0 +1,973 @@
+-Dfile.encoding=UTF-8在哪那是多凡事都vasdfjasdfuaodsfaosdufioasdf哦啊是的女阿十二点vasdjfdf阿萨德发斯蒂芬阿萨德fajsdflsdof奥斯丁就发生
+Using `mvn` from path: /d/apache-maven-3.8.1/bin/mvn
+[INFO] Scanning for projects...
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Build Order:
+[INFO] 
+[INFO] Spark Project Parent POM                                           [pom]
+[INFO] Spark Project Tags                                                 [jar]
+[INFO] Spark Project Sketch                                               [jar]
+[INFO] Spark Project Local DB                                             [jar]
+[INFO] Spark Project Networking                                           [jar]
+[INFO] Spark Project Shuffle Streaming Service                            [jar]
+[INFO] Spark Project Unsafe                                               [jar]
+[INFO] Spark Project Launcher                                             [jar]
+[INFO] Spark Project Core                                                 [jar]
+[INFO] Spark Project ML Local Library                                     [jar]
+[INFO] Spark Project GraphX                                               [jar]
+[INFO] Spark Project Streaming                                            [jar]
+[INFO] Spark Project Catalyst                                             [jar]
+[INFO] Spark Project SQL                                                  [jar]
+[INFO] Spark Project ML Library                                           [jar]
+[INFO] Spark Project Tools                                                [jar]
+[INFO] Spark Project Hive                                                 [jar]
+[INFO] Spark Project REPL                                                 [jar]
+[INFO] Spark Project Assembly                                             [pom]
+[INFO] Kafka 0.10+ Token Provider for Streaming                           [jar]
+[INFO] Spark Integration for Kafka 0.10                                   [jar]
+[INFO] Kafka 0.10+ Source for Structured Streaming                        [jar]
+[INFO] Spark Project Examples                                             [jar]
+[INFO] Spark Integration for Kafka 0.10 Assembly                          [jar]
+[INFO] Spark Avro                                                         [jar]
+[INFO] 
+[INFO] -----------------< org.apache.spark:spark-parent_2.12 >-----------------
+[INFO] Building Spark Project Parent POM 3.2.0-SNAPSHOT                  [1/25]
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] 
+[INFO] --- maven-clean-plugin:3.1.0:clean (default-clean) @ spark-parent_2.12 ---
+[INFO] Deleting D:\spark\target
+[INFO] 
+[INFO] --- maven-enforcer-plugin:3.0.0-M2:enforce (enforce-versions) @ spark-parent_2.12 ---
+[INFO] 
+[INFO] --- maven-enforcer-plugin:3.0.0-M2:enforce (enforce-no-duplicate-dependencies) @ spark-parent_2.12 ---
+[INFO] 
+[INFO] --- mvn-scalafmt_2.12:1.0.3:format (default) @ spark-parent_2.12 ---
+[WARNING] format.skipSources set, ignoring main directories
+[WARNING] format.skipTestSources set, ignoring validateOnly directories
+[WARNING] No sources specified, skipping formatting
+[INFO] 
+[INFO] --- scala-maven-plugin:4.3.0:add-source (eclipse-add-source) @ spark-parent_2.12 ---
+[INFO] Add Source directory: D:\spark\src\main\scala
+[INFO] Add Test Source directory: D:\spark\src\test\scala
+[INFO] 
+[INFO] --- maven-dependency-plugin:3.1.1:build-classpath (default-cli) @ spark-parent_2.12 ---
+[INFO] Dependencies classpath:
+C:\Users\sosog\.m2\repository\org\spark-project\spark\unused\1.0.0\unused-1.0.0.jar
+[INFO] 
+[INFO] --- maven-remote-resources-plugin:1.5:process (process-resource-bundles) @ spark-parent_2.12 ---
+[INFO] 
+[INFO] --- scala-maven-plugin:4.3.0:compile (scala-compile-first) @ spark-parent_2.12 ---
+[INFO] compile in 0.0 s
+[INFO] No sources to compile
+[INFO] 
+[INFO] --- maven-antrun-plugin:1.8:run (create-tmp-dir) @ spark-parent_2.12 ---
+[INFO] Executing tasks
+
+main:
+    [mkdir] Created dir: D:\spark\target\tmp
+[INFO] Executed tasks
+[INFO] 
+[INFO] --- maven-dependency-plugin:3.1.1:build-classpath (generate-test-classpath) @ spark-parent_2.12 ---
+[INFO] Dependencies classpath:
+C:\Users\sosog\.m2\repository\org\scala-lang\scala-reflect\2.12.10\scala-reflect-2.12.10.jar;C:\Users\sosog\.m2\repository\org\scalatestplus\scalatestplus-mockito_2.12\1.0.0-SNAP5\scalatestplus-mockito_2.12-1.0.0-SNAP5.jar;C:\Users\sosog\.m2\repository\com\novocode\junit-interface\0.11\junit-interface-0.11.jar;C:\Users\sosog\.m2\repository\org\seleniumhq\selenium\selenium-ie-driver\3.141.59\selenium-ie-driver-3.141.59.jar;C:\Users\sosog\.m2\repository\org\scalatest\scalatest-freespec_2.12\3.2.3\scalatest-freespec_2.12-3.2.3.jar;C:\Users\sosog\.m2\repository\org\scalatest\scalatest-funsuite_2.12\3.2.3\scalatest-funsuite_2.12-3.2.3.jar;C:\Users\sosog\.m2\repository\junit\junit\4.13.1\junit-4.13.1.jar;C:\Users\sosog\.m2\repository\org\scalatestplus\scalatestplus-scalacheck_2.12\3.1.0.0-RC2\scalatestplus-scalacheck_2.12-3.1.0.0-RC2.jar;C:\Users\sosog\.m2\repository\org\scalatest\scalatest-flatspec_2.12\3.2.3\scalatest-flatspec_2.12-3.2.3.jar;C:\Users\sosog\.m2\repository\org\scalatest\scalatest-funspec_2.12\3.2.3\scalatest-funspec_2.12-3.2.3.jar;C:\Users\sosog\.m2\repository\org\scalatest\scalatest-wordspec_2.12\3.2.3\scalatest-wordspec_2.12-3.2.3.jar;C:\Users\sosog\.m2\repository\org\scalatest\scalatest-refspec_2.12\3.2.3\scalatest-refspec_2.12-3.2.3.jar;C:\Users\sosog\.m2\repository\org\seleniumhq\selenium\selenium-api\3.141.59\selenium-api-3.141.59.jar;C:\Users\sosog\.m2\repository\org\seleniumhq\selenium\selenium-java\3.141.59\selenium-java-3.141.59.jar;C:\Users\sosog\.m2\repository\org\seleniumhq\selenium\selenium-chrome-driver\3.141.59\selenium-chrome-driver-3.141.59.jar;C:\Users\sosog\.m2\repository\org\mockito\mockito-core\3.4.6\mockito-core-3.4.6.jar;C:\Users\sosog\.m2\repository\org\objenesis\objenesis\2.6\objenesis-2.6.jar;C:\Users\sosog\.m2\repository\org\seleniumhq\selenium\selenium-edge-driver\3.141.59\selenium-edge-driver-3.141.59.jar;C:\Users\sosog\.m2\repository\org\seleniumhq\selenium\selenium-opera-driver\3.141.59\selenium-opera-driver-3.141.59.jar;C:\Users\sosog\.m2\repository\org\apache\commons\commons-exec\1.3\commons-exec-1.3.jar;C:\Users\sosog\.m2\repository\org\scalacheck\scalacheck_2.12\1.14.2\scalacheck_2.12-1.14.2.jar;C:\Users\sosog\.m2\repository\org\scalatest\scalatest-diagrams_2.12\3.2.3\scalatest-diagrams_2.12-3.2.3.jar;C:\Users\sosog\.m2\repository\net\bytebuddy\byte-buddy-agent\1.10.13\byte-buddy-agent-1.10.13.jar;C:\Users\sosog\.m2\repository\org\scalactic\scalactic_2.12\3.2.3\scalactic_2.12-3.2.3.jar;C:\Users\sosog\.m2\repository\org\spark-project\spark\unused\1.0.0\unused-1.0.0.jar;C:\Users\sosog\.m2\repository\org\scalatestplus\scalatestplus-selenium_2.12\1.0.0-SNAP5\scalatestplus-selenium_2.12-1.0.0-SNAP5.jar;C:\Users\sosog\.m2\repository\org\scala-sbt\test-interface\1.0\test-interface-1.0.jar;C:\Users\sosog\.m2\repository\com\squareup\okio\okio\1.14.0\okio-1.14.0.jar;C:\Users\sosog\.m2\repository\org\hamcrest\hamcrest-core\1.3\hamcrest-core-1.3.jar;C:\Users\sosog\.m2\repository\org\scalatest\scalatest-compatible\3.2.3\scalatest-compatible-3.2.3.jar;C:\Users\sosog\.m2\repository\org\seleniumhq\selenium\selenium-support\3.141.59\selenium-support-3.141.59.jar;C:\Users\sosog\.m2\repository\org\scalatest\scalatest-propspec_2.12\3.2.3\scalatest-propspec_2.12-3.2.3.jar;C:\Users\sosog\.m2\repository\org\scalatest\scalatest-core_2.12\3.2.3\scalatest-core_2.12-3.2.3.jar;C:\Users\sosog\.m2\repository\org\scala-lang\modules\scala-xml_2.12\1.2.0\scala-xml_2.12-1.2.0.jar;C:\Users\sosog\.m2\repository\org\scalatest\scalatest-featurespec_2.12\3.2.3\scalatest-featurespec_2.12-3.2.3.jar;C:\Users\sosog\.m2\repository\org\scala-lang\scala-library\2.12.10\scala-library-2.12.10.jar;C:\Users\sosog\.m2\repository\org\seleniumhq\selenium\selenium-firefox-driver\3.141.59\selenium-firefox-driver-3.141.59.jar;C:\Users\sosog\.m2\repository\org\seleniumhq\selenium\selenium-safari-driver\3.141.59\selenium-safari-driver-3.141.59.jar;C:\Users\sosog\.m2\repository\org\scalatest\scalatest-shouldmatchers_2.12\3.2.3\scalatest-shouldmatchers_2.12-3.2.3.jar;C:\Users\sosog\.m2\repository\org\scalatest\scalatest_2.12\3.2.3\scalatest_2.12-3.2.3.jar;C:\Users\sosog\.m2\repository\net\bytebuddy\byte-buddy\1.10.13\byte-buddy-1.10.13.jar;C:\Users\sosog\.m2\repository\org\scalatest\scalatest-mustmatchers_2.12\3.2.3\scalatest-mustmatchers_2.12-3.2.3.jar;C:\Users\sosog\.m2\repository\com\squareup\okhttp3\okhttp\3.11.0\okhttp-3.11.0.jar;C:\Users\sosog\.m2\repository\org\scalatest\scalatest-matchers-core_2.12\3.2.3\scalatest-matchers-core_2.12-3.2.3.jar;C:\Users\sosog\.m2\repository\org\seleniumhq\selenium\selenium-remote-driver\3.141.59\selenium-remote-driver-3.141.59.jar
+[INFO] 
+[INFO] --- scala-maven-plugin:4.3.0:testCompile (scala-test-compile-first) @ spark-parent_2.12 ---
+[INFO] compile in 0.0 s
+[INFO] No sources to compile
+[INFO] 
+[INFO] --- maven-surefire-plugin:3.0.0-M5:test (test) @ spark-parent_2.12 ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- scalatest-maven-plugin:2.0.0:test (test) @ spark-parent_2.12 ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- maven-jar-plugin:3.1.2:test-jar (prepare-test-jar) @ spark-parent_2.12 ---
+[WARNING] JAR will be empty - no content was marked for inclusion!
+[INFO] Building jar: D:\spark\target\spark-parent_2.12-3.2.0-SNAPSHOT-tests.jar
+[INFO] 
+[INFO] --- maven-site-plugin:3.5.1:attach-descriptor (attach-descriptor) @ spark-parent_2.12 ---
+[INFO] 
+[INFO] --- maven-shade-plugin:3.2.1:shade (default) @ spark-parent_2.12 ---
+[INFO] Including org.spark-project.spark:unused:jar:1.0.0 in the shaded jar.
+[INFO] Replacing original artifact with shaded artifact.
+[INFO] 
+[INFO] --- maven-source-plugin:3.1.0:jar-no-fork (create-source-jar) @ spark-parent_2.12 ---
+[INFO] 
+[INFO] --- maven-source-plugin:3.1.0:test-jar-no-fork (create-source-jar) @ spark-parent_2.12 ---
+[INFO] 
+[INFO] ------------------< org.apache.spark:spark-tags_2.12 >------------------
+[INFO] Building Spark Project Tags 3.2.0-SNAPSHOT                        [2/25]
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-clean-plugin:3.1.0:clean (default-clean) @ spark-tags_2.12 ---
+[INFO] Deleting D:\spark\common\tags\target
+[INFO] 
+[INFO] --- maven-enforcer-plugin:3.0.0-M2:enforce (enforce-versions) @ spark-tags_2.12 ---
+[INFO] 
+[INFO] --- maven-enforcer-plugin:3.0.0-M2:enforce (enforce-no-duplicate-dependencies) @ spark-tags_2.12 ---
+[INFO] 
+[INFO] --- mvn-scalafmt_2.12:1.0.3:format (default) @ spark-tags_2.12 ---
+[WARNING] format.skipSources set, ignoring main directories
+[WARNING] format.skipTestSources set, ignoring validateOnly directories
+[WARNING] No sources specified, skipping formatting
+[INFO] 
+[INFO] --- scala-maven-plugin:4.3.0:add-source (eclipse-add-source) @ spark-tags_2.12 ---
+[INFO] Add Source directory: D:\spark\common\tags\src\main\scala
+[INFO] Add Test Source directory: D:\spark\common\tags\src\test\scala
+[INFO] 
+[INFO] --- maven-dependency-plugin:3.1.1:build-classpath (default-cli) @ spark-tags_2.12 ---
+[INFO] Dependencies classpath:
+C:\Users\sosog\.m2\repository\org\spark-project\spark\unused\1.0.0\unused-1.0.0.jar;C:\Users\sosog\.m2\repository\org\scala-lang\scala-library\2.12.10\scala-library-2.12.10.jar
+[INFO] 
+[INFO] --- maven-remote-resources-plugin:1.5:process (process-resource-bundles) @ spark-tags_2.12 ---
+[INFO] 
+[INFO] --- maven-resources-plugin:2.7:resources (default-resources) @ spark-tags_2.12 ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] skip non existing resourceDirectory D:\spark\common\tags\src\main\resources
+[INFO] Copying 3 resources
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.8.1:compile (default-compile) @ spark-tags_2.12 ---
+[INFO] Not compiling main sources
+[INFO] 
+[INFO] --- scala-maven-plugin:4.3.0:compile (scala-compile-first) @ spark-tags_2.12 ---
+[INFO] Using incremental compilation using Mixed compile order
+[INFO] Compiler bridge file: C:\Users\sosog\.sbt\1.0\zinc\org.scala-sbt\org.scala-sbt-compiler-bridge_2.12-1.3.1-bin_2.12.10__52.0-1.3.1_20191012T045515.jar
+[INFO] compiler plugin: BasicArtifact(com.github.ghik,silencer-plugin_2.12.10,1.6.0,null)
+[INFO] Compiling 2 Scala sources and 8 Java sources to D:\spark\common\tags\target\scala-2.12\classes ...
+[INFO] Done compiling.
+[INFO] compile in 3.7 s
+[INFO] 
+[INFO] --- maven-antrun-plugin:1.8:run (create-tmp-dir) @ spark-tags_2.12 ---
+[INFO] Executing tasks
+
+main:
+    [mkdir] Created dir: D:\spark\common\tags\target\tmp
+[INFO] Executed tasks
+[INFO] 
+[INFO] --- maven-resources-plugin:2.7:testResources (default-testResources) @ spark-tags_2.12 ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] skip non existing resourceDirectory D:\spark\common\tags\src\test\resources
+[INFO] Copying 3 resources
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.8.1:testCompile (default-testCompile) @ spark-tags_2.12 ---
+[INFO] Not compiling test sources
+[INFO] 
+[INFO] --- maven-dependency-plugin:3.1.1:build-classpath (generate-test-classpath) @ spark-tags_2.12 ---
+[INFO] Dependencies classpath:
+C:\Users\sosog\.m2\repository\org\scala-lang\scala-reflect\2.12.10\scala-reflect-2.12.10.jar;C:\Users\sosog\.m2\repository\org\scalatestplus\scalatestplus-mockito_2.12\1.0.0-SNAP5\scalatestplus-mockito_2.12-1.0.0-SNAP5.jar;C:\Users\sosog\.m2\repository\com\novocode\junit-interface\0.11\junit-interface-0.11.jar;C:\Users\sosog\.m2\repository\org\seleniumhq\selenium\selenium-ie-driver\3.141.59\selenium-ie-driver-3.141.59.jar;C:\Users\sosog\.m2\repository\org\scalatest\scalatest-freespec_2.12\3.2.3\scalatest-freespec_2.12-3.2.3.jar;C:\Users\sosog\.m2\repository\org\scalatest\scalatest-funsuite_2.12\3.2.3\scalatest-funsuite_2.12-3.2.3.jar;C:\Users\sosog\.m2\repository\junit\junit\4.13.1\junit-4.13.1.jar;C:\Users\sosog\.m2\repository\org\scalatestplus\scalatestplus-scalacheck_2.12\3.1.0.0-RC2\scalatestplus-scalacheck_2.12-3.1.0.0-RC2.jar;C:\Users\sosog\.m2\repository\org\scalatest\scalatest-flatspec_2.12\3.2.3\scalatest-flatspec_2.12-3.2.3.jar;C:\Users\sosog\.m2\repository\org\scalatest\scalatest-funspec_2.12\3.2.3\scalatest-funspec_2.12-3.2.3.jar;C:\Users\sosog\.m2\repository\org\scalatest\scalatest-wordspec_2.12\3.2.3\scalatest-wordspec_2.12-3.2.3.jar;C:\Users\sosog\.m2\repository\org\scalatest\scalatest-refspec_2.12\3.2.3\scalatest-refspec_2.12-3.2.3.jar;C:\Users\sosog\.m2\repository\org\seleniumhq\selenium\selenium-api\3.141.59\selenium-api-3.141.59.jar;C:\Users\sosog\.m2\repository\org\seleniumhq\selenium\selenium-java\3.141.59\selenium-java-3.141.59.jar;C:\Users\sosog\.m2\repository\org\seleniumhq\selenium\selenium-chrome-driver\3.141.59\selenium-chrome-driver-3.141.59.jar;C:\Users\sosog\.m2\repository\org\mockito\mockito-core\3.4.6\mockito-core-3.4.6.jar;C:\Users\sosog\.m2\repository\org\objenesis\objenesis\2.6\objenesis-2.6.jar;C:\Users\sosog\.m2\repository\org\seleniumhq\selenium\selenium-edge-driver\3.141.59\selenium-edge-driver-3.141.59.jar;C:\Users\sosog\.m2\repository\org\seleniumhq\selenium\selenium-opera-driver\3.141.59\selenium-opera-driver-3.141.59.jar;C:\Users\sosog\.m2\repository\org\apache\commons\commons-exec\1.3\commons-exec-1.3.jar;C:\Users\sosog\.m2\repository\org\scalacheck\scalacheck_2.12\1.14.2\scalacheck_2.12-1.14.2.jar;C:\Users\sosog\.m2\repository\org\scalatest\scalatest-diagrams_2.12\3.2.3\scalatest-diagrams_2.12-3.2.3.jar;C:\Users\sosog\.m2\repository\net\bytebuddy\byte-buddy-agent\1.10.13\byte-buddy-agent-1.10.13.jar;C:\Users\sosog\.m2\repository\org\scalactic\scalactic_2.12\3.2.3\scalactic_2.12-3.2.3.jar;C:\Users\sosog\.m2\repository\org\spark-project\spark\unused\1.0.0\unused-1.0.0.jar;C:\Users\sosog\.m2\repository\org\scalatestplus\scalatestplus-selenium_2.12\1.0.0-SNAP5\scalatestplus-selenium_2.12-1.0.0-SNAP5.jar;C:\Users\sosog\.m2\repository\org\scala-sbt\test-interface\1.0\test-interface-1.0.jar;C:\Users\sosog\.m2\repository\com\squareup\okio\okio\1.14.0\okio-1.14.0.jar;C:\Users\sosog\.m2\repository\org\hamcrest\hamcrest-core\1.3\hamcrest-core-1.3.jar;C:\Users\sosog\.m2\repository\org\scalatest\scalatest-compatible\3.2.3\scalatest-compatible-3.2.3.jar;C:\Users\sosog\.m2\repository\org\seleniumhq\selenium\selenium-support\3.141.59\selenium-support-3.141.59.jar;C:\Users\sosog\.m2\repository\org\scalatest\scalatest-propspec_2.12\3.2.3\scalatest-propspec_2.12-3.2.3.jar;C:\Users\sosog\.m2\repository\org\scalatest\scalatest-core_2.12\3.2.3\scalatest-core_2.12-3.2.3.jar;C:\Users\sosog\.m2\repository\org\scala-lang\modules\scala-xml_2.12\1.2.0\scala-xml_2.12-1.2.0.jar;C:\Users\sosog\.m2\repository\org\scalatest\scalatest-featurespec_2.12\3.2.3\scalatest-featurespec_2.12-3.2.3.jar;C:\Users\sosog\.m2\repository\org\scala-lang\scala-library\2.12.10\scala-library-2.12.10.jar;C:\Users\sosog\.m2\repository\org\seleniumhq\selenium\selenium-firefox-driver\3.141.59\selenium-firefox-driver-3.141.59.jar;C:\Users\sosog\.m2\repository\org\seleniumhq\selenium\selenium-safari-driver\3.141.59\selenium-safari-driver-3.141.59.jar;C:\Users\sosog\.m2\repository\org\scalatest\scalatest-shouldmatchers_2.12\3.2.3\scalatest-shouldmatchers_2.12-3.2.3.jar;C:\Users\sosog\.m2\repository\org\scalatest\scalatest_2.12\3.2.3\scalatest_2.12-3.2.3.jar;C:\Users\sosog\.m2\repository\net\bytebuddy\byte-buddy\1.10.13\byte-buddy-1.10.13.jar;C:\Users\sosog\.m2\repository\org\scalatest\scalatest-mustmatchers_2.12\3.2.3\scalatest-mustmatchers_2.12-3.2.3.jar;C:\Users\sosog\.m2\repository\com\squareup\okhttp3\okhttp\3.11.0\okhttp-3.11.0.jar;C:\Users\sosog\.m2\repository\org\scalatest\scalatest-matchers-core_2.12\3.2.3\scalatest-matchers-core_2.12-3.2.3.jar;C:\Users\sosog\.m2\repository\org\seleniumhq\selenium\selenium-remote-driver\3.141.59\selenium-remote-driver-3.141.59.jar
+[INFO] 
+[INFO] --- scala-maven-plugin:4.3.0:testCompile (scala-test-compile-first) @ spark-tags_2.12 ---
+[INFO] Using incremental compilation using Mixed compile order
+[INFO] Compiler bridge file: C:\Users\sosog\.sbt\1.0\zinc\org.scala-sbt\org.scala-sbt-compiler-bridge_2.12-1.3.1-bin_2.12.10__52.0-1.3.1_20191012T045515.jar
+[INFO] compiler plugin: BasicArtifact(com.github.ghik,silencer-plugin_2.12.10,1.6.0,null)
+[INFO] Compiling 6 Java sources to D:\spark\common\tags\target\scala-2.12\test-classes ...
+[INFO] Done compiling.
+[INFO] compile in 0.2 s
+[INFO] 
+[INFO] --- maven-surefire-plugin:3.0.0-M5:test (default-test) @ spark-tags_2.12 ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- maven-surefire-plugin:3.0.0-M5:test (test) @ spark-tags_2.12 ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- scalatest-maven-plugin:2.0.0:test (test) @ spark-tags_2.12 ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- maven-jar-plugin:3.1.2:test-jar (prepare-test-jar) @ spark-tags_2.12 ---
+[INFO] Building jar: D:\spark\common\tags\target\spark-tags_2.12-3.2.0-SNAPSHOT-tests.jar
+[INFO] 
+[INFO] --- maven-jar-plugin:3.1.2:jar (default-jar) @ spark-tags_2.12 ---
+[INFO] Building jar: D:\spark\common\tags\target\spark-tags_2.12-3.2.0-SNAPSHOT.jar
+[INFO] 
+[INFO] --- maven-site-plugin:3.5.1:attach-descriptor (attach-descriptor) @ spark-tags_2.12 ---
+[INFO] 
+[INFO] --- maven-shade-plugin:3.2.1:shade (default) @ spark-tags_2.12 ---
+[INFO] Excluding org.scala-lang:scala-library:jar:2.12.10 from the shaded jar.
+[INFO] Including org.spark-project.spark:unused:jar:1.0.0 in the shaded jar.
+[INFO] Replacing original artifact with shaded artifact.
+[INFO] Replacing D:\spark\common\tags\target\spark-tags_2.12-3.2.0-SNAPSHOT.jar with D:\spark\common\tags\target\spark-tags_2.12-3.2.0-SNAPSHOT-shaded.jar
+[INFO] 
+[INFO] --- maven-source-plugin:3.1.0:jar-no-fork (create-source-jar) @ spark-tags_2.12 ---
+[INFO] Building jar: D:\spark\common\tags\target\spark-tags_2.12-3.2.0-SNAPSHOT-sources.jar
+[INFO] 
+[INFO] --- maven-source-plugin:3.1.0:test-jar-no-fork (create-source-jar) @ spark-tags_2.12 ---
+[INFO] Building jar: D:\spark\common\tags\target\spark-tags_2.12-3.2.0-SNAPSHOT-test-sources.jar
+[INFO] 
+[INFO] -----------------< org.apache.spark:spark-sketch_2.12 >-----------------
+[INFO] Building Spark Project Sketch 3.2.0-SNAPSHOT                      [3/25]
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-clean-plugin:3.1.0:clean (default-clean) @ spark-sketch_2.12 ---
+[INFO] Deleting D:\spark\common\sketch\target
+[INFO] 
+[INFO] --- maven-enforcer-plugin:3.0.0-M2:enforce (enforce-versions) @ spark-sketch_2.12 ---
+[INFO] 
+[INFO] --- maven-enforcer-plugin:3.0.0-M2:enforce (enforce-no-duplicate-dependencies) @ spark-sketch_2.12 ---
+[INFO] 
+[INFO] --- mvn-scalafmt_2.12:1.0.3:format (default) @ spark-sketch_2.12 ---
+[WARNING] format.skipSources set, ignoring main directories
+[WARNING] format.skipTestSources set, ignoring validateOnly directories
+[WARNING] No sources specified, skipping formatting
+[INFO] 
+[INFO] --- scala-maven-plugin:4.3.0:add-source (eclipse-add-source) @ spark-sketch_2.12 ---
+[INFO] Add Source directory: D:\spark\common\sketch\src\main\scala
+[INFO] Add Test Source directory: D:\spark\common\sketch\src\test\scala
+[INFO] 
+[INFO] --- maven-dependency-plugin:3.1.1:build-classpath (default-cli) @ spark-sketch_2.12 ---
+[INFO] Dependencies classpath:
+C:\Users\sosog\.m2\repository\org\spark-project\spark\unused\1.0.0\unused-1.0.0.jar;D:\spark\common\tags\target\spark-tags_2.12-3.2.0-SNAPSHOT.jar;C:\Users\sosog\.m2\repository\org\scala-lang\scala-library\2.12.10\scala-library-2.12.10.jar
+[INFO] 
+[INFO] --- maven-remote-resources-plugin:1.5:process (process-resource-bundles) @ spark-sketch_2.12 ---
+[INFO] 
+[INFO] --- maven-resources-plugin:2.7:resources (default-resources) @ spark-sketch_2.12 ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] skip non existing resourceDirectory D:\spark\common\sketch\src\main\resources
+[INFO] Copying 3 resources
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.8.1:compile (default-compile) @ spark-sketch_2.12 ---
+[INFO] Not compiling main sources
+[INFO] 
+[INFO] --- scala-maven-plugin:4.3.0:compile (scala-compile-first) @ spark-sketch_2.12 ---
+[INFO] Using incremental compilation using Mixed compile order
+[INFO] Compiler bridge file: C:\Users\sosog\.sbt\1.0\zinc\org.scala-sbt\org.scala-sbt-compiler-bridge_2.12-1.3.1-bin_2.12.10__52.0-1.3.1_20191012T045515.jar
+[INFO] compiler plugin: BasicArtifact(com.github.ghik,silencer-plugin_2.12.10,1.6.0,null)
+[INFO] Compiling 9 Java sources to D:\spark\common\sketch\target\scala-2.12\classes ...
+[WARNING] [Warn] D:\spark\common\sketch\src\main\java\org\apache\spark\util\sketch\Platform.java:22: sun.misc.Unsafe是内部专用 API, 可能会在未来发行版中删除
+[WARNING] [Warn] D:\spark\common\sketch\src\main\java\org\apache\spark\util\sketch\Platform.java:28: sun.misc.Unsafe是内部专用 API, 可能会在未来发行版中删除
+[WARNING] [Warn] D:\spark\common\sketch\src\main\java\org\apache\spark\util\sketch\Platform.java:150: sun.misc.Unsafe是内部专用 API, 可能会在未来发行版中删除
+[WARNING] [Warn] D:\spark\common\sketch\src\main\java\org\apache\spark\util\sketch\Platform.java:152: sun.misc.Unsafe是内部专用 API, 可能会在未来发行版中删除
+[WARNING] [Warn] D:\spark\common\sketch\src\main\java\org\apache\spark\util\sketch\Platform.java:154: sun.misc.Unsafe是内部专用 API, 可能会在未来发行版中删除
+[INFO] Done compiling.
+[INFO] compile in 0.5 s
+[INFO] 
+[INFO] --- maven-antrun-plugin:1.8:run (create-tmp-dir) @ spark-sketch_2.12 ---
+[INFO] Executing tasks
+
+main:
+    [mkdir] Created dir: D:\spark\common\sketch\target\tmp
+[INFO] Executed tasks
+[INFO] 
+[INFO] --- maven-resources-plugin:2.7:testResources (default-testResources) @ spark-sketch_2.12 ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] skip non existing resourceDirectory D:\spark\common\sketch\src\test\resources
+[INFO] Copying 3 resources
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.8.1:testCompile (default-testCompile) @ spark-sketch_2.12 ---
+[INFO] Not compiling test sources
+[INFO] 
+[INFO] --- maven-dependency-plugin:3.1.1:build-classpath (generate-test-classpath) @ spark-sketch_2.12 ---
+[INFO] Dependencies classpath:
+C:\Users\sosog\.m2\repository\org\scala-lang\scala-reflect\2.12.10\scala-reflect-2.12.10.jar;C:\Users\sosog\.m2\repository\org\scalatestplus\scalatestplus-mockito_2.12\1.0.0-SNAP5\scalatestplus-mockito_2.12-1.0.0-SNAP5.jar;C:\Users\sosog\.m2\repository\com\novocode\junit-interface\0.11\junit-interface-0.11.jar;D:\spark\common\tags\target\spark-tags_2.12-3.2.0-SNAPSHOT.jar;C:\Users\sosog\.m2\repository\org\seleniumhq\selenium\selenium-ie-driver\3.141.59\selenium-ie-driver-3.141.59.jar;C:\Users\sosog\.m2\repository\org\scalatest\scalatest-freespec_2.12\3.2.3\scalatest-freespec_2.12-3.2.3.jar;C:\Users\sosog\.m2\repository\org\scalatest\scalatest-funsuite_2.12\3.2.3\scalatest-funsuite_2.12-3.2.3.jar;C:\Users\sosog\.m2\repository\junit\junit\4.13.1\junit-4.13.1.jar;C:\Users\sosog\.m2\repository\org\scalatestplus\scalatestplus-scalacheck_2.12\3.1.0.0-RC2\scalatestplus-scalacheck_2.12-3.1.0.0-RC2.jar;C:\Users\sosog\.m2\repository\org\scalatest\scalatest-flatspec_2.12\3.2.3\scalatest-flatspec_2.12-3.2.3.jar;C:\Users\sosog\.m2\repository\org\scalatest\scalatest-funspec_2.12\3.2.3\scalatest-funspec_2.12-3.2.3.jar;C:\Users\sosog\.m2\repository\org\scalatest\scalatest-wordspec_2.12\3.2.3\scalatest-wordspec_2.12-3.2.3.jar;C:\Users\sosog\.m2\repository\org\scalatest\scalatest-refspec_2.12\3.2.3\scalatest-refspec_2.12-3.2.3.jar;C:\Users\sosog\.m2\repository\org\seleniumhq\selenium\selenium-api\3.141.59\selenium-api-3.141.59.jar;C:\Users\sosog\.m2\repository\org\seleniumhq\selenium\selenium-java\3.141.59\selenium-java-3.141.59.jar;C:\Users\sosog\.m2\repository\org\seleniumhq\selenium\selenium-chrome-driver\3.141.59\selenium-chrome-driver-3.141.59.jar;C:\Users\sosog\.m2\repository\org\mockito\mockito-core\3.4.6\mockito-core-3.4.6.jar;C:\Users\sosog\.m2\repository\org\objenesis\objenesis\2.6\objenesis-2.6.jar;C:\Users\sosog\.m2\repository\org\seleniumhq\selenium\selenium-edge-driver\3.141.59\selenium-edge-driver-3.141.59.jar;C:\Users\sosog\.m2\repository\org\seleniumhq\selenium\selenium-opera-driver\3.141.59\selenium-opera-driver-3.141.59.jar;C:\Users\sosog\.m2\repository\org\apache\commons\commons-exec\1.3\commons-exec-1.3.jar;C:\Users\sosog\.m2\repository\org\scalacheck\scalacheck_2.12\1.14.2\scalacheck_2.12-1.14.2.jar;C:\Users\sosog\.m2\repository\org\scalatest\scalatest-diagrams_2.12\3.2.3\scalatest-diagrams_2.12-3.2.3.jar;C:\Users\sosog\.m2\repository\net\bytebuddy\byte-buddy-agent\1.10.13\byte-buddy-agent-1.10.13.jar;C:\Users\sosog\.m2\repository\org\scalactic\scalactic_2.12\3.2.3\scalactic_2.12-3.2.3.jar;D:\spark\common\tags\target\spark-tags_2.12-3.2.0-SNAPSHOT-tests.jar;C:\Users\sosog\.m2\repository\org\spark-project\spark\unused\1.0.0\unused-1.0.0.jar;C:\Users\sosog\.m2\repository\org\scalatestplus\scalatestplus-selenium_2.12\1.0.0-SNAP5\scalatestplus-selenium_2.12-1.0.0-SNAP5.jar;C:\Users\sosog\.m2\repository\org\scala-sbt\test-interface\1.0\test-interface-1.0.jar;C:\Users\sosog\.m2\repository\com\squareup\okio\okio\1.14.0\okio-1.14.0.jar;C:\Users\sosog\.m2\repository\org\hamcrest\hamcrest-core\1.3\hamcrest-core-1.3.jar;C:\Users\sosog\.m2\repository\org\scalatest\scalatest-compatible\3.2.3\scalatest-compatible-3.2.3.jar;C:\Users\sosog\.m2\repository\org\seleniumhq\selenium\selenium-support\3.141.59\selenium-support-3.141.59.jar;C:\Users\sosog\.m2\repository\org\scalatest\scalatest-propspec_2.12\3.2.3\scalatest-propspec_2.12-3.2.3.jar;C:\Users\sosog\.m2\repository\org\scalatest\scalatest-core_2.12\3.2.3\scalatest-core_2.12-3.2.3.jar;C:\Users\sosog\.m2\repository\org\scala-lang\modules\scala-xml_2.12\1.2.0\scala-xml_2.12-1.2.0.jar;C:\Users\sosog\.m2\repository\org\scalatest\scalatest-featurespec_2.12\3.2.3\scalatest-featurespec_2.12-3.2.3.jar;C:\Users\sosog\.m2\repository\org\scala-lang\scala-library\2.12.10\scala-library-2.12.10.jar;C:\Users\sosog\.m2\repository\org\seleniumhq\selenium\selenium-firefox-driver\3.141.59\selenium-firefox-driver-3.141.59.jar;C:\Users\sosog\.m2\repository\org\seleniumhq\selenium\selenium-safari-driver\3.141.59\selenium-safari-driver-3.141.59.jar;C:\Users\sosog\.m2\repository\org\scalatest\scalatest-shouldmatchers_2.12\3.2.3\scalatest-shouldmatchers_2.12-3.2.3.jar;C:\Users\sosog\.m2\repository\org\scalatest\scalatest_2.12\3.2.3\scalatest_2.12-3.2.3.jar;C:\Users\sosog\.m2\repository\net\bytebuddy\byte-buddy\1.10.13\byte-buddy-1.10.13.jar;C:\Users\sosog\.m2\repository\org\scalatest\scalatest-mustmatchers_2.12\3.2.3\scalatest-mustmatchers_2.12-3.2.3.jar;C:\Users\sosog\.m2\repository\com\squareup\okhttp3\okhttp\3.11.0\okhttp-3.11.0.jar;C:\Users\sosog\.m2\repository\org\scalatest\scalatest-matchers-core_2.12\3.2.3\scalatest-matchers-core_2.12-3.2.3.jar;C:\Users\sosog\.m2\repository\org\seleniumhq\selenium\selenium-remote-driver\3.141.59\selenium-remote-driver-3.141.59.jar
+[INFO] 
+[INFO] --- scala-maven-plugin:4.3.0:testCompile (scala-test-compile-first) @ spark-sketch_2.12 ---
+[INFO] Using incremental compilation using Mixed compile order
+[INFO] Compiler bridge file: C:\Users\sosog\.sbt\1.0\zinc\org.scala-sbt\org.scala-sbt-compiler-bridge_2.12-1.3.1-bin_2.12.10__52.0-1.3.1_20191012T045515.jar
+[INFO] compiler plugin: BasicArtifact(com.github.ghik,silencer-plugin_2.12.10,1.6.0,null)
+[INFO] Compiling 3 Scala sources to D:\spark\common\sketch\target\scala-2.12\test-classes ...
+[INFO] Done compiling.
+[INFO] compile in 3.8 s
+[INFO] 
+[INFO] --- maven-surefire-plugin:3.0.0-M5:test (default-test) @ spark-sketch_2.12 ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- maven-surefire-plugin:3.0.0-M5:test (test) @ spark-sketch_2.12 ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- scalatest-maven-plugin:2.0.0:test (test) @ spark-sketch_2.12 ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- maven-jar-plugin:3.1.2:test-jar (prepare-test-jar) @ spark-sketch_2.12 ---
+[INFO] Building jar: D:\spark\common\sketch\target\spark-sketch_2.12-3.2.0-SNAPSHOT-tests.jar
+[INFO] 
+[INFO] --- maven-jar-plugin:3.1.2:jar (default-jar) @ spark-sketch_2.12 ---
+[INFO] Building jar: D:\spark\common\sketch\target\spark-sketch_2.12-3.2.0-SNAPSHOT.jar
+[INFO] 
+[INFO] --- maven-site-plugin:3.5.1:attach-descriptor (attach-descriptor) @ spark-sketch_2.12 ---
+[INFO] 
+[INFO] --- maven-shade-plugin:3.2.1:shade (default) @ spark-sketch_2.12 ---
+[INFO] Excluding org.apache.spark:spark-tags_2.12:jar:3.2.0-SNAPSHOT from the shaded jar.
+[INFO] Excluding org.scala-lang:scala-library:jar:2.12.10 from the shaded jar.
+[INFO] Including org.spark-project.spark:unused:jar:1.0.0 in the shaded jar.
+[INFO] Replacing original artifact with shaded artifact.
+[INFO] Replacing D:\spark\common\sketch\target\spark-sketch_2.12-3.2.0-SNAPSHOT.jar with D:\spark\common\sketch\target\spark-sketch_2.12-3.2.0-SNAPSHOT-shaded.jar
+[INFO] 
+[INFO] --- maven-source-plugin:3.1.0:jar-no-fork (create-source-jar) @ spark-sketch_2.12 ---
+[INFO] Building jar: D:\spark\common\sketch\target\spark-sketch_2.12-3.2.0-SNAPSHOT-sources.jar
+[INFO] 
+[INFO] --- maven-source-plugin:3.1.0:test-jar-no-fork (create-source-jar) @ spark-sketch_2.12 ---
+[INFO] Building jar: D:\spark\common\sketch\target\spark-sketch_2.12-3.2.0-SNAPSHOT-test-sources.jar
+[INFO] 
+[INFO] ----------------< org.apache.spark:spark-kvstore_2.12 >-----------------
+[INFO] Building Spark Project Local DB 3.2.0-SNAPSHOT                    [4/25]
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-clean-plugin:3.1.0:clean (default-clean) @ spark-kvstore_2.12 ---
+[INFO] Deleting D:\spark\common\kvstore\target
+[INFO] 
+[INFO] --- maven-enforcer-plugin:3.0.0-M2:enforce (enforce-versions) @ spark-kvstore_2.12 ---
+[INFO] 
+[INFO] --- maven-enforcer-plugin:3.0.0-M2:enforce (enforce-no-duplicate-dependencies) @ spark-kvstore_2.12 ---
+[INFO] 
+[INFO] --- mvn-scalafmt_2.12:1.0.3:format (default) @ spark-kvstore_2.12 ---
+[WARNING] format.skipSources set, ignoring main directories
+[WARNING] format.skipTestSources set, ignoring validateOnly directories
+[WARNING] No sources specified, skipping formatting
+[INFO] 
+[INFO] --- scala-maven-plugin:4.3.0:add-source (eclipse-add-source) @ spark-kvstore_2.12 ---
+[INFO] Add Source directory: D:\spark\common\kvstore\src\main\scala
+[INFO] Add Test Source directory: D:\spark\common\kvstore\src\test\scala
+[INFO] 
+[INFO] --- maven-dependency-plugin:3.1.1:build-classpath (default-cli) @ spark-kvstore_2.12 ---
+[INFO] Dependencies classpath:
+C:\Users\sosog\.m2\repository\com\fasterxml\jackson\core\jackson-core\2.12.2\jackson-core-2.12.2.jar;C:\Users\sosog\.m2\repository\org\spark-project\spark\unused\1.0.0\unused-1.0.0.jar;C:\Users\sosog\.m2\repository\com\fasterxml\jackson\core\jackson-annotations\2.12.2\jackson-annotations-2.12.2.jar;D:\spark\common\tags\target\spark-tags_2.12-3.2.0-SNAPSHOT.jar;C:\Users\sosog\.m2\repository\org\fusesource\leveldbjni\leveldbjni-all\1.8\leveldbjni-all-1.8.jar;C:\Users\sosog\.m2\repository\com\fasterxml\jackson\core\jackson-databind\2.12.2\jackson-databind-2.12.2.jar;C:\Users\sosog\.m2\repository\org\scala-lang\scala-library\2.12.10\scala-library-2.12.10.jar
+[INFO] 
+[INFO] --- maven-remote-resources-plugin:1.5:process (process-resource-bundles) @ spark-kvstore_2.12 ---
+[INFO] 
+[INFO] --- maven-resources-plugin:2.7:resources (default-resources) @ spark-kvstore_2.12 ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] skip non existing resourceDirectory D:\spark\common\kvstore\src\main\resources
+[INFO] Copying 3 resources
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.8.1:compile (default-compile) @ spark-kvstore_2.12 ---
+[INFO] Not compiling main sources
+[INFO] 
+[INFO] --- scala-maven-plugin:4.3.0:compile (scala-compile-first) @ spark-kvstore_2.12 ---
+[INFO] Using incremental compilation using Mixed compile order
+[INFO] Compiler bridge file: C:\Users\sosog\.sbt\1.0\zinc\org.scala-sbt\org.scala-sbt-compiler-bridge_2.12-1.3.1-bin_2.12.10__52.0-1.3.1_20191012T045515.jar
+[INFO] compiler plugin: BasicArtifact(com.github.ghik,silencer-plugin_2.12.10,1.6.0,null)
+[INFO] Compiling 12 Java sources to D:\spark\common\kvstore\target\scala-2.12\classes ...
+[INFO] Done compiling.
+[INFO] compile in 0.8 s
+[INFO] 
+[INFO] --- maven-antrun-plugin:1.8:run (create-tmp-dir) @ spark-kvstore_2.12 ---
+[INFO] Executing tasks
+
+main:
+    [mkdir] Created dir: D:\spark\common\kvstore\target\tmp
+[INFO] Executed tasks
+[INFO] 
+[INFO] --- maven-resources-plugin:2.7:testResources (default-testResources) @ spark-kvstore_2.12 ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] Copying 1 resource
+[INFO] Copying 3 resources
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.8.1:testCompile (default-testCompile) @ spark-kvstore_2.12 ---
+[INFO] Not compiling test sources
+[INFO] 
+[INFO] --- maven-dependency-plugin:3.1.1:build-classpath (generate-test-classpath) @ spark-kvstore_2.12 ---
+[INFO] Dependencies classpath:
+C:\Users\sosog\.m2\repository\org\scala-lang\scala-reflect\2.12.10\scala-reflect-2.12.10.jar;C:\Users\sosog\.m2\repository\org\scalatestplus\scalatestplus-mockito_2.12\1.0.0-SNAP5\scalatestplus-mockito_2.12-1.0.0-SNAP5.jar;C:\Users\sosog\.m2\repository\com\fasterxml\jackson\core\jackson-core\2.12.2\jackson-core-2.12.2.jar;C:\Users\sosog\.m2\repository\log4j\log4j\1.2.17\log4j-1.2.17.jar;C:\Users\sosog\.m2\repository\com\novocode\junit-interface\0.11\junit-interface-0.11.jar;C:\Users\sosog\.m2\repository\org\slf4j\slf4j-log4j12\1.7.30\slf4j-log4j12-1.7.30.jar;C:\Users\sosog\.m2\repository\org\scalatest\scalatest-freespec_2.12\3.2.3\scalatest-freespec_2.12-3.2.3.jar;C:\Users\sosog\.m2\repository\org\scalatest\scalatest-funsuite_2.12\3.2.3\scalatest-funsuite_2.12-3.2.3.jar;C:\Users\sosog\.m2\repository\io\dropwizard\metrics\metrics-core\4.1.1\metrics-core-4.1.1.jar;C:\Users\sosog\.m2\repository\junit\junit\4.13.1\junit-4.13.1.jar;C:\Users\sosog\.m2\repository\org\scalatest\scalatest-funspec_2.12\3.2.3\scalatest-funspec_2.12-3.2.3.jar;C:\Users\sosog\.m2\repository\org\seleniumhq\selenium\selenium-chrome-driver\3.141.59\selenium-chrome-driver-3.141.59.jar;C:\Users\sosog\.m2\repository\org\objenesis\objenesis\2.6\objenesis-2.6.jar;C:\Users\sosog\.m2\repository\org\seleniumhq\selenium\selenium-opera-driver\3.141.59\selenium-opera-driver-3.141.59.jar;C:\Users\sosog\.m2\repository\org\fusesource\leveldbjni\leveldbjni-all\1.8\leveldbjni-all-1.8.jar;C:\Users\sosog\.m2\repository\org\scalatest\scalatest-diagrams_2.12\3.2.3\scalatest-diagrams_2.12-3.2.3.jar;C:\Users\sosog\.m2\repository\net\bytebuddy\byte-buddy-agent\1.10.13\byte-buddy-agent-1.10.13.jar;C:\Users\sosog\.m2\repository\commons-io\commons-io\2.8.0\commons-io-2.8.0.jar;D:\spark\common\tags\target\spark-tags_2.12-3.2.0-SNAPSHOT-tests.jar;C:\Users\sosog\.m2\repository\org\scalatestplus\scalatestplus-selenium_2.12\1.0.0-SNAP5\scalatestplus-selenium_2.12-1.0.0-SNAP5.jar;C:\Users\sosog\.m2\repository\org\scala-sbt\test-interface\1.0\test-interface-1.0.jar;C:\Users\sosog\.m2\repository\com\squareup\okio\okio\1.14.0\okio-1.14.0.jar;C:\Users\sosog\.m2\repository\org\hamcrest\hamcrest-core\1.3\hamcrest-core-1.3.jar;C:\Users\sosog\.m2\repository\org\seleniumhq\selenium\selenium-support\3.141.59\selenium-support-3.141.59.jar;C:\Users\sosog\.m2\repository\org\scala-lang\modules\scala-xml_2.12\1.2.0\scala-xml_2.12-1.2.0.jar;C:\Users\sosog\.m2\repository\org\scala-lang\scala-library\2.12.10\scala-library-2.12.10.jar;C:\Users\sosog\.m2\repository\org\slf4j\slf4j-api\1.7.30\slf4j-api-1.7.30.jar;C:\Users\sosog\.m2\repository\org\scalatest\scalatest_2.12\3.2.3\scalatest_2.12-3.2.3.jar;C:\Users\sosog\.m2\repository\net\bytebuddy\byte-buddy\1.10.13\byte-buddy-1.10.13.jar;C:\Users\sosog\.m2\repository\org\scalatest\scalatest-mustmatchers_2.12\3.2.3\scalatest-mustmatchers_2.12-3.2.3.jar;C:\Users\sosog\.m2\repository\com\squareup\okhttp3\okhttp\3.11.0\okhttp-3.11.0.jar;C:\Users\sosog\.m2\repository\org\seleniumhq\selenium\selenium-remote-driver\3.141.59\selenium-remote-driver-3.141.59.jar;D:\spark\common\tags\target\spark-tags_2.12-3.2.0-SNAPSHOT.jar;C:\Users\sosog\.m2\repository\org\seleniumhq\selenium\selenium-ie-driver\3.141.59\selenium-ie-driver-3.141.59.jar;C:\Users\sosog\.m2\repository\org\scalatestplus\scalatestplus-scalacheck_2.12\3.1.0.0-RC2\scalatestplus-scalacheck_2.12-3.1.0.0-RC2.jar;C:\Users\sosog\.m2\repository\org\scalatest\scalatest-flatspec_2.12\3.2.3\scalatest-flatspec_2.12-3.2.3.jar;C:\Users\sosog\.m2\repository\org\scalatest\scalatest-wordspec_2.12\3.2.3\scalatest-wordspec_2.12-3.2.3.jar;C:\Users\sosog\.m2\repository\org\scalatest\scalatest-refspec_2.12\3.2.3\scalatest-refspec_2.12-3.2.3.jar;C:\Users\sosog\.m2\repository\org\seleniumhq\selenium\selenium-api\3.141.59\selenium-api-3.141.59.jar;C:\Users\sosog\.m2\repository\org\seleniumhq\selenium\selenium-java\3.141.59\selenium-java-3.141.59.jar;C:\Users\sosog\.m2\repository\org\mockito\mockito-core\3.4.6\mockito-core-3.4.6.jar;C:\Users\sosog\.m2\repository\org\seleniumhq\selenium\selenium-edge-driver\3.141.59\selenium-edge-driver-3.141.59.jar;C:\Users\sosog\.m2\repository\org\apache\commons\commons-exec\1.3\commons-exec-1.3.jar;C:\Users\sosog\.m2\repository\org\scalacheck\scalacheck_2.12\1.14.2\scalacheck_2.12-1.14.2.jar;C:\Users\sosog\.m2\repository\com\fasterxml\jackson\core\jackson-databind\2.12.2\jackson-databind-2.12.2.jar;C:\Users\sosog\.m2\repository\com\google\guava\guava\14.0.1\guava-14.0.1.jar;C:\Users\sosog\.m2\repository\org\scalactic\scalactic_2.12\3.2.3\scalactic_2.12-3.2.3.jar;C:\Users\sosog\.m2\repository\org\spark-project\spark\unused\1.0.0\unused-1.0.0.jar;C:\Users\sosog\.m2\repository\com\fasterxml\jackson\core\jackson-annotations\2.12.2\jackson-annotations-2.12.2.jar;C:\Users\sosog\.m2\repository\org\scalatest\scalatest-compatible\3.2.3\scalatest-compatible-3.2.3.jar;C:\Users\sosog\.m2\repository\org\scalatest\scalatest-propspec_2.12\3.2.3\scalatest-propspec_2.12-3.2.3.jar;C:\Users\sosog\.m2\repository\org\scalatest\scalatest-core_2.12\3.2.3\scalatest-core_2.12-3.2.3.jar;C:\Users\sosog\.m2\repository\org\scalatest\scalatest-featurespec_2.12\3.2.3\scalatest-featurespec_2.12-3.2.3.jar;C:\Users\sosog\.m2\repository\org\seleniumhq\selenium\selenium-firefox-driver\3.141.59\selenium-firefox-driver-3.141.59.jar;C:\Users\sosog\.m2\repository\org\seleniumhq\selenium\selenium-safari-driver\3.141.59\selenium-safari-driver-3.141.59.jar;C:\Users\sosog\.m2\repository\org\scalatest\scalatest-shouldmatchers_2.12\3.2.3\scalatest-shouldmatchers_2.12-3.2.3.jar;C:\Users\sosog\.m2\repository\org\scalatest\scalatest-matchers-core_2.12\3.2.3\scalatest-matchers-core_2.12-3.2.3.jar
+[INFO] 
+[INFO] --- scala-maven-plugin:4.3.0:testCompile (scala-test-compile-first) @ spark-kvstore_2.12 ---
+[INFO] Using incremental compilation using Mixed compile order
+[INFO] Compiler bridge file: C:\Users\sosog\.sbt\1.0\zinc\org.scala-sbt\org.scala-sbt-compiler-bridge_2.12-1.3.1-bin_2.12.10__52.0-1.3.1_20191012T045515.jar
+[INFO] compiler plugin: BasicArtifact(com.github.ghik,silencer-plugin_2.12.10,1.6.0,null)
+[INFO] Compiling 11 Java sources to D:\spark\common\kvstore\target\scala-2.12\test-classes ...
+[INFO] Done compiling.
+[INFO] compile in 0.5 s
+[INFO] 
+[INFO] --- maven-surefire-plugin:3.0.0-M5:test (default-test) @ spark-kvstore_2.12 ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- maven-surefire-plugin:3.0.0-M5:test (test) @ spark-kvstore_2.12 ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- scalatest-maven-plugin:2.0.0:test (test) @ spark-kvstore_2.12 ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- maven-jar-plugin:3.1.2:test-jar (prepare-test-jar) @ spark-kvstore_2.12 ---
+[INFO] Building jar: D:\spark\common\kvstore\target\spark-kvstore_2.12-3.2.0-SNAPSHOT-tests.jar
+[INFO] 
+[INFO] --- maven-jar-plugin:3.1.2:jar (default-jar) @ spark-kvstore_2.12 ---
+[INFO] Building jar: D:\spark\common\kvstore\target\spark-kvstore_2.12-3.2.0-SNAPSHOT.jar
+[INFO] 
+[INFO] --- maven-site-plugin:3.5.1:attach-descriptor (attach-descriptor) @ spark-kvstore_2.12 ---
+[INFO] 
+[INFO] --- maven-shade-plugin:3.2.1:shade (default) @ spark-kvstore_2.12 ---
+[INFO] Excluding org.apache.spark:spark-tags_2.12:jar:3.2.0-SNAPSHOT from the shaded jar.
+[INFO] Excluding org.scala-lang:scala-library:jar:2.12.10 from the shaded jar.
+[INFO] Excluding org.fusesource.leveldbjni:leveldbjni-all:jar:1.8 from the shaded jar.
+[INFO] Excluding com.fasterxml.jackson.core:jackson-core:jar:2.12.2 from the shaded jar.
+[INFO] Excluding com.fasterxml.jackson.core:jackson-databind:jar:2.12.2 from the shaded jar.
+[INFO] Excluding com.fasterxml.jackson.core:jackson-annotations:jar:2.12.2 from the shaded jar.
+[INFO] Including org.spark-project.spark:unused:jar:1.0.0 in the shaded jar.
+[INFO] Replacing original artifact with shaded artifact.
+[INFO] Replacing D:\spark\common\kvstore\target\spark-kvstore_2.12-3.2.0-SNAPSHOT.jar with D:\spark\common\kvstore\target\spark-kvstore_2.12-3.2.0-SNAPSHOT-shaded.jar
+[INFO] 
+[INFO] --- maven-source-plugin:3.1.0:jar-no-fork (create-source-jar) @ spark-kvstore_2.12 ---
+[INFO] Building jar: D:\spark\common\kvstore\target\spark-kvstore_2.12-3.2.0-SNAPSHOT-sources.jar
+[INFO] 
+[INFO] --- maven-source-plugin:3.1.0:test-jar-no-fork (create-source-jar) @ spark-kvstore_2.12 ---
+[INFO] Building jar: D:\spark\common\kvstore\target\spark-kvstore_2.12-3.2.0-SNAPSHOT-test-sources.jar
+[INFO] 
+[INFO] -------------< org.apache.spark:spark-network-common_2.12 >-------------
+[INFO] Building Spark Project Networking 3.2.0-SNAPSHOT                  [5/25]
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-clean-plugin:3.1.0:clean (default-clean) @ spark-network-common_2.12 ---
+[INFO] Deleting D:\spark\common\network-common\target
+[INFO] 
+[INFO] --- maven-enforcer-plugin:3.0.0-M2:enforce (enforce-versions) @ spark-network-common_2.12 ---
+[INFO] 
+[INFO] --- maven-enforcer-plugin:3.0.0-M2:enforce (enforce-no-duplicate-dependencies) @ spark-network-common_2.12 ---
+[INFO] 
+[INFO] --- mvn-scalafmt_2.12:1.0.3:format (default) @ spark-network-common_2.12 ---
+[WARNING] format.skipSources set, ignoring main directories
+[WARNING] format.skipTestSources set, ignoring validateOnly directories
+[WARNING] No sources specified, skipping formatting
+[INFO] 
+[INFO] --- scala-maven-plugin:4.3.0:add-source (eclipse-add-source) @ spark-network-common_2.12 ---
+[INFO] Add Source directory: D:\spark\common\network-common\src\main\scala
+[INFO] Add Test Source directory: D:\spark\common\network-common\src\test\scala
+[INFO] 
+[INFO] --- maven-dependency-plugin:3.1.1:build-classpath (default-cli) @ spark-network-common_2.12 ---
+[INFO] Dependencies classpath:
+C:\Users\sosog\.m2\repository\org\apache\commons\commons-crypto\1.1.0\commons-crypto-1.1.0.jar;C:\Users\sosog\.m2\repository\com\fasterxml\jackson\core\jackson-core\2.12.2\jackson-core-2.12.2.jar;C:\Users\sosog\.m2\repository\org\spark-project\spark\unused\1.0.0\unused-1.0.0.jar;C:\Users\sosog\.m2\repository\com\fasterxml\jackson\core\jackson-annotations\2.12.2\jackson-annotations-2.12.2.jar;C:\Users\sosog\.m2\repository\io\dropwizard\metrics\metrics-core\4.1.1\metrics-core-4.1.1.jar;C:\Users\sosog\.m2\repository\org\scala-lang\scala-library\2.12.10\scala-library-2.12.10.jar;C:\Users\sosog\.m2\repository\io\netty\netty-all\4.1.51.Final\netty-all-4.1.51.Final.jar;C:\Users\sosog\.m2\repository\org\apache\commons\commons-lang3\3.11\commons-lang3-3.11.jar;C:\Users\sosog\.m2\repository\org\roaringbitmap\shims\0.9.0\shims-0.9.0.jar;C:\Users\sosog\.m2\repository\com\google\code\findbugs\jsr305\3.0.0\jsr305-3.0.0.jar;C:\Users\sosog\.m2\repository\org\fusesource\leveldbjni\leveldbjni-all\1.8\leveldbjni-all-1.8.jar;C:\Users\sosog\.m2\repository\org\roaringbitmap\RoaringBitmap\0.9.0\RoaringBitmap-0.9.0.jar;C:\Users\sosog\.m2\repository\com\fasterxml\jackson\core\jackson-databind\2.12.2\jackson-databind-2.12.2.jar;C:\Users\sosog\.m2\repository\com\google\guava\guava\14.0.1\guava-14.0.1.jar
+[INFO] 
+[INFO] --- maven-remote-resources-plugin:1.5:process (process-resource-bundles) @ spark-network-common_2.12 ---
+[INFO] 
+[INFO] --- maven-resources-plugin:2.7:resources (default-resources) @ spark-network-common_2.12 ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] skip non existing resourceDirectory D:\spark\common\network-common\src\main\resources
+[INFO] Copying 3 resources
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.8.1:compile (default-compile) @ spark-network-common_2.12 ---
+[INFO] Not compiling main sources
+[INFO] 
+[INFO] --- scala-maven-plugin:4.3.0:compile (scala-compile-first) @ spark-network-common_2.12 ---
+[INFO] Using incremental compilation using Mixed compile order
+[INFO] Compiler bridge file: C:\Users\sosog\.sbt\1.0\zinc\org.scala-sbt\org.scala-sbt-compiler-bridge_2.12-1.3.1-bin_2.12.10__52.0-1.3.1_20191012T045515.jar
+[INFO] compiler plugin: BasicArtifact(com.github.ghik,silencer-plugin_2.12.10,1.6.0,null)
+[INFO] Compiling 79 Java sources to D:\spark\common\network-common\target\scala-2.12\classes ...
+[INFO] Done compiling.
+[INFO] compile in 1.1 s
+[INFO] 
+[INFO] --- maven-antrun-plugin:1.8:run (create-tmp-dir) @ spark-network-common_2.12 ---
+[INFO] Executing tasks
+
+main:
+    [mkdir] Created dir: D:\spark\common\network-common\target\tmp
+[INFO] Executed tasks
+[INFO] 
+[INFO] --- maven-resources-plugin:2.7:testResources (default-testResources) @ spark-network-common_2.12 ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] Copying 1 resource
+[INFO] Copying 3 resources
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.8.1:testCompile (default-testCompile) @ spark-network-common_2.12 ---
+[INFO] Not compiling test sources
+[INFO] 
+[INFO] --- maven-dependency-plugin:3.1.1:build-classpath (generate-test-classpath) @ spark-network-common_2.12 ---
+[INFO] Dependencies classpath:
+C:\Users\sosog\.m2\repository\org\scala-lang\scala-reflect\2.12.10\scala-reflect-2.12.10.jar;C:\Users\sosog\.m2\repository\org\scalatestplus\scalatestplus-mockito_2.12\1.0.0-SNAP5\scalatestplus-mockito_2.12-1.0.0-SNAP5.jar;C:\Users\sosog\.m2\repository\com\fasterxml\jackson\core\jackson-core\2.12.2\jackson-core-2.12.2.jar;C:\Users\sosog\.m2\repository\log4j\log4j\1.2.17\log4j-1.2.17.jar;C:\Users\sosog\.m2\repository\com\novocode\junit-interface\0.11\junit-interface-0.11.jar;C:\Users\sosog\.m2\repository\org\slf4j\slf4j-log4j12\1.7.30\slf4j-log4j12-1.7.30.jar;C:\Users\sosog\.m2\repository\org\scalatest\scalatest-freespec_2.12\3.2.3\scalatest-freespec_2.12-3.2.3.jar;C:\Users\sosog\.m2\repository\org\scalatest\scalatest-funsuite_2.12\3.2.3\scalatest-funsuite_2.12-3.2.3.jar;C:\Users\sosog\.m2\repository\io\dropwizard\metrics\metrics-core\4.1.1\metrics-core-4.1.1.jar;C:\Users\sosog\.m2\repository\junit\junit\4.13.1\junit-4.13.1.jar;C:\Users\sosog\.m2\repository\io\netty\netty-all\4.1.51.Final\netty-all-4.1.51.Final.jar;C:\Users\sosog\.m2\repository\org\apache\commons\commons-lang3\3.11\commons-lang3-3.11.jar;C:\Users\sosog\.m2\repository\org\scalatest\scalatest-funspec_2.12\3.2.3\scalatest-funspec_2.12-3.2.3.jar;C:\Users\sosog\.m2\repository\org\roaringbitmap\shims\0.9.0\shims-0.9.0.jar;C:\Users\sosog\.m2\repository\org\seleniumhq\selenium\selenium-chrome-driver\3.141.59\selenium-chrome-driver-3.141.59.jar;C:\Users\sosog\.m2\repository\com\google\code\findbugs\jsr305\3.0.0\jsr305-3.0.0.jar;C:\Users\sosog\.m2\repository\org\objenesis\objenesis\2.6\objenesis-2.6.jar;C:\Users\sosog\.m2\repository\org\seleniumhq\selenium\selenium-opera-driver\3.141.59\selenium-opera-driver-3.141.59.jar;C:\Users\sosog\.m2\repository\org\fusesource\leveldbjni\leveldbjni-all\1.8\leveldbjni-all-1.8.jar;C:\Users\sosog\.m2\repository\org\scalatest\scalatest-diagrams_2.12\3.2.3\scalatest-diagrams_2.12-3.2.3.jar;C:\Users\sosog\.m2\repository\net\bytebuddy\byte-buddy-agent\1.10.13\byte-buddy-agent-1.10.13.jar;D:\spark\common\tags\target\spark-tags_2.12-3.2.0-SNAPSHOT-tests.jar;C:\Users\sosog\.m2\repository\org\scalatestplus\scalatestplus-selenium_2.12\1.0.0-SNAP5\scalatestplus-selenium_2.12-1.0.0-SNAP5.jar;C:\Users\sosog\.m2\repository\org\scala-sbt\test-interface\1.0\test-interface-1.0.jar;C:\Users\sosog\.m2\repository\com\squareup\okio\okio\1.14.0\okio-1.14.0.jar;C:\Users\sosog\.m2\repository\org\hamcrest\hamcrest-core\1.3\hamcrest-core-1.3.jar;C:\Users\sosog\.m2\repository\org\seleniumhq\selenium\selenium-support\3.141.59\selenium-support-3.141.59.jar;C:\Users\sosog\.m2\repository\org\scala-lang\modules\scala-xml_2.12\1.2.0\scala-xml_2.12-1.2.0.jar;C:\Users\sosog\.m2\repository\org\scala-lang\scala-library\2.12.10\scala-library-2.12.10.jar;C:\Users\sosog\.m2\repository\org\slf4j\slf4j-api\1.7.30\slf4j-api-1.7.30.jar;C:\Users\sosog\.m2\repository\net\bytebuddy\byte-buddy\1.10.13\byte-buddy-1.10.13.jar;C:\Users\sosog\.m2\repository\org\scalatest\scalatest_2.12\3.2.3\scalatest_2.12-3.2.3.jar;C:\Users\sosog\.m2\repository\org\scalatest\scalatest-mustmatchers_2.12\3.2.3\scalatest-mustmatchers_2.12-3.2.3.jar;C:\Users\sosog\.m2\repository\com\squareup\okhttp3\okhttp\3.11.0\okhttp-3.11.0.jar;C:\Users\sosog\.m2\repository\org\seleniumhq\selenium\selenium-remote-driver\3.141.59\selenium-remote-driver-3.141.59.jar;C:\Users\sosog\.m2\repository\org\apache\commons\commons-crypto\1.1.0\commons-crypto-1.1.0.jar;D:\spark\common\tags\target\spark-tags_2.12-3.2.0-SNAPSHOT.jar;C:\Users\sosog\.m2\repository\org\seleniumhq\selenium\selenium-ie-driver\3.141.59\selenium-ie-driver-3.141.59.jar;C:\Users\sosog\.m2\repository\org\scalatestplus\scalatestplus-scalacheck_2.12\3.1.0.0-RC2\scalatestplus-scalacheck_2.12-3.1.0.0-RC2.jar;C:\Users\sosog\.m2\repository\org\scalatest\scalatest-flatspec_2.12\3.2.3\scalatest-flatspec_2.12-3.2.3.jar;C:\Users\sosog\.m2\repository\org\scalatest\scalatest-wordspec_2.12\3.2.3\scalatest-wordspec_2.12-3.2.3.jar;C:\Users\sosog\.m2\repository\org\scalatest\scalatest-refspec_2.12\3.2.3\scalatest-refspec_2.12-3.2.3.jar;C:\Users\sosog\.m2\repository\org\seleniumhq\selenium\selenium-api\3.141.59\selenium-api-3.141.59.jar;C:\Users\sosog\.m2\repository\org\seleniumhq\selenium\selenium-java\3.141.59\selenium-java-3.141.59.jar;C:\Users\sosog\.m2\repository\org\mockito\mockito-core\3.4.6\mockito-core-3.4.6.jar;C:\Users\sosog\.m2\repository\org\seleniumhq\selenium\selenium-edge-driver\3.141.59\selenium-edge-driver-3.141.59.jar;C:\Users\sosog\.m2\repository\org\apache\commons\commons-exec\1.3\commons-exec-1.3.jar;C:\Users\sosog\.m2\repository\org\scalacheck\scalacheck_2.12\1.14.2\scalacheck_2.12-1.14.2.jar;C:\Users\sosog\.m2\repository\org\roaringbitmap\RoaringBitmap\0.9.0\RoaringBitmap-0.9.0.jar;C:\Users\sosog\.m2\repository\com\fasterxml\jackson\core\jackson-databind\2.12.2\jackson-databind-2.12.2.jar;C:\Users\sosog\.m2\repository\com\google\guava\guava\14.0.1\guava-14.0.1.jar;C:\Users\sosog\.m2\repository\org\scalactic\scalactic_2.12\3.2.3\scalactic_2.12-3.2.3.jar;C:\Users\sosog\.m2\repository\org\spark-project\spark\unused\1.0.0\unused-1.0.0.jar;C:\Users\sosog\.m2\repository\com\fasterxml\jackson\core\jackson-annotations\2.12.2\jackson-annotations-2.12.2.jar;C:\Users\sosog\.m2\repository\org\scalatest\scalatest-compatible\3.2.3\scalatest-compatible-3.2.3.jar;C:\Users\sosog\.m2\repository\org\scalatest\scalatest-propspec_2.12\3.2.3\scalatest-propspec_2.12-3.2.3.jar;C:\Users\sosog\.m2\repository\org\scalatest\scalatest-core_2.12\3.2.3\scalatest-core_2.12-3.2.3.jar;C:\Users\sosog\.m2\repository\org\scalatest\scalatest-featurespec_2.12\3.2.3\scalatest-featurespec_2.12-3.2.3.jar;C:\Users\sosog\.m2\repository\org\seleniumhq\selenium\selenium-firefox-driver\3.141.59\selenium-firefox-driver-3.141.59.jar;C:\Users\sosog\.m2\repository\org\seleniumhq\selenium\selenium-safari-driver\3.141.59\selenium-safari-driver-3.141.59.jar;C:\Users\sosog\.m2\repository\org\scalatest\scalatest-shouldmatchers_2.12\3.2.3\scalatest-shouldmatchers_2.12-3.2.3.jar;C:\Users\sosog\.m2\repository\org\scalatest\scalatest-matchers-core_2.12\3.2.3\scalatest-matchers-core_2.12-3.2.3.jar
+[INFO] 
+[INFO] --- scala-maven-plugin:4.3.0:testCompile (scala-test-compile-first) @ spark-network-common_2.12 ---
+[INFO] Using incremental compilation using Mixed compile order
+[INFO] Compiler bridge file: C:\Users\sosog\.sbt\1.0\zinc\org.scala-sbt\org.scala-sbt-compiler-bridge_2.12-1.3.1-bin_2.12.10__52.0-1.3.1_20191012T045515.jar
+[INFO] compiler plugin: BasicArtifact(com.github.ghik,silencer-plugin_2.12.10,1.6.0,null)
+[INFO] Compiling 24 Java sources to D:\spark\common\network-common\target\scala-2.12\test-classes ...
+[WARNING] [Warn] D:\spark\common\network-common\src\test\java\org\apache\spark\network\server\OneForOneStreamManagerSuite.java:105: 未经检查的转换
+  需要: java.util.Iterator<org.apache.spark.network.buffer.ManagedBuffer>
+  找到:    java.util.Iterator
+[WARNING] [Warn] D:\spark\common\network-common\src\test\java\org\apache\spark\network\server\OneForOneStreamManagerSuite.java:111: 未经检查的转换
+  需要: java.util.Iterator<org.apache.spark.network.buffer.ManagedBuffer>
+  找到:    java.util.Iterator
+[INFO] Done compiling.
+[INFO] compile in 0.7 s
+[INFO] 
+[INFO] --- maven-jar-plugin:3.1.2:test-jar (prepare-test-jar) @ spark-network-common_2.12 ---
+[INFO] Building jar: D:\spark\common\network-common\target\spark-network-common_2.12-3.2.0-SNAPSHOT-tests.jar
+[INFO] 
+[INFO] --- maven-surefire-plugin:3.0.0-M5:test (default-test) @ spark-network-common_2.12 ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- maven-surefire-plugin:3.0.0-M5:test (test) @ spark-network-common_2.12 ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- scalatest-maven-plugin:2.0.0:test (test) @ spark-network-common_2.12 ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- maven-jar-plugin:3.1.2:jar (default-jar) @ spark-network-common_2.12 ---
+[INFO] Building jar: D:\spark\common\network-common\target\spark-network-common_2.12-3.2.0-SNAPSHOT.jar
+[INFO] 
+[INFO] --- maven-site-plugin:3.5.1:attach-descriptor (attach-descriptor) @ spark-network-common_2.12 ---
+[INFO] 
+[INFO] --- maven-shade-plugin:3.2.1:shade (default) @ spark-network-common_2.12 ---
+[INFO] Excluding org.scala-lang:scala-library:jar:2.12.10 from the shaded jar.
+[INFO] Excluding io.netty:netty-all:jar:4.1.51.Final from the shaded jar.
+[INFO] Excluding org.apache.commons:commons-lang3:jar:3.11 from the shaded jar.
+[INFO] Excluding org.fusesource.leveldbjni:leveldbjni-all:jar:1.8 from the shaded jar.
+[INFO] Excluding com.fasterxml.jackson.core:jackson-databind:jar:2.12.2 from the shaded jar.
+[INFO] Excluding com.fasterxml.jackson.core:jackson-core:jar:2.12.2 from the shaded jar.
+[INFO] Excluding com.fasterxml.jackson.core:jackson-annotations:jar:2.12.2 from the shaded jar.
+[INFO] Excluding io.dropwizard.metrics:metrics-core:jar:4.1.1 from the shaded jar.
+[INFO] Excluding com.google.code.findbugs:jsr305:jar:3.0.0 from the shaded jar.
+[INFO] Including com.google.guava:guava:jar:14.0.1 in the shaded jar.
+[INFO] Excluding org.apache.commons:commons-crypto:jar:1.1.0 from the shaded jar.
+[INFO] Excluding org.roaringbitmap:RoaringBitmap:jar:0.9.0 from the shaded jar.
+[INFO] Excluding org.roaringbitmap:shims:jar:0.9.0 from the shaded jar.
+[INFO] Including org.spark-project.spark:unused:jar:1.0.0 in the shaded jar.
+[INFO] Replacing original artifact with shaded artifact.
+[INFO] Replacing D:\spark\common\network-common\target\spark-network-common_2.12-3.2.0-SNAPSHOT.jar with D:\spark\common\network-common\target\spark-network-common_2.12-3.2.0-SNAPSHOT-shaded.jar
+[INFO] 
+[INFO] --- maven-source-plugin:3.1.0:jar-no-fork (create-source-jar) @ spark-network-common_2.12 ---
+[INFO] Building jar: D:\spark\common\network-common\target\spark-network-common_2.12-3.2.0-SNAPSHOT-sources.jar
+[INFO] 
+[INFO] --- maven-source-plugin:3.1.0:test-jar-no-fork (create-source-jar) @ spark-network-common_2.12 ---
+[INFO] Building jar: D:\spark\common\network-common\target\spark-network-common_2.12-3.2.0-SNAPSHOT-test-sources.jar
+[INFO] 
+[INFO] ------------< org.apache.spark:spark-network-shuffle_2.12 >-------------
+[INFO] Building Spark Project Shuffle Streaming Service 3.2.0-SNAPSHOT   [6/25]
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-clean-plugin:3.1.0:clean (default-clean) @ spark-network-shuffle_2.12 ---
+[INFO] Deleting D:\spark\common\network-shuffle\target
+[INFO] 
+[INFO] --- maven-enforcer-plugin:3.0.0-M2:enforce (enforce-versions) @ spark-network-shuffle_2.12 ---
+[INFO] 
+[INFO] --- maven-enforcer-plugin:3.0.0-M2:enforce (enforce-no-duplicate-dependencies) @ spark-network-shuffle_2.12 ---
+[INFO] 
+[INFO] --- mvn-scalafmt_2.12:1.0.3:format (default) @ spark-network-shuffle_2.12 ---
+[WARNING] format.skipSources set, ignoring main directories
+[WARNING] format.skipTestSources set, ignoring validateOnly directories
+[WARNING] No sources specified, skipping formatting
+[INFO] 
+[INFO] --- scala-maven-plugin:4.3.0:add-source (eclipse-add-source) @ spark-network-shuffle_2.12 ---
+[INFO] Add Source directory: D:\spark\common\network-shuffle\src\main\scala
+[INFO] Add Test Source directory: D:\spark\common\network-shuffle\src\test\scala
+[INFO] 
+[INFO] --- maven-dependency-plugin:3.1.1:build-classpath (default-cli) @ spark-network-shuffle_2.12 ---
+[INFO] Dependencies classpath:
+D:\spark\common\network-common\target\spark-network-common_2.12-3.2.0-SNAPSHOT.jar;C:\Users\sosog\.m2\repository\org\apache\commons\commons-crypto\1.1.0\commons-crypto-1.1.0.jar;C:\Users\sosog\.m2\repository\com\fasterxml\jackson\core\jackson-core\2.12.2\jackson-core-2.12.2.jar;C:\Users\sosog\.m2\repository\org\spark-project\spark\unused\1.0.0\unused-1.0.0.jar;C:\Users\sosog\.m2\repository\com\fasterxml\jackson\core\jackson-annotations\2.12.2\jackson-annotations-2.12.2.jar;D:\spark\common\tags\target\spark-tags_2.12-3.2.0-SNAPSHOT.jar;C:\Users\sosog\.m2\repository\io\dropwizard\metrics\metrics-core\4.1.1\metrics-core-4.1.1.jar;C:\Users\sosog\.m2\repository\org\scala-lang\scala-library\2.12.10\scala-library-2.12.10.jar;C:\Users\sosog\.m2\repository\io\netty\netty-all\4.1.51.Final\netty-all-4.1.51.Final.jar;C:\Users\sosog\.m2\repository\org\apache\commons\commons-lang3\3.11\commons-lang3-3.11.jar;C:\Users\sosog\.m2\repository\org\roaringbitmap\shims\0.9.0\shims-0.9.0.jar;C:\Users\sosog\.m2\repository\com\google\code\findbugs\jsr305\3.0.0\jsr305-3.0.0.jar;C:\Users\sosog\.m2\repository\org\fusesource\leveldbjni\leveldbjni-all\1.8\leveldbjni-all-1.8.jar;C:\Users\sosog\.m2\repository\org\roaringbitmap\RoaringBitmap\0.9.0\RoaringBitmap-0.9.0.jar;C:\Users\sosog\.m2\repository\com\fasterxml\jackson\core\jackson-databind\2.12.2\jackson-databind-2.12.2.jar
+[INFO] 
+[INFO] --- maven-remote-resources-plugin:1.5:process (process-resource-bundles) @ spark-network-shuffle_2.12 ---
+[INFO] 
+[INFO] --- maven-resources-plugin:2.7:resources (default-resources) @ spark-network-shuffle_2.12 ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] skip non existing resourceDirectory D:\spark\common\network-shuffle\src\main\resources
+[INFO] Copying 3 resources
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.8.1:compile (default-compile) @ spark-network-shuffle_2.12 ---
+[INFO] Not compiling main sources
+[INFO] 
+[INFO] --- scala-maven-plugin:4.3.0:compile (scala-compile-first) @ spark-network-shuffle_2.12 ---
+[INFO] Using incremental compilation using Mixed compile order
+[INFO] Compiler bridge file: C:\Users\sosog\.sbt\1.0\zinc\org.scala-sbt\org.scala-sbt-compiler-bridge_2.12-1.3.1-bin_2.12.10__52.0-1.3.1_20191012T045515.jar
+[INFO] compiler plugin: BasicArtifact(com.github.ghik,silencer-plugin_2.12.10,1.6.0,null)
+[INFO] Compiling 39 Java sources to D:\spark\common\network-shuffle\target\scala-2.12\classes ...
+[INFO] Done compiling.
+[INFO] compile in 0.8 s
+[INFO] 
+[INFO] --- maven-antrun-plugin:1.8:run (create-tmp-dir) @ spark-network-shuffle_2.12 ---
+[INFO] Executing tasks
+
+main:
+    [mkdir] Created dir: D:\spark\common\network-shuffle\target\tmp
+[INFO] Executed tasks
+[INFO] 
+[INFO] --- maven-resources-plugin:2.7:testResources (default-testResources) @ spark-network-shuffle_2.12 ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] Copying 1 resource
+[INFO] Copying 3 resources
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.8.1:testCompile (default-testCompile) @ spark-network-shuffle_2.12 ---
+[INFO] Not compiling test sources
+[INFO] 
+[INFO] --- maven-dependency-plugin:3.1.1:build-classpath (generate-test-classpath) @ spark-network-shuffle_2.12 ---
+[INFO] Dependencies classpath:
+C:\Users\sosog\.m2\repository\org\scala-lang\scala-reflect\2.12.10\scala-reflect-2.12.10.jar;C:\Users\sosog\.m2\repository\org\scalatestplus\scalatestplus-mockito_2.12\1.0.0-SNAP5\scalatestplus-mockito_2.12-1.0.0-SNAP5.jar;C:\Users\sosog\.m2\repository\com\fasterxml\jackson\core\jackson-core\2.12.2\jackson-core-2.12.2.jar;C:\Users\sosog\.m2\repository\log4j\log4j\1.2.17\log4j-1.2.17.jar;C:\Users\sosog\.m2\repository\com\novocode\junit-interface\0.11\junit-interface-0.11.jar;C:\Users\sosog\.m2\repository\org\scalatest\scalatest-freespec_2.12\3.2.3\scalatest-freespec_2.12-3.2.3.jar;C:\Users\sosog\.m2\repository\org\scalatest\scalatest-funsuite_2.12\3.2.3\scalatest-funsuite_2.12-3.2.3.jar;C:\Users\sosog\.m2\repository\io\dropwizard\metrics\metrics-core\4.1.1\metrics-core-4.1.1.jar;C:\Users\sosog\.m2\repository\junit\junit\4.13.1\junit-4.13.1.jar;C:\Users\sosog\.m2\repository\io\netty\netty-all\4.1.51.Final\netty-all-4.1.51.Final.jar;C:\Users\sosog\.m2\repository\org\apache\commons\commons-lang3\3.11\commons-lang3-3.11.jar;C:\Users\sosog\.m2\repository\org\scalatest\scalatest-funspec_2.12\3.2.3\scalatest-funspec_2.12-3.2.3.jar;C:\Users\sosog\.m2\repository\org\roaringbitmap\shims\0.9.0\shims-0.9.0.jar;C:\Users\sosog\.m2\repository\org\seleniumhq\selenium\selenium-chrome-driver\3.141.59\selenium-chrome-driver-3.141.59.jar;C:\Users\sosog\.m2\repository\com\google\code\findbugs\jsr305\3.0.0\jsr305-3.0.0.jar;C:\Users\sosog\.m2\repository\org\objenesis\objenesis\2.6\objenesis-2.6.jar;C:\Users\sosog\.m2\repository\org\seleniumhq\selenium\selenium-opera-driver\3.141.59\selenium-opera-driver-3.141.59.jar;C:\Users\sosog\.m2\repository\org\fusesource\leveldbjni\leveldbjni-all\1.8\leveldbjni-all-1.8.jar;C:\Users\sosog\.m2\repository\org\scalatest\scalatest-diagrams_2.12\3.2.3\scalatest-diagrams_2.12-3.2.3.jar;C:\Users\sosog\.m2\repository\net\bytebuddy\byte-buddy-agent\1.10.13\byte-buddy-agent-1.10.13.jar;D:\spark\common\tags\target\spark-tags_2.12-3.2.0-SNAPSHOT-tests.jar;C:\Users\sosog\.m2\repository\commons-io\commons-io\2.8.0\commons-io-2.8.0.jar;C:\Users\sosog\.m2\repository\org\scalatestplus\scalatestplus-selenium_2.12\1.0.0-SNAP5\scalatestplus-selenium_2.12-1.0.0-SNAP5.jar;C:\Users\sosog\.m2\repository\org\scala-sbt\test-interface\1.0\test-interface-1.0.jar;C:\Users\sosog\.m2\repository\com\squareup\okio\okio\1.14.0\okio-1.14.0.jar;C:\Users\sosog\.m2\repository\org\hamcrest\hamcrest-core\1.3\hamcrest-core-1.3.jar;C:\Users\sosog\.m2\repository\org\seleniumhq\selenium\selenium-support\3.141.59\selenium-support-3.141.59.jar;C:\Users\sosog\.m2\repository\org\scala-lang\modules\scala-xml_2.12\1.2.0\scala-xml_2.12-1.2.0.jar;C:\Users\sosog\.m2\repository\org\scala-lang\scala-library\2.12.10\scala-library-2.12.10.jar;C:\Users\sosog\.m2\repository\org\slf4j\slf4j-api\1.7.30\slf4j-api-1.7.30.jar;C:\Users\sosog\.m2\repository\net\bytebuddy\byte-buddy\1.10.13\byte-buddy-1.10.13.jar;C:\Users\sosog\.m2\repository\org\scalatest\scalatest_2.12\3.2.3\scalatest_2.12-3.2.3.jar;C:\Users\sosog\.m2\repository\org\scalatest\scalatest-mustmatchers_2.12\3.2.3\scalatest-mustmatchers_2.12-3.2.3.jar;C:\Users\sosog\.m2\repository\com\squareup\okhttp3\okhttp\3.11.0\okhttp-3.11.0.jar;D:\spark\common\network-common\target\spark-network-common_2.12-3.2.0-SNAPSHOT-tests.jar;C:\Users\sosog\.m2\repository\org\seleniumhq\selenium\selenium-remote-driver\3.141.59\selenium-remote-driver-3.141.59.jar;D:\spark\common\network-common\target\spark-network-common_2.12-3.2.0-SNAPSHOT.jar;C:\Users\sosog\.m2\repository\org\apache\commons\commons-crypto\1.1.0\commons-crypto-1.1.0.jar;D:\spark\common\tags\target\spark-tags_2.12-3.2.0-SNAPSHOT.jar;C:\Users\sosog\.m2\repository\org\seleniumhq\selenium\selenium-ie-driver\3.141.59\selenium-ie-driver-3.141.59.jar;C:\Users\sosog\.m2\repository\org\scalatestplus\scalatestplus-scalacheck_2.12\3.1.0.0-RC2\scalatestplus-scalacheck_2.12-3.1.0.0-RC2.jar;C:\Users\sosog\.m2\repository\org\scalatest\scalatest-flatspec_2.12\3.2.3\scalatest-flatspec_2.12-3.2.3.jar;C:\Users\sosog\.m2\repository\org\scalatest\scalatest-wordspec_2.12\3.2.3\scalatest-wordspec_2.12-3.2.3.jar;C:\Users\sosog\.m2\repository\org\scalatest\scalatest-refspec_2.12\3.2.3\scalatest-refspec_2.12-3.2.3.jar;C:\Users\sosog\.m2\repository\org\seleniumhq\selenium\selenium-api\3.141.59\selenium-api-3.141.59.jar;C:\Users\sosog\.m2\repository\org\seleniumhq\selenium\selenium-java\3.141.59\selenium-java-3.141.59.jar;C:\Users\sosog\.m2\repository\org\mockito\mockito-core\3.4.6\mockito-core-3.4.6.jar;C:\Users\sosog\.m2\repository\org\seleniumhq\selenium\selenium-edge-driver\3.141.59\selenium-edge-driver-3.141.59.jar;C:\Users\sosog\.m2\repository\org\apache\commons\commons-exec\1.3\commons-exec-1.3.jar;C:\Users\sosog\.m2\repository\org\scalacheck\scalacheck_2.12\1.14.2\scalacheck_2.12-1.14.2.jar;C:\Users\sosog\.m2\repository\org\roaringbitmap\RoaringBitmap\0.9.0\RoaringBitmap-0.9.0.jar;C:\Users\sosog\.m2\repository\com\fasterxml\jackson\core\jackson-databind\2.12.2\jackson-databind-2.12.2.jar;C:\Users\sosog\.m2\repository\com\google\guava\guava\14.0.1\guava-14.0.1.jar;C:\Users\sosog\.m2\repository\org\scalactic\scalactic_2.12\3.2.3\scalactic_2.12-3.2.3.jar;C:\Users\sosog\.m2\repository\org\spark-project\spark\unused\1.0.0\unused-1.0.0.jar;C:\Users\sosog\.m2\repository\com\fasterxml\jackson\core\jackson-annotations\2.12.2\jackson-annotations-2.12.2.jar;C:\Users\sosog\.m2\repository\org\scalatest\scalatest-compatible\3.2.3\scalatest-compatible-3.2.3.jar;C:\Users\sosog\.m2\repository\org\scalatest\scalatest-propspec_2.12\3.2.3\scalatest-propspec_2.12-3.2.3.jar;C:\Users\sosog\.m2\repository\org\scalatest\scalatest-core_2.12\3.2.3\scalatest-core_2.12-3.2.3.jar;C:\Users\sosog\.m2\repository\org\scalatest\scalatest-featurespec_2.12\3.2.3\scalatest-featurespec_2.12-3.2.3.jar;C:\Users\sosog\.m2\repository\org\seleniumhq\selenium\selenium-firefox-driver\3.141.59\selenium-firefox-driver-3.141.59.jar;C:\Users\sosog\.m2\repository\org\seleniumhq\selenium\selenium-safari-driver\3.141.59\selenium-safari-driver-3.141.59.jar;C:\Users\sosog\.m2\repository\org\scalatest\scalatest-shouldmatchers_2.12\3.2.3\scalatest-shouldmatchers_2.12-3.2.3.jar;C:\Users\sosog\.m2\repository\org\scalatest\scalatest-matchers-core_2.12\3.2.3\scalatest-matchers-core_2.12-3.2.3.jar
+[INFO] 
+[INFO] --- scala-maven-plugin:4.3.0:testCompile (scala-test-compile-first) @ spark-network-shuffle_2.12 ---
+[INFO] Using incremental compilation using Mixed compile order
+[INFO] Compiler bridge file: C:\Users\sosog\.sbt\1.0\zinc\org.scala-sbt\org.scala-sbt-compiler-bridge_2.12-1.3.1-bin_2.12.10__52.0-1.3.1_20191012T045515.jar
+[INFO] compiler plugin: BasicArtifact(com.github.ghik,silencer-plugin_2.12.10,1.6.0,null)
+[INFO] Compiling 16 Java sources to D:\spark\common\network-shuffle\target\scala-2.12\test-classes ...
+[INFO] Done compiling.
+[INFO] compile in 0.6 s
+[INFO] 
+[INFO] --- maven-surefire-plugin:3.0.0-M5:test (default-test) @ spark-network-shuffle_2.12 ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- maven-surefire-plugin:3.0.0-M5:test (test) @ spark-network-shuffle_2.12 ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- scalatest-maven-plugin:2.0.0:test (test) @ spark-network-shuffle_2.12 ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- maven-jar-plugin:3.1.2:test-jar (prepare-test-jar) @ spark-network-shuffle_2.12 ---
+[INFO] Building jar: D:\spark\common\network-shuffle\target\spark-network-shuffle_2.12-3.2.0-SNAPSHOT-tests.jar
+[INFO] 
+[INFO] --- maven-jar-plugin:3.1.2:jar (default-jar) @ spark-network-shuffle_2.12 ---
+[INFO] Building jar: D:\spark\common\network-shuffle\target\spark-network-shuffle_2.12-3.2.0-SNAPSHOT.jar
+[INFO] 
+[INFO] --- maven-site-plugin:3.5.1:attach-descriptor (attach-descriptor) @ spark-network-shuffle_2.12 ---
+[INFO] 
+[INFO] --- maven-shade-plugin:3.2.1:shade (default) @ spark-network-shuffle_2.12 ---
+[INFO] Excluding org.apache.spark:spark-network-common_2.12:jar:3.2.0-SNAPSHOT from the shaded jar.
+[INFO] Excluding org.scala-lang:scala-library:jar:2.12.10 from the shaded jar.
+[INFO] Excluding io.netty:netty-all:jar:4.1.51.Final from the shaded jar.
+[INFO] Excluding org.apache.commons:commons-lang3:jar:3.11 from the shaded jar.
+[INFO] Excluding org.fusesource.leveldbjni:leveldbjni-all:jar:1.8 from the shaded jar.
+[INFO] Excluding com.fasterxml.jackson.core:jackson-databind:jar:2.12.2 from the shaded jar.
+[INFO] Excluding com.fasterxml.jackson.core:jackson-core:jar:2.12.2 from the shaded jar.
+[INFO] Excluding com.fasterxml.jackson.core:jackson-annotations:jar:2.12.2 from the shaded jar.
+[INFO] Excluding com.google.code.findbugs:jsr305:jar:3.0.0 from the shaded jar.
+[INFO] Excluding org.apache.commons:commons-crypto:jar:1.1.0 from the shaded jar.
+[INFO] Excluding io.dropwizard.metrics:metrics-core:jar:4.1.1 from the shaded jar.
+[INFO] Excluding org.apache.spark:spark-tags_2.12:jar:3.2.0-SNAPSHOT from the shaded jar.
+[INFO] Excluding org.roaringbitmap:RoaringBitmap:jar:0.9.0 from the shaded jar.
+[INFO] Excluding org.roaringbitmap:shims:jar:0.9.0 from the shaded jar.
+[INFO] Including org.spark-project.spark:unused:jar:1.0.0 in the shaded jar.
+[INFO] Replacing original artifact with shaded artifact.
+[INFO] Replacing D:\spark\common\network-shuffle\target\spark-network-shuffle_2.12-3.2.0-SNAPSHOT.jar with D:\spark\common\network-shuffle\target\spark-network-shuffle_2.12-3.2.0-SNAPSHOT-shaded.jar
+[INFO] 
+[INFO] --- maven-source-plugin:3.1.0:jar-no-fork (create-source-jar) @ spark-network-shuffle_2.12 ---
+[INFO] Building jar: D:\spark\common\network-shuffle\target\spark-network-shuffle_2.12-3.2.0-SNAPSHOT-sources.jar
+[INFO] 
+[INFO] --- maven-source-plugin:3.1.0:test-jar-no-fork (create-source-jar) @ spark-network-shuffle_2.12 ---
+[INFO] Building jar: D:\spark\common\network-shuffle\target\spark-network-shuffle_2.12-3.2.0-SNAPSHOT-test-sources.jar
+[INFO] 
+[INFO] -----------------< org.apache.spark:spark-unsafe_2.12 >-----------------
+[INFO] Building Spark Project Unsafe 3.2.0-SNAPSHOT                      [7/25]
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-clean-plugin:3.1.0:clean (default-clean) @ spark-unsafe_2.12 ---
+[INFO] Deleting D:\spark\common\unsafe\target
+[INFO] 
+[INFO] --- maven-enforcer-plugin:3.0.0-M2:enforce (enforce-versions) @ spark-unsafe_2.12 ---
+[INFO] 
+[INFO] --- maven-enforcer-plugin:3.0.0-M2:enforce (enforce-no-duplicate-dependencies) @ spark-unsafe_2.12 ---
+[INFO] 
+[INFO] --- mvn-scalafmt_2.12:1.0.3:format (default) @ spark-unsafe_2.12 ---
+[WARNING] format.skipSources set, ignoring main directories
+[WARNING] format.skipTestSources set, ignoring validateOnly directories
+[WARNING] No sources specified, skipping formatting
+[INFO] 
+[INFO] --- scala-maven-plugin:4.3.0:add-source (eclipse-add-source) @ spark-unsafe_2.12 ---
+[INFO] Add Source directory: D:\spark\common\unsafe\src\main\scala
+[INFO] Add Test Source directory: D:\spark\common\unsafe\src\test\scala
+[INFO] 
+[INFO] --- maven-dependency-plugin:3.1.1:build-classpath (default-cli) @ spark-unsafe_2.12 ---
+[INFO] Dependencies classpath:
+C:\Users\sosog\.m2\repository\com\esotericsoftware\kryo-shaded\4.0.2\kryo-shaded-4.0.2.jar;C:\Users\sosog\.m2\repository\com\esotericsoftware\minlog\1.3.0\minlog-1.3.0.jar;C:\Users\sosog\.m2\repository\org\spark-project\spark\unused\1.0.0\unused-1.0.0.jar;C:\Users\sosog\.m2\repository\com\google\code\findbugs\jsr305\3.0.0\jsr305-3.0.0.jar;C:\Users\sosog\.m2\repository\org\objenesis\objenesis\2.6\objenesis-2.6.jar;D:\spark\common\tags\target\spark-tags_2.12-3.2.0-SNAPSHOT.jar;C:\Users\sosog\.m2\repository\org\apache\xbean\xbean-asm7-shaded\4.15\xbean-asm7-shaded-4.15.jar;C:\Users\sosog\.m2\repository\com\twitter\chill_2.12\0.9.5\chill_2.12-0.9.5.jar;C:\Users\sosog\.m2\repository\org\scala-lang\scala-library\2.12.10\scala-library-2.12.10.jar;C:\Users\sosog\.m2\repository\com\twitter\chill-java\0.9.5\chill-java-0.9.5.jar
+[INFO] 
+[INFO] --- maven-remote-resources-plugin:1.5:process (process-resource-bundles) @ spark-unsafe_2.12 ---
+[INFO] 
+[INFO] --- maven-resources-plugin:2.7:resources (default-resources) @ spark-unsafe_2.12 ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] skip non existing resourceDirectory D:\spark\common\unsafe\src\main\resources
+[INFO] Copying 3 resources
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.8.1:compile (default-compile) @ spark-unsafe_2.12 ---
+[INFO] Not compiling main sources
+[INFO] 
+[INFO] --- scala-maven-plugin:4.3.0:compile (scala-compile-first) @ spark-unsafe_2.12 ---
+[INFO] Using incremental compilation using Mixed compile order
+[INFO] Compiler bridge file: C:\Users\sosog\.sbt\1.0\zinc\org.scala-sbt\org.scala-sbt-compiler-bridge_2.12-1.3.1-bin_2.12.10__52.0-1.3.1_20191012T045515.jar
+[INFO] compiler plugin: BasicArtifact(com.github.ghik,silencer-plugin_2.12.10,1.6.0,null)
+[INFO] Compiling 18 Java sources to D:\spark\common\unsafe\target\scala-2.12\classes ...
+[WARNING] [Warn] D:\spark\common\unsafe\src\main\java\org\apache\spark\unsafe\Platform.java:26: sun.misc.Unsafe是内部专用 API, 可能会在未来发行版中删除
+[WARNING] [Warn] D:\spark\common\unsafe\src\main\java\org\apache\spark\unsafe\Platform.java:30: sun.misc.Unsafe是内部专用 API, 可能会在未来发行版中删除
+[WARNING] [Warn] D:\spark\common\unsafe\src\main\java\org\apache\spark\unsafe\Platform.java:274: sun.misc.Unsafe是内部专用 API, 可能会在未来发行版中删除
+[WARNING] [Warn] D:\spark\common\unsafe\src\main\java\org\apache\spark\unsafe\Platform.java:276: sun.misc.Unsafe是内部专用 API, 可能会在未来发行版中删除
+[WARNING] [Warn] D:\spark\common\unsafe\src\main\java\org\apache\spark\unsafe\Platform.java:278: sun.misc.Unsafe是内部专用 API, 可能会在未来发行版中删除
+[INFO] Done compiling.
+[INFO] compile in 0.6 s
+[INFO] 
+[INFO] --- maven-antrun-plugin:1.8:run (create-tmp-dir) @ spark-unsafe_2.12 ---
+[INFO] Executing tasks
+
+main:
+    [mkdir] Created dir: D:\spark\common\unsafe\target\tmp
+[INFO] Executed tasks
+[INFO] 
+[INFO] --- maven-resources-plugin:2.7:testResources (default-testResources) @ spark-unsafe_2.12 ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] skip non existing resourceDirectory D:\spark\common\unsafe\src\test\resources
+[INFO] Copying 3 resources
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.8.1:testCompile (default-testCompile) @ spark-unsafe_2.12 ---
+[INFO] Not compiling test sources
+[INFO] 
+[INFO] --- maven-dependency-plugin:3.1.1:build-classpath (generate-test-classpath) @ spark-unsafe_2.12 ---
+[INFO] Dependencies classpath:
+C:\Users\sosog\.m2\repository\org\scala-lang\scala-reflect\2.12.10\scala-reflect-2.12.10.jar;C:\Users\sosog\.m2\repository\org\scalatestplus\scalatestplus-mockito_2.12\1.0.0-SNAP5\scalatestplus-mockito_2.12-1.0.0-SNAP5.jar;C:\Users\sosog\.m2\repository\com\novocode\junit-interface\0.11\junit-interface-0.11.jar;C:\Users\sosog\.m2\repository\org\apache\xbean\xbean-asm7-shaded\4.15\xbean-asm7-shaded-4.15.jar;C:\Users\sosog\.m2\repository\org\scalatest\scalatest-freespec_2.12\3.2.3\scalatest-freespec_2.12-3.2.3.jar;C:\Users\sosog\.m2\repository\org\scalatest\scalatest-funsuite_2.12\3.2.3\scalatest-funsuite_2.12-3.2.3.jar;C:\Users\sosog\.m2\repository\junit\junit\4.13.1\junit-4.13.1.jar;C:\Users\sosog\.m2\repository\org\apache\commons\commons-lang3\3.11\commons-lang3-3.11.jar;C:\Users\sosog\.m2\repository\org\scalatest\scalatest-funspec_2.12\3.2.3\scalatest-funspec_2.12-3.2.3.jar;C:\Users\sosog\.m2\repository\org\seleniumhq\selenium\selenium-chrome-driver\3.141.59\selenium-chrome-driver-3.141.59.jar;C:\Users\sosog\.m2\repository\com\google\code\findbugs\jsr305\3.0.0\jsr305-3.0.0.jar;C:\Users\sosog\.m2\repository\org\objenesis\objenesis\2.6\objenesis-2.6.jar;C:\Users\sosog\.m2\repository\org\seleniumhq\selenium\selenium-opera-driver\3.141.59\selenium-opera-driver-3.141.59.jar;C:\Users\sosog\.m2\repository\org\apache\commons\commons-text\1.6\commons-text-1.6.jar;C:\Users\sosog\.m2\repository\org\scalatest\scalatest-diagrams_2.12\3.2.3\scalatest-diagrams_2.12-3.2.3.jar;C:\Users\sosog\.m2\repository\net\bytebuddy\byte-buddy-agent\1.10.13\byte-buddy-agent-1.10.13.jar;D:\spark\common\tags\target\spark-tags_2.12-3.2.0-SNAPSHOT-tests.jar;C:\Users\sosog\.m2\repository\org\scalatestplus\scalatestplus-selenium_2.12\1.0.0-SNAP5\scalatestplus-selenium_2.12-1.0.0-SNAP5.jar;C:\Users\sosog\.m2\repository\org\scala-sbt\test-interface\1.0\test-interface-1.0.jar;C:\Users\sosog\.m2\repository\com\squareup\okio\okio\1.14.0\okio-1.14.0.jar;C:\Users\sosog\.m2\repository\org\hamcrest\hamcrest-core\1.3\hamcrest-core-1.3.jar;C:\Users\sosog\.m2\repository\org\seleniumhq\selenium\selenium-support\3.141.59\selenium-support-3.141.59.jar;C:\Users\sosog\.m2\repository\org\scala-lang\modules\scala-xml_2.12\1.2.0\scala-xml_2.12-1.2.0.jar;C:\Users\sosog\.m2\repository\org\scala-lang\scala-library\2.12.10\scala-library-2.12.10.jar;C:\Users\sosog\.m2\repository\com\esotericsoftware\kryo-shaded\4.0.2\kryo-shaded-4.0.2.jar;C:\Users\sosog\.m2\repository\com\esotericsoftware\minlog\1.3.0\minlog-1.3.0.jar;C:\Users\sosog\.m2\repository\org\slf4j\slf4j-api\1.7.30\slf4j-api-1.7.30.jar;C:\Users\sosog\.m2\repository\net\bytebuddy\byte-buddy\1.10.13\byte-buddy-1.10.13.jar;C:\Users\sosog\.m2\repository\org\scalatest\scalatest_2.12\3.2.3\scalatest_2.12-3.2.3.jar;C:\Users\sosog\.m2\repository\org\scalatest\scalatest-mustmatchers_2.12\3.2.3\scalatest-mustmatchers_2.12-3.2.3.jar;C:\Users\sosog\.m2\repository\com\squareup\okhttp3\okhttp\3.11.0\okhttp-3.11.0.jar;C:\Users\sosog\.m2\repository\org\seleniumhq\selenium\selenium-remote-driver\3.141.59\selenium-remote-driver-3.141.59.jar;C:\Users\sosog\.m2\repository\com\twitter\chill-java\0.9.5\chill-java-0.9.5.jar;D:\spark\common\tags\target\spark-tags_2.12-3.2.0-SNAPSHOT.jar;C:\Users\sosog\.m2\repository\org\seleniumhq\selenium\selenium-ie-driver\3.141.59\selenium-ie-driver-3.141.59.jar;C:\Users\sosog\.m2\repository\org\scalatestplus\scalatestplus-scalacheck_2.12\3.1.0.0-RC2\scalatestplus-scalacheck_2.12-3.1.0.0-RC2.jar;C:\Users\sosog\.m2\repository\org\scalatest\scalatest-flatspec_2.12\3.2.3\scalatest-flatspec_2.12-3.2.3.jar;C:\Users\sosog\.m2\repository\org\scalatest\scalatest-wordspec_2.12\3.2.3\scalatest-wordspec_2.12-3.2.3.jar;C:\Users\sosog\.m2\repository\org\scalatest\scalatest-refspec_2.12\3.2.3\scalatest-refspec_2.12-3.2.3.jar;C:\Users\sosog\.m2\repository\org\seleniumhq\selenium\selenium-api\3.141.59\selenium-api-3.141.59.jar;C:\Users\sosog\.m2\repository\org\seleniumhq\selenium\selenium-java\3.141.59\selenium-java-3.141.59.jar;C:\Users\sosog\.m2\repository\org\mockito\mockito-core\3.4.6\mockito-core-3.4.6.jar;C:\Users\sosog\.m2\repository\org\seleniumhq\selenium\selenium-edge-driver\3.141.59\selenium-edge-driver-3.141.59.jar;C:\Users\sosog\.m2\repository\org\apache\commons\commons-exec\1.3\commons-exec-1.3.jar;C:\Users\sosog\.m2\repository\org\scalacheck\scalacheck_2.12\1.14.2\scalacheck_2.12-1.14.2.jar;C:\Users\sosog\.m2\repository\com\google\guava\guava\14.0.1\guava-14.0.1.jar;C:\Users\sosog\.m2\repository\org\scalactic\scalactic_2.12\3.2.3\scalactic_2.12-3.2.3.jar;C:\Users\sosog\.m2\repository\org\spark-project\spark\unused\1.0.0\unused-1.0.0.jar;C:\Users\sosog\.m2\repository\com\twitter\chill_2.12\0.9.5\chill_2.12-0.9.5.jar;C:\Users\sosog\.m2\repository\org\scalatest\scalatest-compatible\3.2.3\scalatest-compatible-3.2.3.jar;C:\Users\sosog\.m2\repository\org\scalatest\scalatest-propspec_2.12\3.2.3\scalatest-propspec_2.12-3.2.3.jar;C:\Users\sosog\.m2\repository\org\scalatest\scalatest-core_2.12\3.2.3\scalatest-core_2.12-3.2.3.jar;C:\Users\sosog\.m2\repository\org\scalatest\scalatest-featurespec_2.12\3.2.3\scalatest-featurespec_2.12-3.2.3.jar;C:\Users\sosog\.m2\repository\org\seleniumhq\selenium\selenium-firefox-driver\3.141.59\selenium-firefox-driver-3.141.59.jar;C:\Users\sosog\.m2\repository\org\seleniumhq\selenium\selenium-safari-driver\3.141.59\selenium-safari-driver-3.141.59.jar;C:\Users\sosog\.m2\repository\org\scalatest\scalatest-shouldmatchers_2.12\3.2.3\scalatest-shouldmatchers_2.12-3.2.3.jar;C:\Users\sosog\.m2\repository\org\scalatest\scalatest-matchers-core_2.12\3.2.3\scalatest-matchers-core_2.12-3.2.3.jar
+[INFO] 
+[INFO] --- scala-maven-plugin:4.3.0:testCompile (scala-test-compile-first) @ spark-unsafe_2.12 ---
+[INFO] Using incremental compilation using Mixed compile order
+[INFO] Compiler bridge file: C:\Users\sosog\.sbt\1.0\zinc\org.scala-sbt\org.scala-sbt-compiler-bridge_2.12-1.3.1-bin_2.12.10__52.0-1.3.1_20191012T045515.jar
+[INFO] compiler plugin: BasicArtifact(com.github.ghik,silencer-plugin_2.12.10,1.6.0,null)
+[INFO] Compiling 1 Scala source and 5 Java sources to D:\spark\common\unsafe\target\scala-2.12\test-classes ...
+[INFO] Done compiling.
+[INFO] compile in 4.5 s
+[INFO] 
+[INFO] --- maven-surefire-plugin:3.0.0-M5:test (default-test) @ spark-unsafe_2.12 ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- maven-surefire-plugin:3.0.0-M5:test (test) @ spark-unsafe_2.12 ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- scalatest-maven-plugin:2.0.0:test (test) @ spark-unsafe_2.12 ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- maven-jar-plugin:3.1.2:test-jar (prepare-test-jar) @ spark-unsafe_2.12 ---
+[INFO] Building jar: D:\spark\common\unsafe\target\spark-unsafe_2.12-3.2.0-SNAPSHOT-tests.jar
+[INFO] 
+[INFO] --- maven-jar-plugin:3.1.2:jar (default-jar) @ spark-unsafe_2.12 ---
+[INFO] Building jar: D:\spark\common\unsafe\target\spark-unsafe_2.12-3.2.0-SNAPSHOT.jar
+[INFO] 
+[INFO] --- maven-site-plugin:3.5.1:attach-descriptor (attach-descriptor) @ spark-unsafe_2.12 ---
+[INFO] 
+[INFO] --- maven-shade-plugin:3.2.1:shade (default) @ spark-unsafe_2.12 ---
+[INFO] Excluding org.apache.spark:spark-tags_2.12:jar:3.2.0-SNAPSHOT from the shaded jar.
+[INFO] Excluding org.scala-lang:scala-library:jar:2.12.10 from the shaded jar.
+[INFO] Excluding com.twitter:chill_2.12:jar:0.9.5 from the shaded jar.
+[INFO] Excluding com.twitter:chill-java:jar:0.9.5 from the shaded jar.
+[INFO] Excluding com.esotericsoftware:kryo-shaded:jar:4.0.2 from the shaded jar.
+[INFO] Excluding com.esotericsoftware:minlog:jar:1.3.0 from the shaded jar.
+[INFO] Excluding org.apache.xbean:xbean-asm7-shaded:jar:4.15 from the shaded jar.
+[INFO] Excluding com.google.code.findbugs:jsr305:jar:3.0.0 from the shaded jar.
+[INFO] Excluding org.objenesis:objenesis:jar:2.6 from the shaded jar.
+[INFO] Including org.spark-project.spark:unused:jar:1.0.0 in the shaded jar.
+[INFO] Replacing original artifact with shaded artifact.
+[INFO] Replacing D:\spark\common\unsafe\target\spark-unsafe_2.12-3.2.0-SNAPSHOT.jar with D:\spark\common\unsafe\target\spark-unsafe_2.12-3.2.0-SNAPSHOT-shaded.jar
+[INFO] 
+[INFO] --- maven-source-plugin:3.1.0:jar-no-fork (create-source-jar) @ spark-unsafe_2.12 ---
+[INFO] Building jar: D:\spark\common\unsafe\target\spark-unsafe_2.12-3.2.0-SNAPSHOT-sources.jar
+[INFO] 
+[INFO] --- maven-source-plugin:3.1.0:test-jar-no-fork (create-source-jar) @ spark-unsafe_2.12 ---
+[INFO] Building jar: D:\spark\common\unsafe\target\spark-unsafe_2.12-3.2.0-SNAPSHOT-test-sources.jar
+[INFO] 
+[INFO] ----------------< org.apache.spark:spark-launcher_2.12 >----------------
+[INFO] Building Spark Project Launcher 3.2.0-SNAPSHOT                    [8/25]
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-clean-plugin:3.1.0:clean (default-clean) @ spark-launcher_2.12 ---
+[INFO] Deleting D:\spark\launcher\target
+[INFO] 
+[INFO] --- maven-enforcer-plugin:3.0.0-M2:enforce (enforce-versions) @ spark-launcher_2.12 ---
+[INFO] 
+[INFO] --- maven-enforcer-plugin:3.0.0-M2:enforce (enforce-no-duplicate-dependencies) @ spark-launcher_2.12 ---
+[INFO] 
+[INFO] --- mvn-scalafmt_2.12:1.0.3:format (default) @ spark-launcher_2.12 ---
+[WARNING] format.skipSources set, ignoring main directories
+[WARNING] format.skipTestSources set, ignoring validateOnly directories
+[WARNING] No sources specified, skipping formatting
+[INFO] 
+[INFO] --- scala-maven-plugin:4.3.0:add-source (eclipse-add-source) @ spark-launcher_2.12 ---
+[INFO] Add Source directory: D:\spark\launcher\src\main\scala
+[INFO] Add Test Source directory: D:\spark\launcher\src\test\scala
+[INFO] 
+[INFO] --- maven-dependency-plugin:3.1.1:build-classpath (default-cli) @ spark-launcher_2.12 ---
+[INFO] Dependencies classpath:
+C:\Users\sosog\.m2\repository\org\spark-project\spark\unused\1.0.0\unused-1.0.0.jar;D:\spark\common\tags\target\spark-tags_2.12-3.2.0-SNAPSHOT.jar;C:\Users\sosog\.m2\repository\org\scala-lang\scala-library\2.12.10\scala-library-2.12.10.jar
+[INFO] 
+[INFO] --- maven-remote-resources-plugin:1.5:process (process-resource-bundles) @ spark-launcher_2.12 ---
+[INFO] 
+[INFO] --- maven-resources-plugin:2.7:resources (default-resources) @ spark-launcher_2.12 ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] skip non existing resourceDirectory D:\spark\launcher\src\main\resources
+[INFO] Copying 3 resources
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.8.1:compile (default-compile) @ spark-launcher_2.12 ---
+[INFO] Not compiling main sources
+[INFO] 
+[INFO] --- scala-maven-plugin:4.3.0:compile (scala-compile-first) @ spark-launcher_2.12 ---
+[INFO] Using incremental compilation using Mixed compile order
+[INFO] Compiler bridge file: C:\Users\sosog\.sbt\1.0\zinc\org.scala-sbt\org.scala-sbt-compiler-bridge_2.12-1.3.1-bin_2.12.10__52.0-1.3.1_20191012T045515.jar
+[INFO] compiler plugin: BasicArtifact(com.github.ghik,silencer-plugin_2.12.10,1.6.0,null)
+[INFO] Compiling 20 Java sources to D:\spark\launcher\target\scala-2.12\classes ...
+[WARNING] [Warn] D:\spark\launcher\src\main\java\org\apache\spark\launcher\LauncherServer.java:270: org.apache.spark.launcher.SparkLauncher中的DEPRECATED_CHILD_CONNECTION_TIMEOUT已过时
+[WARNING] [Warn] D:\spark\launcher\src\main\java\org\apache\spark\launcher\LauncherServer.java:273: org.apache.spark.launcher.SparkLauncher中的DEPRECATED_CHILD_CONNECTION_TIMEOUT已过时
+[WARNING] [Warn] D:\spark\launcher\src\main\java\org\apache\spark\launcher\SparkLauncher.java:99: 未使用 @Deprecated 对已过时的项目进行注释
+[INFO] Done compiling.
+[INFO] compile in 0.4 s
+[INFO] 
+[INFO] --- maven-antrun-plugin:1.8:run (create-tmp-dir) @ spark-launcher_2.12 ---
+[INFO] Executing tasks
+
+main:
+    [mkdir] Created dir: D:\spark\launcher\target\tmp
+[INFO] Executed tasks
+[INFO] 
+[INFO] --- maven-resources-plugin:2.7:testResources (default-testResources) @ spark-launcher_2.12 ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] Copying 2 resources
+[INFO] Copying 3 resources
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.8.1:testCompile (default-testCompile) @ spark-launcher_2.12 ---
+[INFO] Not compiling test sources
+[INFO] 
+[INFO] --- maven-dependency-plugin:3.1.1:build-classpath (generate-test-classpath) @ spark-launcher_2.12 ---
+[INFO] Dependencies classpath:
+C:\Users\sosog\.m2\repository\org\scala-lang\scala-reflect\2.12.10\scala-reflect-2.12.10.jar;C:\Users\sosog\.m2\repository\org\scalatestplus\scalatestplus-mockito_2.12\1.0.0-SNAP5\scalatestplus-mockito_2.12-1.0.0-SNAP5.jar;C:\Users\sosog\.m2\repository\log4j\log4j\1.2.17\log4j-1.2.17.jar;C:\Users\sosog\.m2\repository\com\novocode\junit-interface\0.11\junit-interface-0.11.jar;C:\Users\sosog\.m2\repository\org\slf4j\slf4j-log4j12\1.7.30\slf4j-log4j12-1.7.30.jar;C:\Users\sosog\.m2\repository\org\scalatest\scalatest-freespec_2.12\3.2.3\scalatest-freespec_2.12-3.2.3.jar;C:\Users\sosog\.m2\repository\org\scalatest\scalatest-funsuite_2.12\3.2.3\scalatest-funsuite_2.12-3.2.3.jar;C:\Users\sosog\.m2\repository\junit\junit\4.13.1\junit-4.13.1.jar;C:\Users\sosog\.m2\repository\org\scalatest\scalatest-funspec_2.12\3.2.3\scalatest-funspec_2.12-3.2.3.jar;C:\Users\sosog\.m2\repository\org\seleniumhq\selenium\selenium-chrome-driver\3.141.59\selenium-chrome-driver-3.141.59.jar;C:\Users\sosog\.m2\repository\com\google\code\findbugs\jsr305\3.0.0\jsr305-3.0.0.jar;C:\Users\sosog\.m2\repository\org\objenesis\objenesis\2.6\objenesis-2.6.jar;C:\Users\sosog\.m2\repository\org\seleniumhq\selenium\selenium-opera-driver\3.141.59\selenium-opera-driver-3.141.59.jar;C:\Users\sosog\.m2\repository\org\scalatest\scalatest-diagrams_2.12\3.2.3\scalatest-diagrams_2.12-3.2.3.jar;C:\Users\sosog\.m2\repository\net\bytebuddy\byte-buddy-agent\1.10.13\byte-buddy-agent-1.10.13.jar;C:\Users\sosog\.m2\repository\org\apache\htrace\htrace-core4\4.1.0-incubating\htrace-core4-4.1.0-incubating.jar;C:\Users\sosog\.m2\repository\org\apache\hadoop\hadoop-client-runtime\3.2.2\hadoop-client-runtime-3.2.2.jar;D:\spark\common\tags\target\spark-tags_2.12-3.2.0-SNAPSHOT-tests.jar;C:\Users\sosog\.m2\repository\org\scalatestplus\scalatestplus-selenium_2.12\1.0.0-SNAP5\scalatestplus-selenium_2.12-1.0.0-SNAP5.jar;C:\Users\sosog\.m2\repository\org\scala-sbt\test-interface\1.0\test-interface-1.0.jar;C:\Users\sosog\.m2\repository\com\squareup\okio\okio\1.14.0\okio-1.14.0.jar;C:\Users\sosog\.m2\repository\org\hamcrest\hamcrest-core\1.3\hamcrest-core-1.3.jar;C:\Users\sosog\.m2\repository\org\seleniumhq\selenium\selenium-support\3.141.59\selenium-support-3.141.59.jar;C:\Users\sosog\.m2\repository\org\scala-lang\modules\scala-xml_2.12\1.2.0\scala-xml_2.12-1.2.0.jar;C:\Users\sosog\.m2\repository\org\scala-lang\scala-library\2.12.10\scala-library-2.12.10.jar;C:\Users\sosog\.m2\repository\org\slf4j\slf4j-api\1.7.30\slf4j-api-1.7.30.jar;C:\Users\sosog\.m2\repository\net\bytebuddy\byte-buddy\1.10.13\byte-buddy-1.10.13.jar;C:\Users\sosog\.m2\repository\org\scalatest\scalatest_2.12\3.2.3\scalatest_2.12-3.2.3.jar;C:\Users\sosog\.m2\repository\org\scalatest\scalatest-mustmatchers_2.12\3.2.3\scalatest-mustmatchers_2.12-3.2.3.jar;C:\Users\sosog\.m2\repository\com\squareup\okhttp3\okhttp\3.11.0\okhttp-3.11.0.jar;C:\Users\sosog\.m2\repository\org\seleniumhq\selenium\selenium-remote-driver\3.141.59\selenium-remote-driver-3.141.59.jar;C:\Users\sosog\.m2\repository\org\slf4j\jul-to-slf4j\1.7.30\jul-to-slf4j-1.7.30.jar;D:\spark\common\tags\target\spark-tags_2.12-3.2.0-SNAPSHOT.jar;C:\Users\sosog\.m2\repository\org\seleniumhq\selenium\selenium-ie-driver\3.141.59\selenium-ie-driver-3.141.59.jar;C:\Users\sosog\.m2\repository\org\scalatestplus\scalatestplus-scalacheck_2.12\3.1.0.0-RC2\scalatestplus-scalacheck_2.12-3.1.0.0-RC2.jar;C:\Users\sosog\.m2\repository\org\scalatest\scalatest-flatspec_2.12\3.2.3\scalatest-flatspec_2.12-3.2.3.jar;C:\Users\sosog\.m2\repository\org\scalatest\scalatest-wordspec_2.12\3.2.3\scalatest-wordspec_2.12-3.2.3.jar;C:\Users\sosog\.m2\repository\org\scalatest\scalatest-refspec_2.12\3.2.3\scalatest-refspec_2.12-3.2.3.jar;C:\Users\sosog\.m2\repository\org\seleniumhq\selenium\selenium-api\3.141.59\selenium-api-3.141.59.jar;C:\Users\sosog\.m2\repository\org\seleniumhq\selenium\selenium-java\3.141.59\selenium-java-3.141.59.jar;C:\Users\sosog\.m2\repository\org\mockito\mockito-core\3.4.6\mockito-core-3.4.6.jar;C:\Users\sosog\.m2\repository\org\seleniumhq\selenium\selenium-edge-driver\3.141.59\selenium-edge-driver-3.141.59.jar;C:\Users\sosog\.m2\repository\org\apache\commons\commons-exec\1.3\commons-exec-1.3.jar;C:\Users\sosog\.m2\repository\org\scalacheck\scalacheck_2.12\1.14.2\scalacheck_2.12-1.14.2.jar;C:\Users\sosog\.m2\repository\org\scalactic\scalactic_2.12\3.2.3\scalactic_2.12-3.2.3.jar;C:\Users\sosog\.m2\repository\org\spark-project\spark\unused\1.0.0\unused-1.0.0.jar;C:\Users\sosog\.m2\repository\org\scalatest\scalatest-compatible\3.2.3\scalatest-compatible-3.2.3.jar;C:\Users\sosog\.m2\repository\org\scalatest\scalatest-propspec_2.12\3.2.3\scalatest-propspec_2.12-3.2.3.jar;C:\Users\sosog\.m2\repository\org\scalatest\scalatest-core_2.12\3.2.3\scalatest-core_2.12-3.2.3.jar;C:\Users\sosog\.m2\repository\org\scalatest\scalatest-featurespec_2.12\3.2.3\scalatest-featurespec_2.12-3.2.3.jar;C:\Users\sosog\.m2\repository\org\seleniumhq\selenium\selenium-firefox-driver\3.141.59\selenium-firefox-driver-3.141.59.jar;C:\Users\sosog\.m2\repository\commons-logging\commons-logging\1.1.3\commons-logging-1.1.3.jar;C:\Users\sosog\.m2\repository\org\apache\hadoop\hadoop-client-api\3.2.2\hadoop-client-api-3.2.2.jar;C:\Users\sosog\.m2\repository\org\seleniumhq\selenium\selenium-safari-driver\3.141.59\selenium-safari-driver-3.141.59.jar;C:\Users\sosog\.m2\repository\org\scalatest\scalatest-shouldmatchers_2.12\3.2.3\scalatest-shouldmatchers_2.12-3.2.3.jar;C:\Users\sosog\.m2\repository\org\scalatest\scalatest-matchers-core_2.12\3.2.3\scalatest-matchers-core_2.12-3.2.3.jar
+[INFO] 
+[INFO] --- scala-maven-plugin:4.3.0:testCompile (scala-test-compile-first) @ spark-launcher_2.12 ---
+[INFO] Using incremental compilation using Mixed compile order
+[INFO] Compiler bridge file: C:\Users\sosog\.sbt\1.0\zinc\org.scala-sbt\org.scala-sbt-compiler-bridge_2.12-1.3.1-bin_2.12.10__52.0-1.3.1_20191012T045515.jar
+[INFO] compiler plugin: BasicArtifact(com.github.ghik,silencer-plugin_2.12.10,1.6.0,null)
+[INFO] Compiling 7 Java sources to D:\spark\launcher\target\scala-2.12\test-classes ...
+[INFO] Done compiling.
+[INFO] compile in 0.6 s
+[INFO] 
+[INFO] --- maven-surefire-plugin:3.0.0-M5:test (default-test) @ spark-launcher_2.12 ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- maven-surefire-plugin:3.0.0-M5:test (test) @ spark-launcher_2.12 ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- scalatest-maven-plugin:2.0.0:test (test) @ spark-launcher_2.12 ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- maven-jar-plugin:3.1.2:test-jar (prepare-test-jar) @ spark-launcher_2.12 ---
+[INFO] Building jar: D:\spark\launcher\target\spark-launcher_2.12-3.2.0-SNAPSHOT-tests.jar
+[INFO] 
+[INFO] --- maven-jar-plugin:3.1.2:jar (default-jar) @ spark-launcher_2.12 ---
+[INFO] Building jar: D:\spark\launcher\target\spark-launcher_2.12-3.2.0-SNAPSHOT.jar
+[INFO] 
+[INFO] --- maven-site-plugin:3.5.1:attach-descriptor (attach-descriptor) @ spark-launcher_2.12 ---
+[INFO] 
+[INFO] --- maven-shade-plugin:3.2.1:shade (default) @ spark-launcher_2.12 ---
+[INFO] Excluding org.apache.spark:spark-tags_2.12:jar:3.2.0-SNAPSHOT from the shaded jar.
+[INFO] Excluding org.scala-lang:scala-library:jar:2.12.10 from the shaded jar.
+[INFO] Including org.spark-project.spark:unused:jar:1.0.0 in the shaded jar.
+[INFO] Replacing original artifact with shaded artifact.
+[INFO] Replacing D:\spark\launcher\target\spark-launcher_2.12-3.2.0-SNAPSHOT.jar with D:\spark\launcher\target\spark-launcher_2.12-3.2.0-SNAPSHOT-shaded.jar
+[INFO] 
+[INFO] --- maven-source-plugin:3.1.0:jar-no-fork (create-source-jar) @ spark-launcher_2.12 ---
+[INFO] Building jar: D:\spark\launcher\target\spark-launcher_2.12-3.2.0-SNAPSHOT-sources.jar
+[INFO] 
+[INFO] --- maven-source-plugin:3.1.0:test-jar-no-fork (create-source-jar) @ spark-launcher_2.12 ---
+[INFO] Building jar: D:\spark\launcher\target\spark-launcher_2.12-3.2.0-SNAPSHOT-test-sources.jar
+[INFO] 
+[INFO] ------------------< org.apache.spark:spark-core_2.12 >------------------
+[INFO] Building Spark Project Core 3.2.0-SNAPSHOT                        [9/25]
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-clean-plugin:3.1.0:clean (default-clean) @ spark-core_2.12 ---
+[INFO] Deleting D:\spark\core\target
+[INFO] 
+[INFO] --- maven-enforcer-plugin:3.0.0-M2:enforce (enforce-versions) @ spark-core_2.12 ---
+[INFO] 
+[INFO] --- maven-enforcer-plugin:3.0.0-M2:enforce (enforce-no-duplicate-dependencies) @ spark-core_2.12 ---
+[INFO] 
+[INFO] --- mvn-scalafmt_2.12:1.0.3:format (default) @ spark-core_2.12 ---
+[WARNING] format.skipSources set, ignoring main directories
+[WARNING] format.skipTestSources set, ignoring validateOnly directories
+[WARNING] No sources specified, skipping formatting
+[INFO] 
+[INFO] --- build-helper-maven-plugin:3.2.0:timestamp-property (module-timestamp-property) @ spark-core_2.12 ---
+[WARNING] Using platform locale (zh_CN actually) to format date/time, i.e. build is platform dependent!
+[INFO] 
+[INFO] --- build-helper-maven-plugin:3.2.0:timestamp-property (local-timestamp-property) @ spark-core_2.12 ---
+[WARNING] Using platform locale (zh_CN actually) to format date/time, i.e. build is platform dependent!
+[INFO] 
+[INFO] --- scala-maven-plugin:4.3.0:add-source (eclipse-add-source) @ spark-core_2.12 ---
+[INFO] Add Source directory: D:\spark\core\src\main\scala
+[INFO] Add Test Source directory: D:\spark\core\src\test\scala
+[INFO] 
+[INFO] --- maven-dependency-plugin:3.1.1:build-classpath (default-cli) @ spark-core_2.12 ---
+[INFO] Dependencies classpath:
+C:\Users\sosog\.m2\repository\com\fasterxml\jackson\core\jackson-core\2.12.2\jackson-core-2.12.2.jar;C:\Users\sosog\.m2\repository\com\clearspring\analytics\stream\2.9.6\stream-2.9.6.jar;C:\Users\sosog\.m2\repository\org\apache\avro\avro-mapred\1.10.2\avro-mapred-1.10.2.jar;C:\Users\sosog\.m2\repository\org\glassfish\hk2\external\jakarta.inject\2.6.1\jakarta.inject-2.6.1.jar;C:\Users\sosog\.m2\repository\org\glassfish\hk2\hk2-locator\2.6.1\hk2-locator-2.6.1.jar;C:\Users\sosog\.m2\repository\org\eclipse\jetty\jetty-continuation\9.4.39.v20210325\jetty-continuation-9.4.39.v20210325.jar;C:\Users\sosog\.m2\repository\org\slf4j\slf4j-log4j12\1.7.30\slf4j-log4j12-1.7.30.jar;C:\Users\sosog\.m2\repository\org\glassfish\hk2\hk2-utils\2.6.1\hk2-utils-2.6.1.jar;C:\Users\sosog\.m2\repository\org\apache\zookeeper\zookeeper-jute\3.6.2\zookeeper-jute-3.6.2.jar;C:\Users\sosog\.m2\repository\org\eclipse\jetty\jetty-servlet\9.4.39.v20210325\jetty-servlet-9.4.39.v20210325.jar;C:\Users\sosog\.m2\repository\jakarta\servlet\jakarta.servlet-api\4.0.3\jakarta.servlet-api-4.0.3.jar;C:\Users\sosog\.m2\repository\io\netty\netty-all\4.1.51.Final\netty-all-4.1.51.Final.jar;C:\Users\sosog\.m2\repository\com\thoughtworks\paranamer\paranamer\2.8\paranamer-2.8.jar;C:\Users\sosog\.m2\repository\com\google\code\findbugs\jsr305\3.0.0\jsr305-3.0.0.jar;C:\Users\sosog\.m2\repository\org\objenesis\objenesis\2.6\objenesis-2.6.jar;C:\Users\sosog\.m2\repository\org\fusesource\leveldbjni\leveldbjni-all\1.8\leveldbjni-all-1.8.jar;C:\Users\sosog\.m2\repository\org\apache\commons\commons-text\1.6\commons-text-1.6.jar;C:\Users\sosog\.m2\repository\org\glassfish\jersey\media\jersey-media-jaxb\2.30\jersey-media-jaxb-2.30.jar;C:\Users\sosog\.m2\repository\jakarta\ws\rs\jakarta.ws.rs-api\2.1.6\jakarta.ws.rs-api-2.1.6.jar;C:\Users\sosog\.m2\repository\org\glassfish\hk2\external\aopalliance-repackaged\2.6.1\aopalliance-repackaged-2.6.1.jar;C:\Users\sosog\.m2\repository\org\apache\zookeeper\zookeeper\3.6.2\zookeeper-3.6.2.jar;C:\Users\sosog\.m2\repository\org\json4s\json4s-core_2.12\3.7.0-M5\json4s-core_2.12-3.7.0-M5.jar;C:\Users\sosog\.m2\repository\org\apache\htrace\htrace-core4\4.1.0-incubating\htrace-core4-4.1.0-incubating.jar;C:\Users\sosog\.m2\repository\com\fasterxml\jackson\module\jackson-module-scala_2.12\2.12.2\jackson-module-scala_2.12-2.12.2.jar;C:\Users\sosog\.m2\repository\commons-codec\commons-codec\1.15\commons-codec-1.15.jar;C:\Users\sosog\.m2\repository\commons-io\commons-io\2.8.0\commons-io-2.8.0.jar;C:\Users\sosog\.m2\repository\org\eclipse\jetty\jetty-servlets\9.4.39.v20210325\jetty-servlets-9.4.39.v20210325.jar;D:\spark\common\network-shuffle\target\spark-network-shuffle_2.12-3.2.0-SNAPSHOT.jar;C:\Users\sosog\.m2\repository\org\scala-lang\scala-library\2.12.10\scala-library-2.12.10.jar;C:\Users\sosog\.m2\repository\com\esotericsoftware\kryo-shaded\4.0.2\kryo-shaded-4.0.2.jar;C:\Users\sosog\.m2\repository\com\esotericsoftware\minlog\1.3.0\minlog-1.3.0.jar;C:\Users\sosog\.m2\repository\org\eclipse\jetty\jetty-client\9.4.39.v20210325\jetty-client-9.4.39.v20210325.jar;C:\Users\sosog\.m2\repository\com\twitter\chill-java\0.9.5\chill-java-0.9.5.jar;C:\Users\sosog\.m2\repository\org\slf4j\jul-to-slf4j\1.7.30\jul-to-slf4j-1.7.30.jar;C:\Users\sosog\.m2\repository\org\json4s\json4s-scalap_2.12\3.7.0-M5\json4s-scalap_2.12-3.7.0-M5.jar;C:\Users\sosog\.m2\repository\commons-net\commons-net\3.1\commons-net-3.1.jar;D:\spark\common\unsafe\target\spark-unsafe_2.12-3.2.0-SNAPSHOT.jar;C:\Users\sosog\.m2\repository\org\eclipse\jetty\jetty-io\9.4.39.v20210325\jetty-io-9.4.39.v20210325.jar;D:\spark\common\tags\target\spark-tags_2.12-3.2.0-SNAPSHOT.jar;C:\Users\sosog\.m2\repository\org\lz4\lz4-java\1.7.1\lz4-java-1.7.1.jar;C:\Users\sosog\.m2\repository\org\json4s\json4s-jackson_2.12\3.7.0-M5\json4s-jackson_2.12-3.7.0-M5.jar;C:\Users\sosog\.m2\repository\commons-lang\commons-lang\2.6\commons-lang-2.6.jar;C:\Users\sosog\.m2\repository\org\eclipse\jetty\jetty-security\9.4.39.v20210325\jetty-security-9.4.39.v20210325.jar;C:\Users\sosog\.m2\repository\io\dropwizard\metrics\metrics-graphite\4.1.1\metrics-graphite-4.1.1.jar;C:\Users\sosog\.m2\repository\javax\activation\activation\1.1.1\activation-1.1.1.jar;C:\Users\sosog\.m2\repository\org\eclipse\jetty\jetty-server\9.4.39.v20210325\jetty-server-9.4.39.v20210325.jar;C:\Users\sosog\.m2\repository\com\fasterxml\jackson\core\jackson-databind\2.12.2\jackson-databind-2.12.2.jar;C:\Users\sosog\.m2\repository\org\apache\avro\avro\1.10.2\avro-1.10.2.jar;C:\Users\sosog\.m2\repository\org\apache\ivy\ivy\2.4.0\ivy-2.4.0.jar;C:\Users\sosog\.m2\repository\com\fasterxml\jackson\core\jackson-annotations\2.12.2\jackson-annotations-2.12.2.jar;C:\Users\sosog\.m2\repository\javax\servlet\javax.servlet-api\3.1.0\javax.servlet-api-3.1.0.jar;C:\Users\sosog\.m2\repository\com\twitter\chill_2.12\0.9.5\chill_2.12-0.9.5.jar;C:\Users\sosog\.m2\repository\org\apache\commons\commons-math3\3.4.1\commons-math3-3.4.1.jar;C:\Users\sosog\.m2\repository\net\razorvine\pyrolite\4.30\pyrolite-4.30.jar;C:\Users\sosog\.m2\repository\jakarta\validation\jakarta.validation-api\2.0.2\jakarta.validation-api-2.0.2.jar;C:\Users\sosog\.m2\repository\org\tukaani\xz\1.8\xz-1.8.jar;C:\Users\sosog\.m2\repository\org\glassfish\jersey\inject\jersey-hk2\2.30\jersey-hk2-2.30.jar;D:\spark\launcher\target\spark-launcher_2.12-3.2.0-SNAPSHOT.jar;C:\Users\sosog\.m2\repository\org\apache\hadoop\hadoop-client-api\3.2.2\hadoop-client-api-3.2.2.jar;C:\Users\sosog\.m2\repository\org\json4s\json4s-ast_2.12\3.7.0-M5\json4s-ast_2.12-3.7.0-M5.jar;C:\Users\sosog\.m2\repository\org\glassfish\jersey\core\jersey-common\2.30\jersey-common-2.30.jar;C:\Users\sosog\.m2\repository\oro\oro\2.0.8\oro-2.0.8.jar;C:\Users\sosog\.m2\repository\org\scala-lang\scala-reflect\2.12.10\scala-reflect-2.12.10.jar;C:\Users\sosog\.m2\repository\log4j\log4j\1.2.17\log4j-1.2.17.jar;C:\Users\sosog\.m2\repository\org\apache\curator\curator-framework\2.13.0\curator-framework-2.13.0.jar;C:\Users\sosog\.m2\repository\org\apache\xbean\xbean-asm7-shaded\4.15\xbean-asm7-shaded-4.15.jar;C:\Users\sosog\.m2\repository\io\dropwizard\metrics\metrics-core\4.1.1\metrics-core-4.1.1.jar;C:\Users\sosog\.m2\repository\org\apache\commons\commons-lang3\3.11\commons-lang3-3.11.jar;C:\Users\sosog\.m2\repository\io\dropwizard\metrics\metrics-json\4.1.1\metrics-json-4.1.1.jar;C:\Users\sosog\.m2\repository\org\glassfish\hk2\hk2-api\2.6.1\hk2-api-2.6.1.jar;C:\Users\sosog\.m2\repository\org\roaringbitmap\shims\0.9.0\shims-0.9.0.jar;C:\Users\sosog\.m2\repository\jakarta\annotation\jakarta.annotation-api\1.3.5\jakarta.annotation-api-1.3.5.jar;C:\Users\sosog\.m2\repository\org\glassfish\hk2\osgi-resource-locator\1.0.3\osgi-resource-locator-1.0.3.jar;C:\Users\sosog\.m2\repository\org\apache\hadoop\hadoop-client-runtime\3.2.2\hadoop-client-runtime-3.2.2.jar;C:\Users\sosog\.m2\repository\org\apache\yetus\audience-annotations\0.5.0\audience-annotations-0.5.0.jar;C:\Users\sosog\.m2\repository\org\apache\avro\avro-ipc\1.10.2\avro-ipc-1.10.2.jar;C:\Users\sosog\.m2\repository\io\dropwizard\metrics\metrics-jvm\4.1.1\metrics-jvm-4.1.1.jar;C:\Users\sosog\.m2\repository\org\eclipse\jetty\jetty-util-ajax\9.4.39.v20210325\jetty-util-ajax-9.4.39.v20210325.jar;C:\Users\sosog\.m2\repository\com\github\luben\zstd-jni\1.4.9-1\zstd-jni-1.4.9-1.jar;C:\Users\sosog\.m2\repository\org\eclipse\jetty\jetty-plus\9.4.39.v20210325\jetty-plus-9.4.39.v20210325.jar;C:\Users\sosog\.m2\repository\org\scala-lang\modules\scala-xml_2.12\1.2.0\scala-xml_2.12-1.2.0.jar;C:\Users\sosog\.m2\repository\org\apache\curator\curator-recipes\2.13.0\curator-recipes-2.13.0.jar;C:\Users\sosog\.m2\repository\org\slf4j\slf4j-api\1.7.30\slf4j-api-1.7.30.jar;C:\Users\sosog\.m2\repository\com\ning\compress-lzf\1.0.3\compress-lzf-1.0.3.jar;C:\Users\sosog\.m2\repository\org\eclipse\jetty\jetty-http\9.4.39.v20210325\jetty-http-9.4.39.v20210325.jar;C:\Users\sosog\.m2\repository\org\glassfish\jersey\containers\jersey-container-servlet\2.30\jersey-container-servlet-2.30.jar;C:\Users\sosog\.m2\repository\org\eclipse\jetty\jetty-jndi\9.4.39.v20210325\jetty-jndi-9.4.39.v20210325.jar;C:\Users\sosog\.m2\repository\org\apache\curator\curator-client\2.13.0\curator-client-2.13.0.jar;C:\Users\sosog\.m2\repository\org\eclipse\jetty\jetty-util\9.4.39.v20210325\jetty-util-9.4.39.v20210325.jar;D:\spark\common\network-common\target\spark-network-common_2.12-3.2.0-SNAPSHOT.jar;C:\Users\sosog\.m2\repository\org\apache\commons\commons-crypto\1.1.0\commons-crypto-1.1.0.jar;C:\Users\sosog\.m2\repository\org\javassist\javassist\3.25.0-GA\javassist-3.25.0-GA.jar;C:\Users\sosog\.m2\repository\org\glassfish\jersey\containers\jersey-container-servlet-core\2.30\jersey-container-servlet-core-2.30.jar;D:\spark\common\kvstore\target\spark-kvstore_2.12-3.2.0-SNAPSHOT.jar;C:\Users\sosog\.m2\repository\org\xerial\snappy\snappy-java\1.1.8.2\snappy-java-1.1.8.2.jar;C:\Users\sosog\.m2\repository\org\roaringbitmap\RoaringBitmap\0.9.0\RoaringBitmap-0.9.0.jar;C:\Users\sosog\.m2\repository\org\slf4j\jcl-over-slf4j\1.7.30\jcl-over-slf4j-1.7.30.jar;C:\Users\sosog\.m2\repository\org\spark-project\spark\unused\1.0.0\unused-1.0.0.jar;C:\Users\sosog\.m2\repository\org\glassfish\jersey\core\jersey-server\2.30\jersey-server-2.30.jar;C:\Users\sosog\.m2\repository\io\dropwizard\metrics\metrics-jmx\4.1.1\metrics-jmx-4.1.1.jar;C:\Users\sosog\.m2\repository\org\glassfish\jersey\core\jersey-client\2.30\jersey-client-2.30.jar;C:\Users\sosog\.m2\repository\commons-collections\commons-collections\3.2.2\commons-collections-3.2.2.jar;C:\Users\sosog\.m2\repository\commons-logging\commons-logging\1.1.3\commons-logging-1.1.3.jar;C:\Users\sosog\.m2\repository\net\sf\py4j\py4j\0.10.9.2\py4j-0.10.9.2.jar;C:\Users\sosog\.m2\repository\org\eclipse\jetty\jetty-proxy\9.4.39.v20210325\jetty-proxy-9.4.39.v20210325.jar;C:\Users\sosog\.m2\repository\org\apache\commons\commons-compress\1.20\commons-compress-1.20.jar
+[INFO] 
+[INFO] --- build-helper-maven-plugin:3.2.0:add-source (add-sources) @ spark-core_2.12 ---
+[INFO] Source directory: D:\spark\core\src\main\scala-2.12 added.
+[INFO] 
+[INFO] --- maven-remote-resources-plugin:1.5:process (process-resource-bundles) @ spark-core_2.12 ---
+[INFO] 
+[INFO] --- maven-antrun-plugin:1.8:run (default) @ spark-core_2.12 ---
+[INFO] Executing tasks
+
+main:
+[INFO] Executed tasks
+[INFO] 
+[INFO] --- maven-resources-plugin:2.7:resources (default-resources) @ spark-core_2.12 ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] Copying 51 resources
+[INFO] Copying 1 resource
+[INFO] Copying 3 resources
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.8.1:compile (default-compile) @ spark-core_2.12 ---
+[INFO] Not compiling main sources
+[INFO] 
+[INFO] --- scala-maven-plugin:4.3.0:compile (scala-compile-first) @ spark-core_2.12 ---
+[INFO] Using incremental compilation using Mixed compile order
+[INFO] Compiler bridge file: C:\Users\sosog\.sbt\1.0\zinc\org.scala-sbt\org.scala-sbt-compiler-bridge_2.12-1.3.1-bin_2.12.10__52.0-1.3.1_20191012T045515.jar
+[INFO] compiler plugin: BasicArtifact(com.github.ghik,silencer-plugin_2.12.10,1.6.0,null)
+[INFO] Compiling 561 Scala sources and 99 Java sources to D:\spark\core\target\scala-2.12\classes ...
+[ERROR] ## Exception when compiling 660 sources to D:\spark\core\target\scala-2.12\classes
+java.lang.OutOfMemoryError: Java heap space
+java.util.HashMap.newNode(HashMap.java:1734)
+java.util.HashMap.putVal(HashMap.java:641)
+java.util.HashMap.put(HashMap.java:611)
+java.util.jar.Manifest.read(Manifest.java:249)
+java.util.jar.Manifest.<init>(Manifest.java:69)
+java.util.jar.JarFile.getManifestFromReference(JarFile.java:199)
+java.util.jar.JarFile.getManifest(JarFile.java:180)
+sun.misc.URLClassPath$JarLoader$2.getManifest(URLClassPath.java:944)
+java.net.URLClassLoader.defineClass(URLClassLoader.java:450)
+java.net.URLClassLoader.access$100(URLClassLoader.java:73)
+java.net.URLClassLoader$1.run(URLClassLoader.java:368)
+java.net.URLClassLoader$1.run(URLClassLoader.java:362)
+java.security.AccessController.doPrivileged(Native Method)
+java.net.URLClassLoader.findClass(URLClassLoader.java:361)
+java.lang.ClassLoader.loadClass(ClassLoader.java:424)
+java.lang.ClassLoader.loadClass(ClassLoader.java:357)
+scala.collection.concurrent.TrieMap.RDCSS_ROOT(TrieMap.scala:721)
+scala.collection.concurrent.TrieMap.clear(TrieMap.scala:819)
+scala.reflect.internal.SymbolTable$perRunCaches$.$anonfun$clearAll$3(SymbolTable.scala:464)
+scala.reflect.internal.SymbolTable$perRunCaches$.$anonfun$clearAll$2(SymbolTable.scala:464)
+scala.reflect.internal.SymbolTable$perRunCaches$.clearAll(SymbolTable.scala:464)
+scala.tools.nsc.Global.close(Global.scala:1721)
+xsbt.CachedCompiler0.close(CompilerInterface.scala:100)
+sbt.internal.inc.AnalyzingCompiler.compile(AnalyzingCompiler.scala:98)
+sbt.internal.inc.MixedAnalyzingCompiler.$anonfun$compile$4(MixedAnalyzingCompiler.scala:91)
+sbt.internal.inc.MixedAnalyzingCompiler$$Lambda$219/16142764.apply$mcV$sp(Unknown Source)
+scala.runtime.java8.JFunction0$mcV$sp.apply(JFunction0$mcV$sp.java:23)
+sbt.internal.inc.MixedAnalyzingCompiler.timed(MixedAnalyzingCompiler.scala:186)
+sbt.internal.inc.MixedAnalyzingCompiler.$anonfun$compile$3(MixedAnalyzingCompiler.scala:82)
+sbt.internal.inc.MixedAnalyzingCompiler.$anonfun$compile$3$adapted(MixedAnalyzingCompiler.scala:77)
+sbt.internal.inc.MixedAnalyzingCompiler$$Lambda$211/13535899.apply(Unknown Source)
+sbt.internal.inc.JarUtils$.withPreviousJar(JarUtils.scala:215)
+           
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Summary for Spark Project Parent POM 3.2.0-SNAPSHOT:
+[INFO] 
+[INFO] Spark Project Parent POM ........................... SUCCESS [  2.564 s]
+[INFO] Spark Project Tags ................................. SUCCESS [  4.560 s]
+[INFO] Spark Project Sketch ............................... SUCCESS [  4.713 s]
+[INFO] Spark Project Local DB ............................. SUCCESS [  1.870 s]
+[INFO] Spark Project Networking ........................... SUCCESS [  3.293 s]
+[INFO] Spark Project Shuffle Streaming Service ............ SUCCESS [  2.080 s]
+[INFO] Spark Project Unsafe ............................... SUCCESS [  5.742 s]
+[INFO] Spark Project Launcher ............................. SUCCESS [  1.439 s]
+[INFO] Spark Project Core ................................. FAILURE [01:16 min]
+[INFO] Spark Project ML Local Library ..................... SKIPPED
+[INFO] Spark Project GraphX ............................... SKIPPED
+[INFO] Spark Project Streaming ............................ SKIPPED
+[INFO] Spark Project Catalyst ............................. SKIPPED
+[INFO] Spark Project SQL .................................. SKIPPED
+[INFO] Spark Project ML Library ........................... SKIPPED
+[INFO] Spark Project Tools ................................ SKIPPED
+[INFO] Spark Project Hive ................................. SKIPPED
+[INFO] Spark Project REPL ................................. SKIPPED
+[INFO] Spark Project Assembly ............................. SKIPPED
+[INFO] Kafka 0.10+ Token Provider for Streaming ........... SKIPPED
+[INFO] Spark Integration for Kafka 0.10 ................... SKIPPED
+[INFO] Kafka 0.10+ Source for Structured Streaming ........ SKIPPED
+[INFO] Spark Project Examples ............................. SKIPPED
+[INFO] Spark Integration for Kafka 0.10 Assembly .......... SKIPPED
+[INFO] Spark Avro ......................................... SKIPPED
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  01:43 min
+[INFO] Finished at: 2021-04-21T11:53:01+08:00
+[INFO] ------------------------------------------------------------------------
+[ERROR] Java heap space -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/OutOfMemoryError

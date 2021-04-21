@@ -33,7 +33,7 @@
   <properties>
     <sbt.project.name>core</sbt.project.name>
   </properties>
-  
+
   <dependencies>
     <dependency>
       <groupId>org.apache.avro</groupId>
@@ -521,6 +521,28 @@
       </resource>
     </resources>
     <plugins>
+<!--      <plugin>-->
+<!--        <groupId>org.apache.maven.plugins</groupId>-->
+<!--        <artifactId>maven-antrun-plugin</artifactId>-->
+<!--        <executions>-->
+<!--          <execution>-->
+<!--            <phase>generate-resources</phase>-->
+<!--            <configuration>-->
+<!--              &lt;!&ndash; 替换为执行自定义bat脚本. &ndash;&gt;-->
+<!--              <target>-->
+<!--                <exec executable="cmd.exe">-->
+<!--                  <arg line="${project.basedir}/../build/spark-build-info.bat"/>-->
+<!--                  <arg line="${project.build.directory}/extra-resources"/>-->
+<!--                  <arg line="${project.version}"/>-->
+<!--                </exec>-->
+<!--              </target>-->
+<!--            </configuration>-->
+<!--            <goals>-->
+<!--              <goal>run</goal>-->
+<!--            </goals>-->
+<!--          </execution>-->
+<!--        </executions>-->
+<!--      </plugin>-->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-antrun-plugin</artifactId>

@@ -72,7 +72,7 @@ install_mvn() {
   fi
   if [ $(version $MVN_DETECTED_VERSION) -lt $(version $MVN_VERSION) ]; then
     local APACHE_MIRROR=${APACHE_MIRROR:-'https://www.apache.org/dyn/closer.lua?action=download&filename='}
-        
+
     if [ $(command -v curl) ]; then
       local TEST_MIRROR_URL="${APACHE_MIRROR}/maven/maven-3/${MVN_VERSION}/binaries/apache-maven-${MVN_VERSION}-bin.tar.gz"
       if ! curl -L --output /dev/null --silent --head --fail "$TEST_MIRROR_URL" ; then
@@ -118,6 +118,8 @@ cd "${_CALLING_DIR}"
 
 # Set any `mvn` options if not already present
 export MAVEN_OPTS=${MAVEN_OPTS:-"$_COMPILE_JVM_OPTS"}
+
+echo ${MAVEN_OPTS}
 
 echo "Using \`mvn\` from path: $MVN_BIN" 1>&2
 
