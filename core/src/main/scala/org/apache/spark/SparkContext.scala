@@ -77,11 +77,11 @@ import org.apache.spark.util.logging.DriverLogger
   * @note Only one `SparkContext` should be active per JVM. You must `stop()` the
   *       active `SparkContext` before creating a new one.
   * @param config a Spark Config object describing the application configuration. Any settings in
-  *       this config overrides the default configs as well as system properties.
+  *               this config overrides the default configs as well as system properties.
   *
-  * Spark功能的核心。SparkContext作为集群的会话终端，可以用来创建RDD、累加器和广播变量。
-  * 注意：每个JVM上只能启动一个SparkContext，如果要启动下一个，必须先关停上一个。
-  * 参数Config：一个spark应用的配置对象，这个对象的么个属性都会覆盖系统默认的属性
+  *               Spark功能的核心。SparkContext作为集群的会话终端，可以用来创建RDD、累加器和广播变量。
+  *               注意：每个JVM上只能启动一个SparkContext，如果要启动下一个，必须先关停上一个。
+  *               参数Config：一个spark应用的配置对象，这个对象的么个属性都会覆盖系统默认的属性
   */
 class SparkContext(config: SparkConf) extends Logging {
 
@@ -299,6 +299,7 @@ class SparkContext(config: SparkConf) extends Logging {
 
     /**
       * 如果context已经停了或者正在停止，则返回 true
+      *
       * @return true if context is stopped or in the midst of stopping.
       */
     def isStopped: Boolean = stopped.get()
@@ -345,9 +346,10 @@ class SparkContext(config: SparkConf) extends Logging {
 
     /**
       * A default Hadoop Configuration for the Hadoop code (e.g. file systems) that we reuse.
+      *
       * @note As it will be reused in all Hadoop RDDs, it's better not to modify it unless you
       *       plan to set some global configurations for all Hadoop RDDs.
-      * 所有的Hadoop RDD默认使用的hadoop配置，最好不要修改
+      *       所有的Hadoop RDD默认使用的hadoop配置，最好不要修改
       */
     def hadoopConfiguration: Configuration = _hadoopConfiguration
 
@@ -428,7 +430,10 @@ class SparkContext(config: SparkConf) extends Logging {
      | stop() method to be called.                                                           |
      * ------------------------------------------------------------------------------------- */
 
+    // 初始化context,初始化所有的变量，遇到异常会继续，遇到错误会停止
+
     private def warnSparkMem(value: String): String = {
+        // 用SPARK_MEM设置excutor的内存的方式已经过时了，请使用spark.executor.memory
         logWarning("Using SPARK_MEM to set amount of memory to use per executor process is " +
                 "deprecated, please use spark.executor.memory instead.")
         value
@@ -438,9 +443,11 @@ class SparkContext(config: SparkConf) extends Logging {
       *
       * @param logLevel The desired log level as a string.
       *                 Valid log levels include: ALL, DEBUG, ERROR, FATAL, INFO, OFF, TRACE, WARN
+      *                 控制日志级别，其它所有的用户自定义级别都会被覆盖
       */
     def setLogLevel(logLevel: String): Unit = {
         // let's allow lowercase or mixed case too
+        // 统一转换为大写，并且和固定值匹配，不匹配做提示
         val upperCased = logLevel.toUpperCase(Locale.ROOT)
         require(SparkContext.VALID_LOG_LEVELS.contains(upperCased),
             s"Supplied level $logLevel did not match one of:" +
@@ -453,6 +460,7 @@ class SparkContext(config: SparkConf) extends Logging {
         _conf.validateSettings()
         _conf.set("spark.app.startTime", startTime.toString)
 
+        // master 和 appname 是必须设置的参数
         if (!_conf.contains("spark.master")) {
             throw new SparkException("A master URL must be set in your configuration")
         }
@@ -467,9 +475,11 @@ class SparkContext(config: SparkConf) extends Logging {
         logResourceInfo(SPARK_DRIVER_PREFIX, _resources)
 
         // log out spark.app.name in the Spark driver logs
+        // 打印app名称
         logInfo(s"Submitted application: $appName")
 
         // System property spark.yarn.app.id must be set if user code ran by AM on a YARN cluster
+        // 使用yarn做资源调度的时候，系统参数 spark.yarn.app.id 必须设置
         if (master == "yarn" && deployMode == "cluster" && !_conf.contains("spark.yarn.app.id")) {
             throw new SparkException("Detected yarn cluster mode, but isn't running on a cluster. " +
                     "Deployment to YARN is not supported directly by SparkContext. Please use spark-submit.")
@@ -481,11 +491,13 @@ class SparkContext(config: SparkConf) extends Logging {
 
         // Set Spark driver host and port system properties. This explicitly sets the configuration
         // instead of relying on the default value of the config constant.
+        // 设置driver的主机名和端口号，这个需要明确地设置而不是依赖配置的默认值
         _conf.set(DRIVER_HOST_ADDRESS, _conf.get(DRIVER_HOST_ADDRESS))
         _conf.setIfMissing(DRIVER_PORT, 0)
 
         _conf.set(EXECUTOR_ID, SparkContext.DRIVER_IDENTIFIER)
 
+        // 读取用户代码
         _jars = Utils.getUserJars(_conf)
         _files = _conf.getOption(FILES.key).map(_.split(",")).map(_.filter(_.nonEmpty))
                 .toSeq.flatten
@@ -513,15 +525,18 @@ class SparkContext(config: SparkConf) extends Logging {
 
         // Initialize the app status store and listener before SparkEnv is created so that it gets
         // all events.
+        // 在sparkEnv创建之前初始化状态和监听参数，这样就能获取完整的过程
         val appStatusSource = AppStatusSource.createSource(conf)
         _statusStore = AppStatusStore.createLiveStore(conf, appStatusSource)
         listenerBus.addToStatusQueue(_statusStore.listener.get)
 
         // Create the Spark execution environment (cache, map output tracker, etc)
+        // 创建sparkEvn
         _env = createSparkEnv(_conf, isLocal, listenerBus)
         SparkEnv.set(_env)
 
         // If running the REPL, register the repl's output dir with the file server.
+        // 如果运行repl,则注册repl的输出目录
         _conf.getOption("spark.repl.class.outputDir").foreach { path =>
             val replUri = _env.rpcEnv.fileServer.addDirectory("/classes", new File(path))
             _conf.set("spark.repl.class.uri", replUri)
@@ -542,10 +557,12 @@ class SparkContext(config: SparkConf) extends Logging {
                         startTime))
                 } else {
                     // For tests, do not enable the UI
+                    // 测试的时候没有UI界面
                     None
                 }
         // Bind the UI before starting the task scheduler to communicate
         // the bound port to the cluster manager properly
+        // 启动任务调度程序之前绑定UI, 以使能绑定端口，然后与集群管理器正常通信
         _ui.foreach(_.bind())
 
         _hadoopConfiguration = SparkHadoopUtil.get.newConfiguration(_conf)
@@ -557,9 +574,12 @@ class SparkContext(config: SparkConf) extends Logging {
         // parsing to load configuration defaults and populate its own properties. By ensuring
         // that we've pre-computed the parent's properties, the child Configuration will simply
         // clone the parent's properties.
+        // 性能优化: 这里对.size()方法的伪调用触发了Configuration对内部属性的快速求值，
+        // 确保了这些值不会在后续使用中才触发计算，并且后续代码只需要继承读取便可。
         _hadoopConfiguration.size()
 
         // Add each JAR given through the constructor
+        // 加载构造器中提供的每个jar、文件、和文档
         if (jars != null) {
             jars.foreach(jar => addJar(jar, true))
             if (addedJars.nonEmpty) {
@@ -581,6 +601,7 @@ class SparkContext(config: SparkConf) extends Logging {
             }
         }
 
+        // 优先从配置项里读取excutor的内存大小，默认是 1G
         _executorMemory = _conf.getOption(EXECUTOR_MEMORY.key)
                 .orElse(Option(System.getenv("SPARK_EXECUTOR_MEMORY")))
                 .orElse(Option(System.getenv("SPARK_MEM"))
@@ -590,6 +611,7 @@ class SparkContext(config: SparkConf) extends Logging {
 
         // Convert java options to env vars as a work around
         // since we can't set env vars directly in sbt.
+        // 从sbt中无法直接获取环境变量，需要从Java opts中转换，暂时跳过
         for {(envKey, propKey) <- Seq(("SPARK_TESTING", IS_TESTING.key))
              value <- Option(System.getenv(envKey)).orElse(Option(System.getProperty(propKey)))} {
             executorEnvs(envKey) = value
@@ -599,6 +621,7 @@ class SparkContext(config: SparkConf) extends Logging {
         }
         // The Mesos scheduler backend relies on this environment variable to set executor memory.
         // TODO: Set this only in the Mesos scheduler.
+        // Mesos 调度后台依赖这个环境变量来设置executor的内存
         executorEnvs("SPARK_EXECUTOR_MEMORY") = executorMemory + "m"
         executorEnvs ++= _conf.getExecutorEnv
         executorEnvs("SPARK_USER") = sparkUser
@@ -610,13 +633,16 @@ class SparkContext(config: SparkConf) extends Logging {
 
         // We need to register "HeartbeatReceiver" before "createTaskScheduler" because Executor will
         // retrieve "HeartbeatReceiver" in the constructor. (SPARK-6640)
+        // 需要在创建TaskScheduler之前创建“心跳接受”，因为excutor会在构造阶段检索心跳信息
         _heartbeatReceiver = env.rpcEnv.setupEndpoint(
             HeartbeatReceiver.ENDPOINT_NAME, new HeartbeatReceiver(this))
 
         // Initialize any plugins before the task scheduler is initialized.
+        // 初始化插件
         _plugins = PluginContainer(this, _resources.asJava)
 
         // Create and start the scheduler
+        // 重头戏开始，创建dagscheduler和taskscheduler
         val (sched, ts) = SparkContext.createTaskScheduler(this, master, deployMode)
         _schedulerBackend = sched
         _taskScheduler = ts
@@ -631,6 +657,7 @@ class SparkContext(config: SparkConf) extends Logging {
             }
 
         // create and start the heartbeater for collecting memory metrics
+        // 多线程方式创建和启动心跳信息
         _heartbeater = new Heartbeater(
             () => SparkContext.this.reportHeartBeat(_executorMetricsSource),
             "driver-heartbeater",
@@ -639,6 +666,7 @@ class SparkContext(config: SparkConf) extends Logging {
 
         // start TaskScheduler after taskScheduler sets DAGScheduler reference in DAGScheduler's
         // constructor
+        // 在TaskScheduler设置Dagscheduler的引用后启动TaskScheduler
         _taskScheduler.start()
 
         _applicationId = _taskScheduler.applicationId()
@@ -655,6 +683,7 @@ class SparkContext(config: SparkConf) extends Logging {
 
         // The metrics system for Driver need to be set spark.app.id to app ID.
         // So it should start after we get app ID from the task scheduler and set spark.app.id.
+        // driver的度量系统需要获取app ID, 所以应该在task scheduler提供ID之后再启动
         _env.metricsSystem.start(_conf.get(METRICS_STATIC_SOURCES_ENABLED))
         // Attach the driver metrics servlet handler to the web ui after the metrics system is started.
         _env.metricsSystem.getServletHandlers.foreach(handler => ui.foreach(_.attachHandler(handler)))
@@ -716,6 +745,7 @@ class SparkContext(config: SparkConf) extends Logging {
         // Make sure the context is stopped if the user forgets about it. This avoids leaving
         // unfinished event logs around after the JVM exits cleanly. It doesn't help if the JVM
         // is killed, though.
+        // 如果用户忘记，确保context会停止。避免JVM关闭的时候有位执行完的事件
         logDebug("Adding shutdown hook") // force eager creation of logger
         _shutdownHookRef = ShutdownHookManager.addShutdownHook(
             ShutdownHookManager.SPARK_CONTEXT_SHUTDOWN_PRIORITY) { () =>
@@ -745,6 +775,8 @@ class SparkContext(config: SparkConf) extends Logging {
       * Logs an error and returns None if we failed to obtain a thread dump, which could occur due
       * to an executor being dead or unresponsive or due to network issues while sending the thread
       * dump message back to the driver.
+      * 为web UI 提供excutor的线程状态快照，这个方法很耗费资源
+      * 如果executor宕掉或者失去响应或者网络故障，会返回报错或者空
       */
     private[spark] def getExecutorThreadDump(executorId: String): Option[Array[ThreadStackTrace]] = {
         try {
@@ -761,8 +793,10 @@ class SparkContext(config: SparkConf) extends Logging {
         }
     }
 
+    // 获取本地属性
     private[spark] def getLocalProperties: Properties = localProperties.get()
 
+    // 设置本地属性
     private[spark] def setLocalProperties(props: Properties): Unit = {
         localProperties.set(props)
     }
@@ -772,11 +806,15 @@ class SparkContext(config: SparkConf) extends Logging {
       * scheduler pool. User-defined properties may also be set here. These properties are propagated
       * through to worker tasks and can be accessed there via
       * [[org.apache.spark.TaskContext#getLocalProperty]].
+      * 设置一个会对job提交产生影响的属性，比如说spark失败调度池。用户自定义的属性集也会在这里设置。
+      * 这些属性集最后会通过这个方法传递给worker上的task
       *
       * These properties are inherited by child threads spawned from this thread. This
       * may have unexpected consequences when working with thread pools. The standard java
       * implementation of thread pools have worker threads spawn other worker threads.
       * As a result, local properties may propagate unpredictably.
+      * 这些属性会被子线程继承，从而导致一些难以预料的结果，这是由于java线程池的实现标准决定的
+      * 总之，本地属性可能以不可预料的方式传递
       */
     def setLocalProperty(key: String, value: String): Unit = {
         if (value == null) {
@@ -789,11 +827,13 @@ class SparkContext(config: SparkConf) extends Logging {
     /**
       * Get a local property set in this thread, or null if it is missing. See
       * `org.apache.spark.SparkContext.setLocalProperty`.
+      * 获取当前线程设置的本地属性
       */
     def getLocalProperty(key: String): String =
         Option(localProperties.get).map(_.getProperty(key)).orNull
 
     /** Set a human readable description of the current job. */
+    // job注释，人能看懂的
     def setJobDescription(value: String): Unit = {
         setLocalProperty(SparkContext.SPARK_JOB_DESCRIPTION, value)
     }
@@ -801,18 +841,24 @@ class SparkContext(config: SparkConf) extends Logging {
     /**
       * Assigns a group ID to all the jobs started by this thread until the group ID is set to a
       * different value or cleared.
+      * 为所有由当前线程触发的job分配一个ID，知道ID被重新赋值
       *
       * Often, a unit of execution in an application consists of multiple Spark actions or jobs.
       * Application programmers can use this method to group all those jobs together and give a
       * group description. Once set, the Spark web UI will associate such jobs with this group.
+      * 通常情况下，一个application的执行单元由不同的action和job组成，application程序能用这个方法
+      * 为这些job做一个统一的描述。一但设置，web UI 就会把这些action和这个描述绑定
       *
       * The application can also use `org.apache.spark.SparkContext.cancelJobGroup` to cancel all
       * running jobs in this group. For example,
+      * 能绑定，也能取消
+      * 绑定如下
       * {{{
       * // In the main thread:
       * sc.setJobGroup("some_job_to_cancel", "some job description")
       * sc.parallelize(1 to 10000, 2).map { i => Thread.sleep(10); i }.count()
       *
+      * 取消如下
       * // In a separate thread:
       * sc.cancelJobGroup("some_job_to_cancel")
       * }}}
@@ -821,6 +867,8 @@ class SparkContext(config: SparkConf) extends Logging {
       *                          being called on the job's executor threads. This is useful to help ensure that the tasks
       *                          are actually stopped in a timely manner, but is off by default due to HDFS-1208, where HDFS
       *                          may respond to Thread.interrupt() by marking nodes as dead.
+      * 如果为true,取消的结果会在executor的线程中体现，这能有效确保task最终被取消了
+      * 但是默认为false,因为hdfs 可能会通过标记节点宕机来响应中断
       */
     def setJobGroup(groupId: String,
                     description: String, interruptOnCancel: Boolean = false): Unit = {
@@ -830,10 +878,14 @@ class SparkContext(config: SparkConf) extends Logging {
         // changing several public APIs and allows Spark cancellations outside of the cancelJobGroup
         // APIs to also take advantage of this property (e.g., internal job failures or canceling from
         // JobProgressTab UI) on a per-job basis.
+        // 注意：在set中指定interruptOnCancel 而不是在cancel时指定，能避免修改几个公共的api，
+        // 同时，还能在cancel之外利用这个属性
+        // （比如，web UI取消或者 job 执行失败）
         setLocalProperty(SparkContext.SPARK_JOB_INTERRUPT_ON_CANCEL, interruptOnCancel.toString)
     }
 
     /** Clear the current thread's job group ID and its description. */
+    // 消除上面设置的当前线程的group ID 和 人能看得懂的描述
     def clearJobGroup(): Unit = {
         setLocalProperty(SparkContext.SPARK_JOB_DESCRIPTION, null)
         setLocalProperty(SparkContext.SPARK_JOB_GROUP_ID, null)
@@ -843,12 +895,14 @@ class SparkContext(config: SparkConf) extends Logging {
     /**
       * Execute a block of code in a scope such that all new RDDs created in this body will
       * be part of the same scope. For more detail, see {{org.apache.spark.rdd.RDDOperationScope}}.
-      *
       * @note Return statements are NOT allowed in the given body.
+      * 在一个作用域里执行一部分代码，这样一来所有在这部分创建的新的RDD都会有一部分共同的作用域
+      * 详情请看大屏幕
       */
     private[spark] def withScope[U](body: => U): U = RDDOperationScope.withScope[U](this)(body)
 
     // Methods for creating RDDs
+    // 创建RDD的方法
 
     /** Distribute a local Scala collection to form an RDD.
       *
@@ -886,10 +940,13 @@ class SparkContext(config: SparkConf) extends Logging {
                      numSlices: Int = defaultParallelism): RDD[Long] = withScope {
         assertNotStopped()
         // when step is 0, range will run infinitely
+        // require 这个方法只会抛异常
         require(step != 0, "step cannot be 0")
         val numElements: BigInt = {
             val safeStart = BigInt(start)
             val safeEnd = BigInt(end)
+            // 正向步进 (end - start) % step = start * step + 1
+            // 逆向步进
             if ((safeEnd - safeStart) % step == 0 || (safeEnd > safeStart) != (step > 0)) {
                 (safeEnd - safeStart) / step
             } else {
