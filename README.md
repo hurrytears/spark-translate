@@ -16,7 +16,7 @@ Spark是一个统一的大数据处理引擎，它提供了多种语言的高级
 你能找到最新的spark 文档，包括[编程指导](https://spark.apache.org/documentation.html)，
 这个READ文件只包含基本的安装说明。
 
-## Building Spark
+## 编译 Spark
 
 spark基于 [Apache Maven](https://maven.apache.org/)构建，
 要编译或者执行example,命令如下：
