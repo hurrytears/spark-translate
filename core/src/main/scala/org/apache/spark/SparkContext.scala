@@ -945,8 +945,7 @@ class SparkContext(config: SparkConf) extends Logging {
         val numElements: BigInt = {
             val safeStart = BigInt(start)
             val safeEnd = BigInt(end)
-            // 正向步进 (end - start) % step = start * step + 1
-            // 逆向步进
+            // 逆向步进会有问题，这个判定在下边几行处理，执行效率应该不高
             if ((safeEnd - safeStart) % step == 0 || (safeEnd > safeStart) != (step > 0)) {
                 (safeEnd - safeStart) / step
             } else {
@@ -954,10 +953,15 @@ class SparkContext(config: SparkConf) extends Logging {
                 (safeEnd - safeStart) / step + 1
             }
         }
+
+        /**
+          * 数学太差了
+          */
         parallelize(0 until numSlices, numSlices).mapPartitionsWithIndex { (i, _) =>
             val partitionStart = (i * numElements) / numSlices * step + start
             val partitionEnd = (((i + 1) * numElements) / numSlices) * step + start
 
+            // 获取安全值，应该没必要，不存在这么大的并行度
             def getSafeMargin(bi: BigInt): Long =
                 if (bi.isValidLong) {
                     bi.toLong
@@ -974,6 +978,7 @@ class SparkContext(config: SparkConf) extends Logging {
                 private[this] var number: Long = safePartitionStart
                 private[this] var overflow: Boolean = false
 
+                // 这里判定步进方向是否合法，不太好
                 override def hasNext =
                     if (!overflow) {
                         if (step > 0) {
@@ -990,6 +995,10 @@ class SparkContext(config: SparkConf) extends Logging {
                         // we have Long.MaxValue + Long.MaxValue < Long.MaxValue
                         // and Long.MinValue + Long.MinValue > Long.MinValue, so iff the step causes a step
                         // back, we are pretty sure that we have an overflow.
+                        // scala 语法规则，Long.MaxValue + Long.MaxValue = -2
+                        //                 Long.MinValue + Long.MinValue = 0
+                        // 也就是说如果超过了最大值或者最小值边界，步进之后的结果会回退
+                        // 如果回退了，就是百分百确定越界了
                         overflow = true
                     }
                     ret
@@ -1034,6 +1043,8 @@ class SparkContext(config: SparkConf) extends Logging {
       * @param path          path to the text file on a supported file system
       * @param minPartitions suggested minimum number of partitions for the resulting RDD
       * @return RDD of lines of the text file
+      *
+      * 这几个方法暂时先不深入，后边再看
       */
     def textFile(
                         path: String,
@@ -1044,6 +1055,7 @@ class SparkContext(config: SparkConf) extends Logging {
     }
 
     /**
+      * TextFile方法的升级版
       * Read a directory of text files from HDFS, a local file system (available on all nodes), or any
       * Hadoop-supported file system URI. Each file is read as a single record and returned in a
       * key-value pair, where the key is the path of each file, the value is the content of each file.
@@ -1203,16 +1215,18 @@ class SparkContext(config: SparkConf) extends Logging {
                                minPartitions: Int = defaultMinPartitions): RDD[(K, V)] = withScope {
         assertNotStopped()
 
-        // This is a hack to enforce loading hdfs-site.xml.
+        // This is a hack（黑客） to enforce loading hdfs-site.xml.
         // See SPARK-11227 for details.
         FileSystem.getLocal(conf)
 
         // Add necessary security credentials to the JobConf before broadcasting it.
+        // 在JobConf广播之前，加一些必要的安全凭证
         SparkHadoopUtil.get.addCredentials(conf)
         new HadoopRDD(this, conf, inputFormatClass, keyClass, valueClass, minPartitions)
     }
 
     /** Get an RDD for a Hadoop file with an arbitrary InputFormat
+      * 自定义InputFormat
       *
       * @note Because Hadoop's RecordReader class re-uses the same Writable object for each
       *       record, directly caching the returned RDD or directly passing it to an aggregation or shuffle
@@ -1240,6 +1254,7 @@ class SparkContext(config: SparkConf) extends Logging {
         FileSystem.getLocal(hadoopConfiguration)
 
         // A Hadoop configuration can be about 10 KiB, which is pretty big, so broadcast it.
+        // hadoop的配置大学是10K大小
         val confBroadcast = broadcast(new SerializableConfiguration(hadoopConfiguration))
         val setInputPathsFunc = (jobConf: JobConf) => FileInputFormat.setInputPaths(jobConf, path)
         new HadoopRDD(
@@ -1260,11 +1275,15 @@ class SparkContext(config: SparkConf) extends Logging {
       * val file = sparkContext.hadoopFile[LongWritable, Text, TextInputFormat](path, minPartitions)
       * }}}
       *
+      * 这是个hadoopFile() 方法的升级版，用户不需要自己传参就能直接自动识别出key,value,inputformat
+      * 的类，举例如上
+      *
       * @note Because Hadoop's RecordReader class re-uses the same Writable object for each
       *       record, directly caching the returned RDD or directly passing it to an aggregation or shuffle
       *       operation will create many references to the same object.
       *       If you plan to directly cache, sort, or aggregate Hadoop writable objects, you should first
       *       copy them using a `map` function.
+      * 冗余了呀大哥，又来一遍
       * @param path          directory to the input data files, the path can be comma separated paths
       *                      as a list of inputs
       * @param minPartitions suggested minimum number of partitions for the resulting RDD
@@ -1281,6 +1300,7 @@ class SparkContext(config: SparkConf) extends Logging {
     }
 
     /**
+      * 无力吐槽，注释不要钱的吗
       * Smarter version of hadoopFile() that uses class tags to figure out the classes of keys,
       * values and the InputFormat so that users don't need to pass them directly. Instead, callers
       * can just write, for example,
@@ -1536,10 +1556,11 @@ class SparkContext(config: SparkConf) extends Logging {
     def emptyRDD[T: ClassTag]: RDD[T] = new EmptyRDD[T](this)
 
     // Methods for creating shared variables
+    // 创建共享变量
 
     /**
       * Register the given accumulator.
-      *
+      * 注册累加器
       * @note Accumulators must be registered before use, or it will throw exception.
       */
     def register(acc: AccumulatorV2[_, _]): Unit = {
@@ -1612,6 +1633,7 @@ class SparkContext(config: SparkConf) extends Logging {
     }
 
     /**
+      * 广播变量
       * Broadcast a read-only variable to the cluster, returning a
       * [[org.apache.spark.broadcast.Broadcast]] object for reading it in distributed functions.
       * The variable will be sent to each cluster only once.
@@ -1632,13 +1654,18 @@ class SparkContext(config: SparkConf) extends Logging {
 
     /**
       * Add a file to be downloaded with this Spark job on every node.
-      *
+      * 在每个节点上添加文件
       * If a file is added during execution, it will not be available until the next TaskSet starts.
+      * 如果是执行过程中添加的，这个文件会保持到下一个TaskSet开始
       *
       * @param path can be either a local file, a file in HDFS (or other Hadoop-supported
       *             filesystems), or an HTTP, HTTPS or FTP URI. To access the file in Spark jobs,
       *             use `SparkFiles.get(fileName)` to find its download location.
+      * 可以是本地文件，也可以是HDFS文件，甚至是FTP
       * @note A path can be added only once. Subsequent additions of the same path are ignored.
+      * 一个路径只能添加一次，后续添加同样的path会被忽略
+      *
+      * 这个方法应该是为了让spark可以独立于hadoop执行
       */
     def addFile(path: String): Unit = {
         addFile(path, false, false)
@@ -1646,13 +1673,14 @@ class SparkContext(config: SparkConf) extends Logging {
 
     /**
       * Returns a list of file paths that are added to resources.
+      * 获取上个方法添加的文件列表
       */
     def listFiles(): Seq[String] = addedFiles.keySet.toSeq
 
     /**
       * :: Experimental ::
       * Add an archive to be downloaded and unpacked with this Spark job on every node.
-      *
+      * 文档相关，跳过
       * If an archive is added during execution, it will not be available until the next TaskSet
       * starts.
       *
@@ -1799,6 +1827,8 @@ class SparkContext(config: SparkConf) extends Logging {
       * Note that please don't cache the value returned by this method, because the number can change
       * due to add/remove executors.
       *
+      * 根据这个传递的文件计算能并发启动的任务的最大数，不论是否有任务正在执行
+      *
       * @param rp ResourceProfile which to use to calculate max concurrent tasks.
       * @return The max number of tasks that can be concurrent launched currently.
       */
@@ -1809,17 +1839,23 @@ class SparkContext(config: SparkConf) extends Logging {
     /**
       * Update the cluster manager on our scheduling needs. Three bits of information are included
       * to help it make decisions. This applies to the default ResourceProfile.
+      * 传递三个信息给集群管理器，已确认调度需求
       *
       * @param numExecutors         The total number of executors we'd like to have. The cluster manager
       *                             shouldn't kill any running executor to reach this number, but,
       *                             if all existing executors were to die, this is the number of executors
       *                             we'd want to be allocated.
+      * 希望拥有的executor的数量，集群管理器不能通过杀死正在执行的executor来充数，但是如果所有的executor
+      * 已经挂掉了，这个参数就是我们希望得到的executor数量
       * @param localityAwareTasks   The number of tasks in all active stages that have a locality
       *                           preferences. This includes running, pending, and completed tasks.
+      * 所有运行的stage里具有位置首选项（位置优先）的任务的数量，这个数量包括正在执行的或者已经执行完的任务
       * @param hostToLocalTaskCount A map of hosts to the number of tasks from all active stages
-      *                             that would like to like to run on that host.
+      *                             that would like to run on that host.
       *                             This includes running, pending, and completed tasks.
+      * host和将在其上执行的任务数量之间的对应关系
       * @return whether the request is acknowledged by the cluster manager.
+      *  返回请求是否被集群管理器确认
       */
     @DeveloperApi
     def requestTotalExecutors(
@@ -1861,13 +1897,16 @@ class SparkContext(config: SparkConf) extends Logging {
     /**
       * :: DeveloperApi ::
       * Request that the cluster manager kill the specified executors.
-      *
+      * 请求杀掉指定的excutor
       * This is not supported when dynamic allocation is turned on.
+      * 这个方法在开启动态分配的时候不管用
       *
       * @note This is an indication to the cluster manager that the application wishes to adjust
-      *       its resource usage downwards. If the application wishes to replace the executors it kills
-      *       through this method with new ones, it should follow up explicitly with a call to
+      *       its resource usage downwards. If the application wishes to replace the executors，
+      *       it kills through this method with new ones, it should follow up explicitly with a call to
       *       {{SparkContext#requestExecutors}}.
+      * 一种是直接杀，一种是杀掉当前的，拿新的代替，用新的代替这种方法不会影响请求的数量，方法在下边
+      *
       * @return whether the request is received.
       */
     @DeveloperApi
@@ -1927,8 +1966,10 @@ class SparkContext(config: SparkConf) extends Logging {
     /**
       * Return a map from the block manager to the max memory available for caching and the remaining
       * memory available for caching.
+      * 从block manager 中获取最大的可用内存
       */
     def getExecutorMemoryStatus: Map[String, (Long, Long)] = {
+        // 思考，到处都在调用这个方法，是不是有更好的实现方式
         assertNotStopped()
         env.blockManager.master.getMemoryStatus.map { case (blockManagerId, mem) =>
             (blockManagerId.host + ":" + blockManagerId.port, mem)
@@ -1939,6 +1980,7 @@ class SparkContext(config: SparkConf) extends Logging {
       * :: DeveloperApi ::
       * Return information about what RDDs are cached, if they are in mem or on disk, how much space
       * they take, etc.
+      * 返回缓存了那些RDD，并且这些RDD占用了多少空间
       */
     @DeveloperApi
     def getRDDStorageInfo: Array[RDDInfo] = {
@@ -1960,8 +2002,10 @@ class SparkContext(config: SparkConf) extends Logging {
 
     /**
       * Returns an immutable map of RDDs that have marked themselves as persistent via cache() call.
+      * 返回一个不可变的Rdd,这些rdd是已经通过cache()方法持久化过的
       *
       * @note This does not necessarily mean the caching or computation was successful.
+      * 这个并不是缓存或者计算执行成功的充分条件
       */
     def getPersistentRDDs: Map[Int, RDD[_]] = persistentRdds.toMap
 
@@ -1988,6 +2032,7 @@ class SparkContext(config: SparkConf) extends Logging {
 
     /**
       * Return current scheduling mode
+      * 返回当前的调度模式
       */
     def getSchedulingMode: SchedulingMode.SchedulingMode = {
         assertNotStopped()
@@ -1996,6 +2041,7 @@ class SparkContext(config: SparkConf) extends Logging {
 
     /**
       * Gets the locality information associated with the partition in a particular rdd
+      * 返回一个特定的RDD中的分区的位置信息
       *
       * @param rdd       of interest
       * @param partition to be looked up for locality
@@ -2007,6 +2053,7 @@ class SparkContext(config: SparkConf) extends Logging {
 
     /**
       * Register an RDD to be persisted in memory and/or disk storage
+      * 持久化
       */
     private[spark] def persistRDD(rdd: RDD[_]): Unit = {
         persistentRdds(rdd.id) = rdd
@@ -2014,6 +2061,7 @@ class SparkContext(config: SparkConf) extends Logging {
 
     /**
       * Unpersist an RDD from memory and/or disk storage
+      * 释放缓存
       */
     private[spark] def unpersistRDD(rddId: Int, blocking: Boolean): Unit = {
         env.blockManager.master.removeRdd(rddId, blocking)
@@ -2023,8 +2071,10 @@ class SparkContext(config: SparkConf) extends Logging {
 
     /**
       * Adds a JAR dependency for all tasks to be executed on this `SparkContext` in the future.
+      * 以全局的方式添加jar包的依赖
       *
       * If a jar is added during execution, it will not be available until the next TaskSet starts.
+      * 添加后在应用执行时会一直存在
       *
       * @param path can be either a local file, a file in HDFS (or other Hadoop-supported filesystems),
       *             an HTTP, HTTPS or FTP URI, or local:/path for a file on every worker node.
@@ -2124,6 +2174,7 @@ class SparkContext(config: SparkConf) extends Logging {
 
     /**
       * Returns a list of jar files that are added to resources.
+      * 查询已添加的jar文件
       */
     def listJars(): Seq[String] = addedJars.keySet.toSeq
 
@@ -2131,6 +2182,7 @@ class SparkContext(config: SparkConf) extends Logging {
       * When stopping SparkContext inside Spark components, it's easy to cause dead-lock since Spark
       * may wait for some internal threads to finish. It's better to use this method to stop
       * SparkContext instead.
+      * spark context在spark组件内停止的时候，很容易导致死锁，最好使用这个方法来避免
       */
     private[spark] def stopInNewThread(): Unit = {
         new Thread("stop-spark-context") {
@@ -2157,6 +2209,7 @@ class SparkContext(config: SparkConf) extends Logging {
         }
         // Use the stopping variable to ensure no contention for the stop scenario.
         // Still track the stopped variable for use elsewhere in the code.
+        // automic变量的stopped变量确保不会产生停止操作的争夺
         if (!stopped.compareAndSet(false, true)) {
             logInfo("SparkContext already stopped.")
             return
@@ -2250,6 +2303,7 @@ class SparkContext(config: SparkConf) extends Logging {
       * Get Spark's home location from either a value set through the constructor,
       * or the spark.home Java property, or the SPARK_HOME environment variable
       * (in that order of preference). If neither of these is set, return None.
+      * 获取spark_home
       */
     private[spark] def getSparkHome(): Option[String] = {
         conf.getOption("spark.home").orElse(Option(System.getenv("SPARK_HOME")))
@@ -2296,6 +2350,7 @@ class SparkContext(config: SparkConf) extends Logging {
     /**
       * Run a function on a given set of partitions in an RDD and pass the results to the given
       * handler function. This is the main entry point for all actions in Spark.
+      * 为参数1执行参数2的方法，回调给的参数
       *
       * @param rdd           target RDD to run tasks on
       * @param func          a function to run on each partition of the RDD
@@ -2325,6 +2380,7 @@ class SparkContext(config: SparkConf) extends Logging {
     /**
       * Run a function on a given set of partitions in an RDD and return the results as an array.
       * The function that is run against each partition additionally takes `TaskContext` argument.
+      * 执行方法，返回的是数组
       *
       * @param rdd        target RDD to run tasks on
       * @param func       a function to run on each partition of the RDD
@@ -2418,6 +2474,7 @@ class SparkContext(config: SparkConf) extends Logging {
     /**
       * :: DeveloperApi ::
       * Run a job that can return approximate results.
+      * 执行job 返回近似的结果
       *
       * @param rdd       target RDD to run tasks on
       * @param func      a function to run on each partition of the RDD
@@ -2446,7 +2503,7 @@ class SparkContext(config: SparkConf) extends Logging {
 
     /**
       * Submit a job for execution and return a FutureJob holding the result.
-      *
+      * 提交job返回一个线程结果
       * @param rdd              target RDD to run tasks on
       * @param processPartition a function to run on each partition of the RDD
       * @param partitions       set of partitions to run on; some jobs may not want to compute on all
@@ -2476,6 +2533,7 @@ class SparkContext(config: SparkConf) extends Logging {
     /**
       * Submit a map stage for execution. This is currently an internal API only, but might be
       * promoted to DeveloperApi in the future.
+      * 提交一个执行的map stage，这个后期可能会对外提供
       */
     private[spark] def submitMapStage[K, V, C](dependency: ShuffleDependency[K, V, C])
     : SimpleFutureAction[MapOutputStatistics] = {
@@ -2495,6 +2553,7 @@ class SparkContext(config: SparkConf) extends Logging {
     /**
       * Cancel active jobs for the specified group. See `org.apache.spark.SparkContext.setJobGroup`
       * for more information.
+      * 通过上边方法设置的group id 取消一组job
       */
     def cancelJobGroup(groupId: String): Unit = {
         assertNotStopped()
@@ -2502,6 +2561,7 @@ class SparkContext(config: SparkConf) extends Logging {
     }
 
     /** Cancel all jobs that have been scheduled or are running.  */
+    // 取消所有的job
     def cancelAllJobs(): Unit = {
         assertNotStopped()
         dagScheduler.cancelAllJobs()
@@ -2509,7 +2569,7 @@ class SparkContext(config: SparkConf) extends Logging {
 
     /**
       * Cancel a given job if it's scheduled or running.
-      *
+      * 取消一个已被调度或者正在执行的job
       * @param jobId  the job ID to cancel
       * @param reason optional reason for cancellation
       * @note Throws `InterruptedException` if the cancel message cannot be sent
@@ -2530,6 +2590,7 @@ class SparkContext(config: SparkConf) extends Logging {
 
     /**
       * Cancel a given stage and all jobs associated with it.
+      * 厉害了，取消一个stage
       *
       * @param stageId the stage ID to cancel
       * @param reason  reason for cancellation
