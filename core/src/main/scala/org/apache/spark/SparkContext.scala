@@ -2613,6 +2613,7 @@ class SparkContext(config: SparkConf) extends Logging {
     /**
       * Kill and reschedule the given task attempt. Task ids can be obtained from the Spark UI
       * or through SparkListener.onTaskStart.
+      * 杀死或者重新调度给定的task, task id 可以从spark UI 或者从...中获取
       *
       * @param taskId          the task ID to kill. This id uniquely identifies the task attempt.
       * @param interruptThread whether to interrupt the thread running the task.
@@ -2629,6 +2630,7 @@ class SparkContext(config: SparkConf) extends Logging {
 
     /**
       * Clean a closure to make it ready to be serialized and sent to tasks
+      * 清除一个闭包用于序列化并向task发送？
       * (removes unreferenced variables in $outer's, updates REPL variables)
       * If <tt>checkSerializable</tt> is set, <tt>clean</tt> will also proactively
       * check to see if <tt>f</tt> is serializable and throw a <tt>SparkException</tt>
@@ -2647,6 +2649,7 @@ class SparkContext(config: SparkConf) extends Logging {
 
     /**
       * Set the directory under which RDDs are going to be checkpointed.
+      * 设置rdd checkpoint的目录
       *
       * @param directory path to the directory where checkpoint files will be stored
       *                  (must be HDFS path if running in cluster)
@@ -2657,6 +2660,8 @@ class SparkContext(config: SparkConf) extends Logging {
         // Otherwise, the driver may attempt to reconstruct the checkpointed RDD from
         // its own local file system, which is incorrect because the checkpoint files
         // are actually on the executor machines.
+        // 执行过程中只会打印警告信息
+        // 非执行过程中会去executor所在的文件系统中创建目录
         if (!isLocal && Utils.nonLocalPaths(directory).isEmpty) {
             logWarning("Spark is not running in local mode, therefore the checkpoint directory " +
                     s"must not be on the local filesystem. Directory '$directory' " +
@@ -2674,6 +2679,7 @@ class SparkContext(config: SparkConf) extends Logging {
     def getCheckpointDir: Option[String] = checkpointDir
 
     /** Default level of parallelism to use when not given by user (e.g. parallelize and makeRDD). */
+    // 获取默认的并行度
     def defaultParallelism: Int = {
         assertNotStopped()
         taskScheduler.defaultParallelism
@@ -2682,6 +2688,7 @@ class SparkContext(config: SparkConf) extends Logging {
     /**
       * Default min number of partitions for Hadoop RDDs when not given by user
       * Notice that we use math.min so the "defaultMinPartitions" cannot be higher than 2.
+      * 获取默认的分区数，需要注意的是使用了min方法，所以不会大于2
       * The reasons for this are discussed in https://github.com/mesos/spark/pull/718
       */
     def defaultMinPartitions: Int = math.min(defaultParallelism, 2)
@@ -2699,6 +2706,7 @@ class SparkContext(config: SparkConf) extends Logging {
       * Registers listeners specified in spark.extraListeners, then starts the listener bus.
       * This should be called after all internal listeners have been registered with the listener bus
       * (e.g. after the web UI and event logging listeners have been registered).
+      * 所有的监听程序都在监听总线注册了之后，才会去spark.extraListeners中获取额外的监听并注册
       */
     private def setupAndStartListenerBus(): Unit = {
         try {
@@ -2723,6 +2731,7 @@ class SparkContext(config: SparkConf) extends Logging {
     }
 
     /** Post the application start event */
+    // 发送应用启动事件
     private def postApplicationStart(): Unit = {
         // Note: this code assumes that the task scheduler has been initialized and has contacted
         // the cluster manager to get an application ID (in case the cluster manager provides one).
@@ -2733,11 +2742,13 @@ class SparkContext(config: SparkConf) extends Logging {
     }
 
     /** Post the application end event */
+    // 发送应用结束事件
     private def postApplicationEnd(): Unit = {
         listenerBus.post(SparkListenerApplicationEnd(System.currentTimeMillis))
     }
 
     /** Post the environment update event once the task scheduler is ready */
+    // 确保task scheduler准备好之后发送环境更新事件
     private def postEnvironmentUpdate(): Unit = {
         if (taskScheduler != null) {
             val schedulingMode = getSchedulingMode.toString
@@ -2752,12 +2763,14 @@ class SparkContext(config: SparkConf) extends Logging {
     }
 
     /** Reports heartbeat metrics for the driver. */
+    // 报告心跳信息给driver
     private def reportHeartBeat(executorMetricsSource: Option[ExecutorMetricsSource]): Unit = {
         val currentMetrics = ExecutorMetrics.getCurrentMetrics(env.memoryManager)
         executorMetricsSource.foreach(_.updateMetricsSnapshot(currentMetrics))
 
         val driverUpdates = new HashMap[(Int, Int), ExecutorMetrics]
         // In the driver, we do not track per-stage metrics, so use a dummy stage for the key
+        // 在driver中不记录每一个stage的度量，所以造个假的stage糊弄key
         driverUpdates.put(EventLoggingListener.DRIVER_STAGE_KEY, new ExecutorMetrics(currentMetrics))
         val accumUpdates = new Array[(Long, Int, Int, Seq[AccumulableInfo])](0)
         listenerBus.post(SparkListenerExecutorMetricsUpdate("driver", accumUpdates,
@@ -2767,12 +2780,14 @@ class SparkContext(config: SparkConf) extends Logging {
     // In order to prevent multiple SparkContexts from being active at the same time, mark this
     // context as having finished construction.
     // NOTE: this must be placed at the end of the SparkContext constructor.
+    // 避免重复构造，所以这个必须放在构造方法的最后边
     SparkContext.setActiveContext(this)
 }
 
 /**
   * The SparkContext object contains a number of implicit conversions and parameters for use with
   * various Spark features.
+  * spark context包含了一些隐式转换和各种各样的特性
   */
 object SparkContext extends Logging {
     private val VALID_LOG_LEVELS =
@@ -3189,9 +3204,12 @@ private object SparkMasterRegex {
   * A class encapsulating how to convert some type `T` from `Writable`. It stores both the `Writable`
   * class corresponding to `T` (e.g. `IntWritable` for `Int`) and a function for doing the
   * conversion.
+  * 封装了一些把Writable转换为其他类型的方法
   * The getter for the writable class takes a `ClassTag[T]` in case this is a generic object
   * that doesn't know the type of `T` when it is created. This sounds strange but is necessary to
   * support converting subclasses of `Writable` to themselves (`writableWritableConverter()`).
+  * 提供一个类标签防止新创造的类不知道自己姓什么，
+  * 这听起来很奇怪但是这是支持转换所必须的
   */
 private[spark] class WritableConverter[T](
                                                  val writableClass: ClassTag[T] => Class[_ <: Writable],
