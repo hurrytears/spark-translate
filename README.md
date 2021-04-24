@@ -1,11 +1,8 @@
 # Apache Spark
 
-Spark is a unified analytics engine for large-scale data processing. It provides
-high-level APIs in Scala, Java, Python, and R, and an optimized engine that
-supports general computation graphs for data analysis. It also supports a
-rich set of higher-level tools including Spark SQL for SQL and DataFrames,
-MLlib for machine learning, GraphX for graph processing,
-and Structured Streaming for stream processing.
+Spark是一个统一的大数据处理引擎，它提供了多种语言的高级API，以及一个支持大部分
+图计算的优化引擎。它同样支持丰富的高级工具，如用于结构化数据的spark SQL、
+用于机器学习的MLlib、和流处理的Structured Streaming。
 
 <https://spark.apache.org/>
 
@@ -14,95 +11,77 @@ and Structured Streaming for stream processing.
 [![PySpark Coverage](https://img.shields.io/badge/dynamic/xml.svg?label=pyspark%20coverage&url=https%3A%2F%2Fspark-test.github.io%2Fpyspark-coverage-site&query=%2Fhtml%2Fbody%2Fdiv%5B1%5D%2Fdiv%2Fh1%2Fspan&colorB=brightgreen&style=plastic)](https://spark-test.github.io/pyspark-coverage-site)
 
 
-## Online Documentation
+## 在线文档
 
-You can find the latest Spark documentation, including a programming
-guide, on the [project web page](https://spark.apache.org/documentation.html).
-This README file only contains basic setup instructions.
+你能找到最新的spark 文档，包括[编程指导](https://spark.apache.org/documentation.html)，
+这个READ文件只包含基本的安装说明。
 
 ## Building Spark
 
-Spark is built using [Apache Maven](https://maven.apache.org/).
-To build Spark and its example programs, run:
+spark基于 [Apache Maven](https://maven.apache.org/)构建，
+要编译或者执行example,命令如下：
 
     ./build/mvn -DskipTests clean package
 
-(You do not need to do this if you downloaded a pre-built package.)
+(如果下载的是编译完成的，就不需要执行了.)
 
-More detailed documentation is available from the project site, at
+更多细节请点击
 ["Building Spark"](https://spark.apache.org/docs/latest/building-spark.html).
 
-For general development tips, including info on developing Spark using an IDE, see ["Useful Developer Tools"](https://spark.apache.org/developer-tools.html).
+开发小建议, 如使用 IDE, 点击 ["Useful Developer Tools"](https://spark.apache.org/developer-tools.html).
 
-## Interactive Scala Shell
+## Scala Shell 交互
 
-The easiest way to start using Spark is through the Scala shell:
+最简单的使用方法是使用 Scala shell:
 
     ./bin/spark-shell
 
-Try the following command, which should return 1,000,000,000:
+尝试下面的命令，正确的返回结果是 1,000,000,000:
 
     scala> spark.range(1000 * 1000 * 1000).count()
 
-## Interactive Python Shell
+## Python Shell 交互
 
-Alternatively, if you prefer Python, you can use the Python shell:
+或者你喜欢python:
 
     ./bin/pyspark
 
-And run the following command, which should also return 1,000,000,000:
+执行下边的命令返回 1,000,000,000:
 
     >>> spark.range(1000 * 1000 * 1000).count()
 
-## Example Programs
+## 示例程序
 
-Spark also comes with several sample programs in the `examples` directory.
-To run one of them, use `./bin/run-example <class> [params]`. For example:
+spark 同样提供了几个样例程序在根目录的example中，执行下边类似的命令就能跑：
 
     ./bin/run-example SparkPi
 
-will run the Pi example locally.
+将会以本地模式跑Pi 3.141595653
 
-You can set the MASTER environment variable when running examples to submit
-examples to a cluster. This can be a mesos:// or spark:// URL,
-"yarn" to run on YARN, and "local" to run
-locally with one thread, or "local[N]" to run locally with N threads. You
-can also use an abbreviated class name if the class is in the `examples`
-package. For instance:
+你能自己设置master变量来决定你的程序在什么环境里执行。spark:// URL 提交到spark集群，
+mesos:// 提交到mesos集群看，local就是本地跑，local[N]就是本地拿N个线程跑，
+也能使用一个缩写的类名，如果这个类在example包下边的话。如下：
 
     MASTER=spark://host:7077 ./bin/run-example SparkPi
 
-Many of the example programs print usage help if no params are given.
+许多样例程序如果没给参数，会打印使用帮助。
 
-## Running Tests
+## 运行测试
 
-Testing first requires [building Spark](#building-spark). Once Spark is built, tests
-can be run using:
+测试前要先编译，编译方法请点击 [building Spark](#building-spark). 测试命令如下：
 
     ./dev/run-tests
 
-Please see the guidance on how to
-[run tests for a module, or individual tests](https://spark.apache.org/developer-tools.html#individual-tests).
+请看详细的命令
+[模块测试，单独测试](https://spark.apache.org/developer-tools.html#individual-tests).
 
-There is also a Kubernetes integration test, see resource-managers/kubernetes/integration-tests/README.md
+也有K8S的集成测试，查看resource-managers/kubernetes/integration-tests/README.md
 
-## A Note About Hadoop Versions
+## hadoop版本建议
 
-Spark uses the Hadoop core library to talk to HDFS and other Hadoop-supported
-storage systems. Because the protocols have changed in different versions of
-Hadoop, you must build Spark against the same version that your cluster runs.
+编译的时候版本弄成匹配的，不然可能会有问题
+请戳[如何在编译的时候指定hadoop版本并能yarn模式启动](https://spark.apache.org/docs/latest/building-spark.html#specifying-the-hadoop-version-and-enabling-yarn)
 
-Please refer to the build documentation at
-["Specifying the Hadoop Version and Enabling YARN"](https://spark.apache.org/docs/latest/building-spark.html#specifying-the-hadoop-version-and-enabling-yarn)
-for detailed guidance on building for a particular distribution of Hadoop, including
-building for particular Hive and Hive Thriftserver distributions.
+## 配置
 
-## Configuration
-
-Please refer to the [Configuration Guide](https://spark.apache.org/docs/latest/configuration.html)
-in the online documentation for an overview on how to configure Spark.
-
-## Contributing
-
-Please review the [Contribution to Spark guide](https://spark.apache.org/contributing.html)
-for information on how to get started contributing to the project.
+戳 [配置指导](https://spark.apache.org/docs/latest/configuration.html)
