@@ -983,6 +983,7 @@ private[deploy] class Master(
             return
         }
         // Drivers take strict precedence over executors
+        // drivers 获取详细的优先级
         val shuffledAliveWorkers = Random.shuffle(workers.toSeq.filter(_.state == WorkerState.ALIVE))
         val numWorkersAlive = shuffledAliveWorkers.size
         var curPos = 0
@@ -990,11 +991,14 @@ private[deploy] class Master(
             // We assign workers to each waiting driver in a round-robin fashion. For each driver, we
             // start from the last worker that was assigned a driver, and continue onwards until we have
             // explored all alive workers.
+            // 每个driver都尽量分配到不同的worker上启动
             var launched = false
             var isClusterIdle = true
+            // 上一个访问或的worker的位置
             var numWorkersVisited = 0
             while (numWorkersVisited < numWorkersAlive && !launched) {
                 val worker = shuffledAliveWorkers(curPos)
+                // worker上没driver并且没executor就是闲置
                 isClusterIdle = worker.drivers.isEmpty && worker.executors.isEmpty
                 numWorkersVisited += 1
                 if (canLaunchDriver(worker, driver.desc)) {
@@ -1013,6 +1017,7 @@ private[deploy] class Master(
         startExecutorsOnWorkers()
     }
 
+    // 启动executor
     private def launchExecutor(worker: WorkerInfo, exec: ExecutorDesc): Unit = {
         logInfo("Launching executor " + exec.fullId + " on worker " + worker.id)
         worker.addExecutor(exec)
@@ -1022,6 +1027,7 @@ private[deploy] class Master(
             ExecutorAdded(exec.id, worker.id, worker.hostPort, exec.cores, exec.memory))
     }
 
+    // 注册单个worker
     private def registerWorker(worker: WorkerInfo): Boolean = {
         // There may be one or more refs to dead workers on this same node (w/ different ID's),
         // remove them.
@@ -1054,9 +1060,10 @@ private[deploy] class Master(
       * Decommission all workers that are active on any of the given hostnames. The decommissioning is
       * asynchronously done by enqueueing WorkerDecommission messages to self. No checks are done about
       * the prior state of the worker. So an already decommissioned worker will match as well.
+      * 下线指定的主机上的所有的运行的worker,下线操作是异步的，不会检查worker之前的状态，所以之前已经
+      * 下线的，也会同样被匹配到，也会再下线一次
       *
       * @param hostnames : A list of hostnames without the ports. Like "localhost", "foo.bar.com" etc
-      *
       *                  Returns the number of workers that matched the hostnames.
       */
     private def decommissionWorkersOnHosts(hostnames: Seq[String]): Integer = {
@@ -1069,12 +1076,15 @@ private[deploy] class Master(
         logInfo(s"Decommissioning the workers with host:ports ${workersToRemoveHostPorts}")
 
         // The workers are removed async to avoid blocking the receive loop for the entire batch
+        // 使用同步的方式移除worker来避免阻塞接收循环影响整个批处理
         self.send(DecommissionWorkers(workersToRemove.map(_.id).toSeq))
 
         // Return the count of workers actually removed
+        // 返回实际溢出的worker的数量
         workersToRemove.size
     }
 
+    // 下线worker
     private def decommissionWorker(worker: WorkerInfo): Unit = {
         if (worker.state != WorkerState.DECOMMISSIONED) {
             logInfo("Decommissioning worker %s on %s:%d".format(worker.id, worker.host, worker.port))
