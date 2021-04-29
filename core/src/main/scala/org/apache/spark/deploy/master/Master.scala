@@ -1080,7 +1080,7 @@ private[deploy] class Master(
         self.send(DecommissionWorkers(workersToRemove.map(_.id).toSeq))
 
         // Return the count of workers actually removed
-        // 返回实际溢出的worker的数量
+        // 返回实际移除的worker的数量
         workersToRemove.size
     }
 
@@ -1089,6 +1089,7 @@ private[deploy] class Master(
         if (worker.state != WorkerState.DECOMMISSIONED) {
             logInfo("Decommissioning worker %s on %s:%d".format(worker.id, worker.host, worker.port))
             worker.setState(WorkerState.DECOMMISSIONED)
+            // 先下线worker上的executor
             for (exec <- worker.executors.values) {
                 logInfo("Telling app of decommission executors")
                 exec.application.driver.send(ExecutorUpdated(
@@ -1097,11 +1098,14 @@ private[deploy] class Master(
                     // worker host is being set here to let the driver know that the host (aka. worker)
                     // is also being decommissioned. So the driver can unregister all the shuffle map
                     // statues located at this host when it receives the executor lost event.
+                    // worker主机信息放在这里是为了让driver知道哪些主机已经下线了。这样一来，driver能在
+                    // 接收到executor丢失事件的时候注销所有该主机上的shuffl map 计算
                     Some(worker.host)))
                 exec.state = ExecutorState.DECOMMISSIONED
                 exec.application.removeExecutor(exec)
             }
             // On recovery do not add a decommissioned executor
+            // 持久化中移除
             persistenceEngine.removeWorker(worker)
         } else {
             logWarning("Skipping decommissioning worker %s on %s:%d as worker is already decommissioned".
@@ -1138,6 +1142,7 @@ private[deploy] class Master(
         persistenceEngine.removeWorker(worker)
     }
 
+    // 重启driver
     private def relaunchDriver(driver: DriverInfo): Unit = {
         // We must setup a new driver with a new driver id here, because the original driver may
         // be still running. Consider this scenario: a worker is network partitioned with master,
