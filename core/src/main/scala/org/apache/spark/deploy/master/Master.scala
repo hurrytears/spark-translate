@@ -926,7 +926,7 @@ private[deploy] class Master(
         // If the number of cores per executor is specified, we divide the cores assigned
         // to this worker evenly among the executors with no remainder.
         // Otherwise, we launch a single executor that grabs all the assignedCores on this worker.
-        // 如果每个executor的核数制定了，我们划分worker的cores知道executor全部分配完成
+        // 如果每个executor的核数制定了，我们划分worker的cores直到executor全部分配完成
         // 或者，我们启动一个executor，一次性占用所有的分配的核数
         val numExecutors = coresPerExecutor.map {
             assignedCores / _
@@ -955,7 +955,7 @@ private[deploy] class Master(
 
     /**
       * @return whether the worker could launch the driver represented by DriverDescription
-      * 判断worker能否启动描述的driver
+      * 判断worker能否启动driverdescription描述的driver
       */
     private def canLaunchDriver(worker: WorkerInfo, desc: DriverDescription): Boolean = {
         canLaunch(worker, desc.mem, desc.cores, desc.resourceReqs)
@@ -1113,12 +1113,16 @@ private[deploy] class Master(
         }
     }
 
+    // 移除worker
     private def removeWorker(worker: WorkerInfo, msg: String): Unit = {
         logInfo("Removing worker " + worker.id + " on " + worker.host + ":" + worker.port)
+        // 状态置为DEAD
         worker.setState(WorkerState.DEAD)
+        // 队列中删除worker信息
         idToWorker -= worker.id
         addressToWorker -= worker.endpoint.address
 
+        // worker上的每个executor状态设为LOST,然后从application中移除executor
         for (exec <- worker.executors.values) {
             logInfo("Telling app of lost executor: " + exec.id)
             exec.application.driver.send(ExecutorUpdated(
@@ -1126,7 +1130,9 @@ private[deploy] class Master(
             exec.state = ExecutorState.LOST
             exec.application.removeExecutor(exec)
         }
+        // 移除worker上的driver
         for (driver <- worker.drivers.values) {
+            // 如果driver设置了supervise属性，则会在别的worker上重启
             if (driver.desc.supervise) {
                 logInfo(s"Re-launching ${driver.id}")
                 relaunchDriver(driver)
@@ -1136,6 +1142,7 @@ private[deploy] class Master(
             }
         }
         logInfo(s"Telling app of lost worker: " + worker.id)
+        // 向每一个未完成的app发送worker下线的信息
         apps.filterNot(completedApps.contains(_)).foreach { app =>
             app.driver.send(WorkerRemoved(worker.id, worker.host, msg))
         }
@@ -1151,6 +1158,8 @@ private[deploy] class Master(
         // can not distinguish the statusUpdate of the original driver and the newly relaunched one,
         // for example, when DriverStateChanged(driverID1, KILLED) arrives at master, master will
         // remove driverID1, so the newly relaunched driver disappears too. See SPARK-19900 for details.
+        // 必须使用新的driver id来启动一个driver,因为原始的driver可能还在运行，如果原始的driver
+        // 的状态改变了，master会让新旧两个driver的状态同时改变
         removeDriver(driver.id, DriverState.RELAUNCHING, None)
         val newDriver = createDriver(driver.desc)
         persistenceEngine.addDriver(newDriver)
@@ -1160,14 +1169,17 @@ private[deploy] class Master(
         schedule()
     }
 
+    // 创建application
     private def createApplication(desc: ApplicationDescription, driver: RpcEndpointRef):
     ApplicationInfo = {
         val now = System.currentTimeMillis()
         val date = new Date(now)
+        // 根据日期创建app id
         val appId = newApplicationId(date)
         new ApplicationInfo(now, appId, desc, date, driver, defaultCores)
     }
 
+    // 注册application
     private def registerApplication(app: ApplicationInfo): Unit = {
         val appAddress = app.driver.address
         if (addressToApp.contains(appAddress)) {
@@ -1183,10 +1195,11 @@ private[deploy] class Master(
         waitingApps += app
     }
 
+    // 结束application
     private def finishApplication(app: ApplicationInfo): Unit = {
         removeApplication(app, ApplicationState.FINISHED)
     }
-
+    // 移除application
     def removeApplication(app: ApplicationInfo, state: ApplicationState.Value): Unit = {
         if (apps.contains(app)) {
             logInfo("Removing app " + app.id)
@@ -1224,12 +1237,13 @@ private[deploy] class Master(
 
     /**
       * Handle a request to set the target number of executors for this application.
-      *
+      * 控制application的executor的数量
       * If the executor limit is adjusted upwards, new executors will be launched provided
       * that there are workers with sufficient resources. If it is adjusted downwards, however,
       * we do not kill existing executors until we explicitly receive a kill request.
-      *
+      * 多退少补
       * @return whether the application has previously registered with this Master.
+      * 返回application是否在当前master上提前注册
       */
     private def handleRequestExecutors(appId: String, requestedTotal: Int): Boolean = {
         idToApp.get(appId) match {
@@ -1246,11 +1260,11 @@ private[deploy] class Master(
 
     /**
       * Handle a kill request from the given application.
-      *
+      * 处理指定app 上的杀进程请求
       * This method assumes the executor limit has already been adjusted downwards through
       * a separate [[RequestExecutors]] message, such that we do not launch new executors
       * immediately after the old ones are removed.
-      *
+      * 这个方法指定了executor限制已经向下调整后，不会在旧的移除前启动新的
       * @return whether the application has previously registered with this Master.
       */
     private def handleKillExecutors(appId: String, executorIds: Seq[Int]): Boolean = {
@@ -1277,10 +1291,12 @@ private[deploy] class Master(
 
     /**
       * Cast the given executor IDs to integers and filter out the ones that fail.
-      *
+      * 把所有的executor id 转成整数并且过滤出失败的
       * All executors IDs should be integers since we launched these executors. However,
       * the kill interface on the driver side accepts arbitrary strings, so we need to
       * handle non-integer executor IDs just to be safe.
+      * 所有的executor id都应该在executor启动后转成int型，然而driver端的接口要求是string，
+      * 所以要转换以确保安全
       */
     private def formatExecutorIds(executorIds: Seq[String]): Seq[Int] = {
         executorIds.flatMap { executorId =>
@@ -1296,6 +1312,7 @@ private[deploy] class Master(
 
     /**
       * Ask the worker on which the specified executor is launched to kill the executor.
+      * 让启动了该executor的worker杀掉这个executor
       */
     private def killExecutor(exec: ExecutorDesc): Unit = {
         exec.worker.removeExecutor(exec)
@@ -1311,9 +1328,11 @@ private[deploy] class Master(
     }
 
     /** Check for, and remove, any timed-out workers */
+    // 检查并移除超时的worker
     private def timeOutDeadWorkers(): Unit = {
         // Copy the workers into an array so we don't modify the hashset while iterating through it
         val currentTime = System.currentTimeMillis()
+        // 根据心跳信息来过滤出超时的worker
         val toRemove = workers.filter(_.lastHeartbeat < currentTime - workerTimeoutMs).toArray
         for (worker <- toRemove) {
             if (worker.state != WorkerState.DEAD) {
