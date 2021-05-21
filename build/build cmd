@@ -1,0 +1,4 @@
+./build/mvn clean package -DskipTests=true
+./dev/make-distribution.sh --name custom-spark --pip --r --tgz -Psparkr -Phive -Phive-thriftserver -Pmesos -Pyarn -Pkubernetes
+
+

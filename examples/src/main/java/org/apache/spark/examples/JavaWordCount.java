@@ -17,6 +17,7 @@
 
 package org.apache.spark.examples;
 
+import org.apache.spark.SparkContext;
 import scala.Tuple2;
 
 import org.apache.spark.api.java.JavaPairRDD;
