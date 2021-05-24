@@ -30,6 +30,7 @@ public final class JavaWordCount {
     private static final Pattern SPACE = Pattern.compile(" ");
 
     public static void main(String[] args) throws Exception {
+        // github
         args = new String[]{"mytest/words"};
 
         if (args.length < 1) {
