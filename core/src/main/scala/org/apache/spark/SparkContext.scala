@@ -2374,7 +2374,9 @@ class SparkContext(config: SparkConf) extends Logging {
         }
         // 这里开始dagScheduler
         dagScheduler.runJob(rdd, cleanedFunc, partitions, callSite, resultHandler, localProperties.get)
+        // 进度条
         progressBar.foreach(_.finishAll())
+        // 这里为啥做这个操作
         rdd.doCheckpoint()
     }
 
