@@ -104,6 +104,7 @@ class HadoopRDD[K, V](
     extends RDD[(K, V)](sc, Nil) with Logging {
 
     if (initLocalJobConfFuncOpt.isDefined) {
+        // 暂停一下，看下clean是干啥的
         sparkContext.clean(initLocalJobConfFuncOpt.get)
     }
 
