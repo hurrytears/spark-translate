@@ -203,7 +203,7 @@ class HadoopRDD[K, V](
         // add the credentials here as this can be called before SparkContext initialized
         SparkHadoopUtil.get.addCredentials(jobConf)
         try {
-            // 这里读取hadoop文件
+            // 这里读取hadoop文件, 调用InputFormat的getSplits()方法
             val allInputSplits = getInputFormat(jobConf).getSplits(jobConf, minPartitions)
             val inputSplits = if (ignoreEmptySplits) {
                 allInputSplits.filter(_.getLength > 0)
@@ -213,6 +213,7 @@ class HadoopRDD[K, V](
             if (inputSplits.length == 1 && inputSplits(0).isInstanceOf[FileSplit]) {
                 val fileSplit = inputSplits(0).asInstanceOf[FileSplit]
                 val path = fileSplit.getPath
+                // 如果只有一个块，并且块大小超过IO警告的阈值，启动压缩
                 if (fileSplit.getLength > conf.get(IO_WARNING_LARGEFILETHRESHOLD)) {
                     val codecFactory = new CompressionCodecFactory(jobConf)
                     if (Utils.isFileSplittable(path, codecFactory)) {

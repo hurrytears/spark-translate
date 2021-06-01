@@ -3087,6 +3087,7 @@ object SparkContext extends Logging {
                 checkResourcesPerTask(1)
                 val scheduler = new TaskSchedulerImpl(sc, MAX_LOCAL_TASK_FAILURES, isLocal = true)
                 val backend = new LocalSchedulerBackend(sc.getConf, scheduler, 1)
+                // 渣渣代码
                 scheduler.initialize(backend)
                 (backend, scheduler)
 

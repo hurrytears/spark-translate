@@ -83,7 +83,8 @@ import org.apache.spark.util.random.{
   * <a href="http://people.csail.mit.edu/matei/papers/2012/nsdi_spark.pdf">Spark paper</a>
   * for more details on RDD internals.
   */
-// 这里的deps参数是怎么初始化的
+// 这里的deps参数是怎么初始化的?
+// HadoopRDD 的deps是Nil
 abstract class RDD[T: ClassTag](
                                        @transient private var _sc: SparkContext,
                                        @transient private var deps: Seq[Dependency[_]]
@@ -123,6 +124,7 @@ abstract class RDD[T: ClassTag](
     /**
       * :: DeveloperApi ::
       * Implemented by subclasses to compute a given partition.
+      * 这咋又回去了，这不是死循环了吗
       */
     @DeveloperApi
     def compute(split: Partition, context: TaskContext): Iterator[T]

@@ -37,6 +37,7 @@ import org.apache.spark.util.random.SamplingUtils
  * Note that, partitioner must be deterministic, i.e. it must return the same partition id given
  * the same partition key.
  */
+// 垃圾代码
 abstract class Partitioner extends Serializable {
   def numPartitions: Int
   def getPartition(key: Any): Int

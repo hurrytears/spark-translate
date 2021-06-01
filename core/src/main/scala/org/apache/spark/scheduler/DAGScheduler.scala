@@ -1473,7 +1473,8 @@ private[spark] class DAGScheduler(
         if (tasks.nonEmpty) {
             logInfo(s"Submitting ${tasks.size} missing tasks from $stage (${stage.rdd}) (first 15 " +
                     s"tasks are for partitions ${tasks.take(15).map(_.partitionId)})")
-            // 这里交给taskScheduler
+            // 这里交给taskScheduler、、
+            // 默认情况下，standlone模式使用的是一个TaskSchedulerImpl
             taskScheduler.submitTasks(new TaskSet(
                 tasks.toArray, stage.id, stage.latestInfo.attemptNumber, jobId, properties,
                 stage.resourceProfileId))
