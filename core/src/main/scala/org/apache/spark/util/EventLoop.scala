@@ -25,118 +25,119 @@ import scala.util.control.NonFatal
 import org.apache.spark.internal.Logging
 
 /**
- * An event loop to receive events from the caller and process all events in the event thread. It
- * will start an exclusive event thread to process all events.
- *
- * Note: The event queue will grow indefinitely. So subclasses should make sure `onReceive` can
- * handle events in time to avoid the potential OOM.
- */
+  * An event loop to receive events from the caller and process all events in the event thread. It
+  * will start an exclusive event thread to process all events.
+  *
+  * Note: The event queue will grow indefinitely. So subclasses should make sure `onReceive` can
+  * handle events in time to avoid the potential OOM.
+  */
 private[spark] abstract class EventLoop[E](name: String) extends Logging {
 
-  private val eventQueue: BlockingQueue[E] = new LinkedBlockingDeque[E]()
+    // java 线程队列
+    private val eventQueue: BlockingQueue[E] = new LinkedBlockingDeque[E]()
 
-  private val stopped = new AtomicBoolean(false)
+    private val stopped = new AtomicBoolean(false)
 
-  // Exposed for testing.
-  private[spark] val eventThread = new Thread(name) {
-    setDaemon(true)
+    // Exposed for testing.
+    private[spark] val eventThread = new Thread(name) {
+        setDaemon(true)
 
-    override def run(): Unit = {
-      try {
-        while (!stopped.get) {
-          val event = eventQueue.take()
-          try {
-            onReceive(event)
-          } catch {
-            case NonFatal(e) =>
-              try {
-                onError(e)
-              } catch {
+        override def run(): Unit = {
+            try {
+                while (!stopped.get) {
+                    val event = eventQueue.take()
+                    try {
+                        onReceive(event)
+                    } catch {
+                        case NonFatal(e) =>
+                            try {
+                                onError(e)
+                            } catch {
+                                case NonFatal(e) => logError("Unexpected error in " + name, e)
+                            }
+                    }
+                }
+            } catch {
+                case ie: InterruptedException => // exit even if eventQueue is not empty
                 case NonFatal(e) => logError("Unexpected error in " + name, e)
-              }
-          }
+            }
         }
-      } catch {
-        case ie: InterruptedException => // exit even if eventQueue is not empty
-        case NonFatal(e) => logError("Unexpected error in " + name, e)
-      }
+
     }
 
-  }
-
-  def start(): Unit = {
-    if (stopped.get) {
-      throw new IllegalStateException(name + " has already been stopped")
+    def start(): Unit = {
+        if (stopped.get) {
+            throw new IllegalStateException(name + " has already been stopped")
+        }
+        // Call onStart before starting the event thread to make sure it happens before onReceive
+        onStart()
+        eventThread.start()
     }
-    // Call onStart before starting the event thread to make sure it happens before onReceive
-    onStart()
-    eventThread.start()
-  }
 
-  def stop(): Unit = {
-    if (stopped.compareAndSet(false, true)) {
-      eventThread.interrupt()
-      var onStopCalled = false
-      try {
-        eventThread.join()
-        // Call onStop after the event thread exits to make sure onReceive happens before onStop
-        onStopCalled = true
-        onStop()
-      } catch {
-        case ie: InterruptedException =>
-          Thread.currentThread().interrupt()
-          if (!onStopCalled) {
-            // ie is thrown from `eventThread.join()`. Otherwise, we should not call `onStop` since
-            // it's already called.
-            onStop()
-          }
-      }
-    } else {
-      // Keep quiet to allow calling `stop` multiple times.
+    def stop(): Unit = {
+        if (stopped.compareAndSet(false, true)) {
+            eventThread.interrupt()
+            var onStopCalled = false
+            try {
+                eventThread.join()
+                // Call onStop after the event thread exits to make sure onReceive happens before onStop
+                onStopCalled = true
+                onStop()
+            } catch {
+                case ie: InterruptedException =>
+                    Thread.currentThread().interrupt()
+                    if (!onStopCalled) {
+                        // ie is thrown from `eventThread.join()`. Otherwise, we should not call `onStop` since
+                        // it's already called.
+                        onStop()
+                    }
+            }
+        } else {
+            // Keep quiet to allow calling `stop` multiple times.
+        }
     }
-  }
 
-  /**
-   * Put the event into the event queue. The event thread will process it later.
-   */
-  def post(event: E): Unit = {
-    if (!stopped.get) {
-      if (eventThread.isAlive) {
-        eventQueue.put(event)
-      } else {
-        onError(new IllegalStateException(s"$name has already been stopped accidentally."))
-      }
+    /**
+      * Put the event into the event queue. The event thread will process it later.
+      */
+    def post(event: E): Unit = {
+        if (!stopped.get) {
+            if (eventThread.isAlive) {
+                eventQueue.put(event)
+            } else {
+                onError(new IllegalStateException(s"$name has already been stopped accidentally."))
+            }
+        }
     }
-  }
 
-  /**
-   * Return if the event thread has already been started but not yet stopped.
-   */
-  def isActive: Boolean = eventThread.isAlive
+    /**
+      * Return if the event thread has already been started but not yet stopped.
+      */
+    def isActive: Boolean = eventThread.isAlive
 
-  /**
-   * Invoked when `start()` is called but before the event thread starts.
-   */
-  protected def onStart(): Unit = {}
+    /**
+      * Invoked when `start()` is called but before the event thread starts.
+      */
+    protected def onStart(): Unit = {}
 
-  /**
-   * Invoked when `stop()` is called and the event thread exits.
-   */
-  protected def onStop(): Unit = {}
+    /**
+      * Invoked when `stop()` is called and the event thread exits.
+      */
+    protected def onStop(): Unit = {}
 
-  /**
-   * Invoked in the event thread when polling events from the event queue.
-   *
-   * Note: Should avoid calling blocking actions in `onReceive`, or the event thread will be blocked
-   * and cannot process events in time. If you want to call some blocking actions, run them in
-   * another thread.
-   */
-  protected def onReceive(event: E): Unit
+    /**
+      * Invoked in the event thread when polling events from the event queue.
+      *
+      * Note: Should avoid calling blocking actions in `onReceive`, or the event thread will be blocked
+      * and cannot process events in time. If you want to call some blocking actions, run them in
+      * another thread.
+      */
+    protected def onReceive(event: E): Unit
 
-  /**
-   * Invoked if `onReceive` throws any non fatal error. Any non fatal error thrown from `onError`
-   * will be ignored.
-   */
-  protected def onError(e: Throwable): Unit
+    /**
+      * Invoked if `onReceive` throws any non fatal error. Any non fatal error thrown from `onError`
+      * will be ignored.
+      */
+    protected def onError(e: Throwable): Unit
 
 }

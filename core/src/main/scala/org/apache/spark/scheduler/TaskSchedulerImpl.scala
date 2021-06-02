@@ -257,6 +257,7 @@ private[spark] class TaskSchedulerImpl(
                 ts.isZombie = true
             }
             stageTaskSets(taskSet.stageAttemptId) = manager
+            // 加入调度池
             schedulableBuilder.addTaskSetManager(manager, manager.taskSet.properties)
 
             if (!isLocal && !hasReceivedTask) {
@@ -274,6 +275,7 @@ private[spark] class TaskSchedulerImpl(
             }
             hasReceivedTask = true
         }
+        // 这里直接提交
         backend.reviveOffers()
     }
 
@@ -536,14 +538,17 @@ private[spark] class TaskSchedulerImpl(
             }
         }.getOrElse(offers)
 
+        // ??????????????????????????随机的必要性在哪里
         val shuffledOffers = shuffleOffers(filteredOffers)
         // Build a list of tasks to assign to each worker.
         // Note the size estimate here might be off with different ResourceProfiles but should be
         // close estimate
+        // 代表了每个worker能启动的task的数量
         val tasks = shuffledOffers.map(o => new ArrayBuffer[TaskDescription](o.cores / CPUS_PER_TASK))
         val availableResources = shuffledOffers.map(_.resources).toArray
         val availableCpus = shuffledOffers.map(o => o.cores).toArray
         val resourceProfileIds = shuffledOffers.map(o => o.resourceProfileId).toArray
+        // taskSet在这里了
         val sortedTaskSets = rootPool.getSortedTaskSetQueue
         for (taskSet <- sortedTaskSets) {
             logDebug("parentName: %s, name: %s, runningTasks: %s".format(
@@ -556,6 +561,7 @@ private[spark] class TaskSchedulerImpl(
         // Take each TaskSet in our scheduling order, and then offer it to each node in increasing order
         // of locality levels so that it gets a chance to launch local tasks on all of them.
         // NOTE: the preferredLocality order: PROCESS_LOCAL, NODE_LOCAL, NO_PREF, RACK_LOCAL, ANY
+        // 计算taskSet在每个节点上的优先级
         for (taskSet <- sortedTaskSets) {
             // we only need to calculate available slots if using barrier scheduling, otherwise the
             // value is -1

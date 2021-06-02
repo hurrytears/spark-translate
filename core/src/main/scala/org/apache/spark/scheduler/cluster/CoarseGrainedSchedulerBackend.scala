@@ -41,8 +41,9 @@ import org.apache.spark.scheduler.cluster.CoarseGrainedSchedulerBackend.ENDPOINT
 import org.apache.spark.util.{RpcUtils, SerializableBuffer, ThreadUtils, Utils}
 
 /**
-  * A scheduler backend that waits for coarse-grained executors to connect.
-  * This backend holds onto each executor for the duration of the Spark job rather than relinquishing
+  * A scheduler backend that waits for coarse-grained（粗粒度） executors to connect.
+  * This backend holds onto each executor for the duration of the Spark job rather than
+  * relinquishing（放弃）
   * executors whenever a task is done and asking the scheduler to launch a new executor for
   * each new task. Executors may be launched in a variety of ways, such as Mesos tasks for the
   * coarse-grained Mesos mode or standalone processes for Spark's standalone deploy mode
@@ -309,6 +310,7 @@ class CoarseGrainedSchedulerBackend(scheduler: TaskSchedulerImpl, val rpcEnv: Rp
         }
 
         // Make fake resource offers on all executors
+        // 撒子意思哦，分布式代码rpc调用是真的狗
         private def makeOffers(): Unit = {
             // Make sure no executor is killed while some task is launching on it
             val taskDescs = withLock {
