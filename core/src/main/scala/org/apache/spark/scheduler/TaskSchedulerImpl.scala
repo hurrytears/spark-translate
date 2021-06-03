@@ -383,6 +383,7 @@ private[spark] class TaskSchedulerImpl(
         var minLaunchedLocality: Option[TaskLocality] = None
         // nodes and executors that are excluded for the entire application have already been
         // filtered out by this point
+        // 遍历所有executor
         for (i <- 0 until shuffledOffers.size) {
             val execId = shuffledOffers(i).executorId
             val host = shuffledOffers(i).host
@@ -390,12 +391,15 @@ private[spark] class TaskSchedulerImpl(
             // make the resource profile id a hard requirement for now - ie only put tasksets
             // on executors where resource profile exactly matches.
             if (taskSetRpID == shuffledOffers(i).resourceProfileId) {
+                // 阿西吧
                 val taskResAssignmentsOpt = resourcesMeetTaskRequirements(taskSet, availableCpus(i),
                     availableResources(i))
                 taskResAssignmentsOpt.foreach { taskResAssignments =>
                     try {
+                        // profile
                         val prof = sc.resourceProfileManager.resourceProfileFromId(taskSetRpID)
                         val taskCpus = ResourceProfile.getTaskCpusOrDefaultForProfile(prof, conf)
+                        // 这里是根据调度时间,挖一下看看深浅
                         val (taskDescOption, didReject, index) =
                             taskSet.resourceOffer(execId, host, maxLocality, taskResAssignments)
                         noDelayScheduleRejects &= !didReject
@@ -450,6 +454,7 @@ private[spark] class TaskSchedulerImpl(
       * Returns None if the resources don't meet the task requirements, otherwise returns
       * the task resource assignments to give to the next task. Note that the assignments maybe
       * be empty if no custom resources are used.
+      * what the fuck 简直是没完没了
       */
     private def resourcesMeetTaskRequirements(
                                                      taskSet: TaskSetManager,
@@ -458,8 +463,10 @@ private[spark] class TaskSchedulerImpl(
                                              ): Option[Map[String, ResourceInformation]] = {
         val rpId = taskSet.taskSet.resourceProfileId
         val taskSetProf = sc.resourceProfileManager.resourceProfileFromId(rpId)
+        // 获取或默认
         val taskCpus = ResourceProfile.getTaskCpusOrDefaultForProfile(taskSetProf, conf)
         // check if the ResourceProfile has cpus first since that is common case
+        // 根据可用的cpu来的呀
         if (availCpus < taskCpus) return None
         // only look at the resource other then cpus
         val tsResources = ResourceProfile.getCustomTaskResources(taskSetProf)
@@ -501,7 +508,7 @@ private[spark] class TaskSchedulerImpl(
       * Called by cluster manager to offer resources on workers. We respond by asking our active task
       * sets for tasks in order of priority. We fill each node with tasks in a round-robin manner so
       * that tasks are balanced across the cluster.
-      * 轮循机制
+      * task分配算法
       */
     def resourceOffers(
                               offers: IndexedSeq[WorkerOffer],
@@ -543,7 +550,7 @@ private[spark] class TaskSchedulerImpl(
         // Build a list of tasks to assign to each worker.
         // Note the size estimate here might be off with different ResourceProfiles but should be
         // close estimate
-        // 代表了每个worker能启动的task的数量
+        // 代表了每个executor能启动的task的数量
         val tasks = shuffledOffers.map(o => new ArrayBuffer[TaskDescription](o.cores / CPUS_PER_TASK))
         val availableResources = shuffledOffers.map(_.resources).toArray
         val availableCpus = shuffledOffers.map(o => o.cores).toArray
@@ -554,6 +561,7 @@ private[spark] class TaskSchedulerImpl(
             logDebug("parentName: %s, name: %s, runningTasks: %s".format(
                 taskSet.parent.name, taskSet.name, taskSet.runningTasks))
             if (newExecAvail) {
+                // 这里会重新分配一下executor
                 taskSet.executorAdded()
             }
         }
@@ -561,7 +569,7 @@ private[spark] class TaskSchedulerImpl(
         // Take each TaskSet in our scheduling order, and then offer it to each node in increasing order
         // of locality levels so that it gets a chance to launch local tasks on all of them.
         // NOTE: the preferredLocality order: PROCESS_LOCAL, NODE_LOCAL, NO_PREF, RACK_LOCAL, ANY
-        // 计算taskSet在每个节点上的优先级
+        // 按照调度顺序把每个TaskSet扔到每个节点上，以从小到大的本地化优先级别启动所有的task
         for (taskSet <- sortedTaskSets) {
             // we only need to calculate available slots if using barrier scheduling, otherwise the
             // value is -1
@@ -586,9 +594,13 @@ private[spark] class TaskSchedulerImpl(
                         s"because the barrier taskSet requires ${taskSet.numTasks} slots, while the total " +
                         s"number of available slots is $numBarrierSlotsAvailable.")
             } else {
+                // process_local,进程本地化，rdd的partition和task，进入一个executor内，那么速度当然快
+                // node_local,no_pref 没有本地化优先，rack_local，在一个机架上
                 var launchedAnyTask = false
                 var noDelaySchedulingRejects = true
+                // 默认是None
                 var globalMinLocality: Option[TaskLocality] = None
+                // TaskSet封装成TaskScheduler的时候会把所有的level都给taskSet
                 for (currentMaxLocality <- taskSet.myLocalityLevels) {
                     var launchedTaskAtCurrentMaxLocality = false
                     do {
@@ -1185,7 +1197,7 @@ private[spark] object TaskSchedulerImpl {
       * Calculate the max available task slots given the `availableCpus` and `availableResources`
       * from a collection of ResourceProfiles. And only those ResourceProfiles who has the
       * same id with the `rpId` can be used to calculate the task slots.
-      *
+      * 这里暂时跳过
       * @param scheduler          the TaskSchedulerImpl instance
       * @param conf               SparkConf used to calculate the limiting resource and get the cpu amount per task
       * @param rpId               the target ResourceProfile id. Only those ResourceProfiles who has the same id

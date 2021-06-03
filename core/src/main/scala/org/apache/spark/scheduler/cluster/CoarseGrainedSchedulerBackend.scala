@@ -318,6 +318,7 @@ class CoarseGrainedSchedulerBackend(scheduler: TaskSchedulerImpl, val rpcEnv: Rp
                 val activeExecutors = executorDataMap.filterKeys(isExecutorActive)
                 val workOffers = activeExecutors.map {
                     case (id, executorData) =>
+                        // workerOffer 代表了每一个executor的资源
                         new WorkerOffer(id, executorData.executorHost, executorData.freeCores,
                             Some(executorData.executorAddress.hostPort),
                             executorData.resourcesInfo.map { case (rName, rInfo) =>
@@ -398,6 +399,7 @@ class CoarseGrainedSchedulerBackend(scheduler: TaskSchedulerImpl, val rpcEnv: Rp
                     logDebug(s"Launching task ${task.taskId} on executor id: ${task.executorId} hostname: " +
                             s"${executorData.executorHost}.")
 
+                    // 这里就彻底启动起来了
                     executorData.executorEndpoint.send(LaunchTask(new SerializableBuffer(serializedTask)))
                 }
             }
