@@ -29,6 +29,7 @@ import org.apache.spark.rdd.RDD
 /**
   * A ShuffleMapTask divides the elements of an RDD into multiple buckets (based on a partitioner
   * specified in the ShuffleDependency).
+  * 一个ShuffleMapTask将RDD里的元素划分进不同的buckets(根据在ShuffleDependency中的partitioner指定)
   *
   * See [[org.apache.spark.scheduler.Task]] for more information.
   *
@@ -50,20 +51,20 @@ import org.apache.spark.rdd.RDD
   *                              at the same time for a barrier stage.
   */
 private[spark] class ShuffleMapTask(
-                                       stageId: Int,
-                                       stageAttemptId: Int,
-                                       taskBinary: Broadcast[Array[Byte]],
-                                       partition: Partition,
-                                       @transient private var locs: Seq[TaskLocation],
-                                       localProperties: Properties,
-                                       serializedTaskMetrics: Array[Byte],
-                                       jobId: Option[Int] = None,
-                                       appId: Option[String] = None,
-                                       appAttemptId: Option[String] = None,
-                                       isBarrier: Boolean = false)
-    extends Task[MapStatus](stageId, stageAttemptId, partition.index, localProperties,
-        serializedTaskMetrics, jobId, appId, appAttemptId, isBarrier)
-        with Logging {
+                                           stageId: Int,
+                                           stageAttemptId: Int,
+                                           taskBinary: Broadcast[Array[Byte]],
+                                           partition: Partition,
+                                           @transient private var locs: Seq[TaskLocation],
+                                           localProperties: Properties,
+                                           serializedTaskMetrics: Array[Byte],
+                                           jobId: Option[Int] = None,
+                                           appId: Option[String] = None,
+                                           appAttemptId: Option[String] = None,
+                                           isBarrier: Boolean = false)
+        extends Task[MapStatus](stageId, stageAttemptId, partition.index, localProperties,
+            serializedTaskMetrics, jobId, appId, appAttemptId, isBarrier)
+                with Logging {
 
     /** A constructor used only in test suites. This does not require passing in an RDD. */
     def this(partitionId: Int) = {

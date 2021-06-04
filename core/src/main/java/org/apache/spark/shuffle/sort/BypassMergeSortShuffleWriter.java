@@ -54,7 +54,7 @@ import org.apache.spark.util.Utils;
 
 /**
  * This class implements sort-based shuffle's hash-style shuffle fallback path. This write path
- * writes incoming records to separate files, one file per reduce partition, then concatenates these
+ * writes incoming records to separate files, one file per reduce partition, then concatenates(连接) these
  * per-partition files to form a single output file, regions of which are served to reducers.
  * Records are not buffered in memory. It writes output in a format
  * that can be served / consumed via {@link org.apache.spark.shuffle.IndexShuffleBlockResolver}.
@@ -152,6 +152,7 @@ final class BypassMergeSortShuffleWriter<K, V> extends ShuffleWriter<K, V> {
             // Creating the file to write to and creating a disk writer both involve interacting with
             // the disk, and can take a long time in aggregate when we open many files, so should be
             // included in the shuffle write time.
+            //
             writeMetrics.incWriteTime(System.nanoTime() - openStartTime);
 
             while (records.hasNext()) {

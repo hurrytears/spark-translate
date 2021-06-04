@@ -50,8 +50,10 @@ private[spark] class ShuffleWriteProcessor extends Serializable with Logging {
                  partition: Partition): MapStatus = {
         var writer: ShuffleWriter[Any, Any] = null
         try {
+            // 从shuffleManager获取shuffleWriter
             val manager = SparkEnv.get.shuffleManager
             writer = manager.getWriter[Any, Any](
+                // 根据dep的shuffleHandle生成对应的Writer,比如SortShuffleWriter
                 dep.shuffleHandle,
                 mapId,
                 context,
