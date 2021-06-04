@@ -103,9 +103,12 @@ class ShuffledRDD[K: ClassTag, V: ClassTag, C: ClassTag](
         tracker.getPreferredLocationsForShuffle(dep, partition.index)
     }
 
+    // shuffle 写源码之后开始看
+    //
     override def compute(split: Partition, context: TaskContext): Iterator[(K, C)] = {
         val dep = dependencies.head.asInstanceOf[ShuffleDependency[K, V, C]]
         val metrics = context.taskMetrics().createTempShuffleReadMetrics()
+        // 依然是通过manager获取reader
         SparkEnv.get.shuffleManager.getReader(
             dep.shuffleHandle, split.index, split.index + 1, context, metrics)
                 .read()

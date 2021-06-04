@@ -18,33 +18,35 @@
 package org.apache.spark.util
 
 /**
- * Wrapper around an iterator which calls a completion method after it successfully iterates
- * through all the elements.
- */
+  * Wrapper around an iterator which calls a completion method after it successfully iterates
+  * through all the elements.
+  */
 private[spark]
-abstract class CompletionIterator[ +A, +I <: Iterator[A]](sub: I) extends Iterator[A] {
+abstract class CompletionIterator[+A, +I <: Iterator[A]](sub: I) extends Iterator[A] {
 
-  private[this] var completed = false
-  private[this] var iter = sub
-  def next(): A = iter.next()
-  def hasNext: Boolean = {
-    val r = iter.hasNext
-    if (!r && !completed) {
-      completed = true
-      // reassign to release resources of highly resource consuming iterators early
-      iter = Iterator.empty.asInstanceOf[I]
-      completion()
+    private[this] var completed = false
+    private[this] var iter = sub
+
+    def next(): A = iter.next()
+
+    def hasNext: Boolean = {
+        val r = iter.hasNext
+        if (!r && !completed) {
+            completed = true
+            // reassign to release resources of highly resource consuming iterators early
+            iter = Iterator.empty.asInstanceOf[I]
+            completion()
+        }
+        r
     }
-    r
-  }
 
-  def completion(): Unit
+    def completion(): Unit
 }
 
 private[spark] object CompletionIterator {
-  def apply[A, I <: Iterator[A]](sub: I, completionFunction: => Unit) : CompletionIterator[A, I] = {
-    new CompletionIterator[A, I](sub) {
-      def completion(): Unit = completionFunction
+    def apply[A, I <: Iterator[A]](sub: I, completionFunction: => Unit): CompletionIterator[A, I] = {
+        new CompletionIterator[A, I](sub) {
+            def completion(): Unit = completionFunction
+        }
     }
-  }
 }
