@@ -547,11 +547,13 @@ final class ShuffleBlockFetcherIterator(
         }
     }
 
+    // 这里看一下
     private[this] def initialize(): Unit = {
         // Add a task completion callback (called in both success case and failure case) to cleanup.
         context.addTaskCompletionListener(onCompleteCallback)
 
         // Partition blocks by the different fetch modes: local, host-local and remote blocks.
+        //
         val remoteRequests = partitionBlocksByFetchMode()
         // Add the remote requests into our queue in a random order
         fetchRequests ++= Utils.randomize(remoteRequests)
@@ -560,6 +562,7 @@ final class ShuffleBlockFetcherIterator(
                     ", expected bytesInFlight = 0 but found bytesInFlight = " + bytesInFlight)
 
         // Send out initial requests for blocks, up to our maxBytesInFlight
+        // 吃到饱
         fetchUpToMaxBytes()
 
         val numDeferredRequest = deferredFetchRequests.values.map(_.size).sum
