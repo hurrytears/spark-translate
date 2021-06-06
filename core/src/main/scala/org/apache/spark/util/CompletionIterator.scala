@@ -29,6 +29,7 @@ abstract class CompletionIterator[+A, +I <: Iterator[A]](sub: I) extends Iterato
 
     def next(): A = iter.next()
 
+    // 搞点进度
     def hasNext: Boolean = {
         val r = iter.hasNext
         if (!r && !completed) {
