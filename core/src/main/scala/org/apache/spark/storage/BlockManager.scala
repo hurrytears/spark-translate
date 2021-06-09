@@ -70,6 +70,7 @@ private[spark] class BlockResult(
 /**
   * Abstracts away how blocks are stored and provides different ways to read the underlying block
   * data. Callers should call [[dispose()]] when they're done with the block.
+  * 抽象出block存储和读取的方式， 调用者应该在处理完block后调这个方法
   */
 private[spark] trait BlockData {
 
