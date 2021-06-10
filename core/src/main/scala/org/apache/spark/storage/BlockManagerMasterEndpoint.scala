@@ -397,7 +397,7 @@ class BlockManagerMasterEndpoint(
 
     private def removeExecutor(execId: String): Unit = {
         logInfo("Trying to remove executor " + execId + " from BlockManagerMaster.")
-        // 获取
+        // 移除指定executor id 对应的所有的blockManager
         blockManagerIdByExecutor.get(execId).foreach(removeBlockManager)
     }
 
