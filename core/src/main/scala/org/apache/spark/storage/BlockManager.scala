@@ -468,6 +468,8 @@ private[spark] class BlockManager(
       * service if configured.
       */
     def initialize(appId: String): Unit = {
+
+        // 这里blockTransferService用于远程传输
         blockTransferService.init(this)
         externalBlockStoreClient.foreach { blockStoreClient =>
             blockStoreClient.init(appId)

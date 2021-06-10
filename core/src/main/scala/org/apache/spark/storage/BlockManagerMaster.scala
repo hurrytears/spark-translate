@@ -27,6 +27,8 @@ import org.apache.spark.rpc.RpcEndpointRef
 import org.apache.spark.storage.BlockManagerMessages._
 import org.apache.spark.util.{RpcUtils, ThreadUtils}
 
+// 这个设计模式就是传说中的工厂模式
+// 这个类是个工具人，相当于别人调用的时候先调用这个类的方法，然后这个类的方法将调用请求做一个封装处理
 private[spark]
 class BlockManagerMaster(
                                 var driverEndpoint: RpcEndpointRef,
