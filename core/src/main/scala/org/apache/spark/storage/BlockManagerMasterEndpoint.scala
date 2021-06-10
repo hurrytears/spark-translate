@@ -403,7 +403,7 @@ class BlockManagerMasterEndpoint(
 
     /**
       * Returns a Seq of ReplicateBlock for each RDD block stored by given blockManagerId
-      *
+      * 获取block的RDD的副本信息
       * @param blockManagerId - block manager id for which ReplicateBlock info is needed
       * @return Seq of ReplicateBlock
       */
