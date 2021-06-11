@@ -101,6 +101,7 @@ class BlockManagerMasterEndpoint(
         mapper
     }
 
+    // 主动副本
     val proactivelyReplicate = conf.get(config.STORAGE_REPLICATION_PROACTIVE)
 
     val defaultRpcTimeout = RpcUtils.askRpcTimeout(conf)

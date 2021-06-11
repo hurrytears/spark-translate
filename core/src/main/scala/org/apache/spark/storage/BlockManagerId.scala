@@ -29,6 +29,7 @@ import org.apache.spark.util.Utils
   * :: DeveloperApi ::
   * This class represent a unique identifier for a BlockManager.
   * 根据executorId，host, port确定唯一的BlockManager ID
+  *
   * The first 2 constructors of this class are made private to ensure that BlockManagerId objects
   * can be created only using the apply method in the companion object. This allows de-duplication
   * of ID objects. Also, constructor parameters are private to ensure that parameters cannot be
