@@ -117,6 +117,7 @@ private[spark] class ByteBufferBlockData(
 
 }
 
+// 节点目录管理
 private[spark] class HostLocalDirManager(
                                             futureExecutionContext: ExecutionContext,
                                             cacheSize: Int,
@@ -200,6 +201,7 @@ private[spark] class BlockManager(
         ThreadUtils.newDaemonCachedThreadPool("block-manager-future", 128))
 
     // Actual storage of where blocks are kept
+    // 真材实料在此
     private[spark] val memoryStore =
         new MemoryStore(conf, blockInfoManager, serializerManager, memoryManager, this)
     private[spark] val diskStore = new DiskStore(conf, diskBlockManager, securityManager)
@@ -209,6 +211,7 @@ private[spark] class BlockManager(
     // However, since we use this only for reporting and logging, what we actually want here is
     // the absolute maximum value that `maxMemory` can ever possibly reach. We may need
     // to revisit whether reporting this value as the "max" is intuitive to the user.
+    // 总之，这里不精确，不完美，待优化
     private val maxOnHeapMemory = memoryManager.maxOnHeapStorageMemory
     private val maxOffHeapMemory = memoryManager.maxOffHeapStorageMemory
 
@@ -249,7 +252,7 @@ private[spark] class BlockManager(
     @volatile private[spark] var decommissioner: Option[BlockManagerDecommissioner] = None
 
     // A DownloadFileManager used to track all the files of remote blocks which are above the
-    // specified memory threshold. Files will be deleted automatically based on weak reference.
+    // specified memory threshold（阈值）. Files will be deleted automatically based on weak reference.
     // Exposed for test
     private[storage] val remoteBlockTempFileManager =
     new BlockManager.RemoteBlockDownloadFileManager(this)
@@ -460,7 +463,7 @@ private[spark] class BlockManager(
 
     /**
       * Initializes the BlockManager with the given appId. This is not performed in the constructor as
-      * the appId may not be known at BlockManager instantiation time (in particular for the driver,
+      * the appId may not be known at BlockManager instantiation（实例化） time (in particular for the driver,
       * where it is only learned after registration with the TaskScheduler).
       *
       * This method initializes the BlockTransferService and BlockStoreClient, registers with the
@@ -474,6 +477,7 @@ private[spark] class BlockManager(
         externalBlockStoreClient.foreach { blockStoreClient =>
             blockStoreClient.init(appId)
         }
+        // 从配置中获取存储策略
         blockReplicationPolicy = {
             val priorityClass = conf.get(config.STORAGE_REPLICATION_POLICY)
             val clazz = Utils.classForName(priorityClass)
@@ -485,6 +489,7 @@ private[spark] class BlockManager(
         val id =
             BlockManagerId(executorId, blockTransferService.hostName, blockTransferService.port, None)
 
+        // blockManager是注册进master的
         val idFromMaster = master.registerBlockManager(
             id,
             diskBlockManager.localDirsString,
@@ -494,6 +499,7 @@ private[spark] class BlockManager(
 
         blockManagerId = if (idFromMaster != null) idFromMaster else id
 
+        // 在这里确定是否启用三方服务
         shuffleServerId = if (externalShuffleServiceEnabled) {
             logInfo(s"external shuffle service port = $externalShuffleServicePort")
             BlockManagerId(executorId, blockTransferService.hostName, externalShuffleServicePort)

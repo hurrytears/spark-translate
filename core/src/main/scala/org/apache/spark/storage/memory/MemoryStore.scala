@@ -83,6 +83,7 @@ private[storage] trait BlockEvictionHandler {
 /**
   * Stores blocks in memory, either as Arrays of deserialized Java objects or as
   * serialized ByteBuffers.
+  * 两种存储形式，序列化的java对象数组，或者序列化的字节
   */
 private[spark] class MemoryStore(
                                         conf: SparkConf,
@@ -94,7 +95,9 @@ private[spark] class MemoryStore(
 
     // Note: all changes to memory allocations, notably putting blocks, evicting blocks, and
     // acquiring or releasing unroll memory, must be synchronized on `memoryManager`!
+    // 所有的操作必须同步锁
 
+    // 实际数据就存在这
     private val entries = new LinkedHashMap[BlockId, MemoryEntry[_]](32, 0.75f, true)
 
     // A mapping from taskAttemptId to amount of memory used for unrolling a block (in bytes)
