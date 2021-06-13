@@ -27,166 +27,167 @@ import org.apache.spark.internal.{config, Logging}
 import org.apache.spark.util.{ShutdownHookManager, Utils}
 
 /**
- * Creates and maintains the logical mapping between logical blocks and physical on-disk
- * locations. One block is mapped to one file with a name given by its BlockId.
- *
- * Block files are hashed among the directories listed in spark.local.dir (or in
- * SPARK_LOCAL_DIRS, if it's set).
- */
+  * Creates and maintains the logical mapping between logical blocks and physical on-disk
+  * locations. One block is mapped to one file with a name given by its BlockId.
+  * 创建和保存了逻辑块到物理块的映射，一个block对应一个文件
+  *
+  * Block files are hashed among the directories listed in spark.local.dir (or in
+  * SPARK_LOCAL_DIRS, if it's set).
+  */
 private[spark] class DiskBlockManager(conf: SparkConf, deleteFilesOnStop: Boolean) extends Logging {
 
-  private[spark] val subDirsPerLocalDir = conf.get(config.DISKSTORE_SUB_DIRECTORIES)
+    private[spark] val subDirsPerLocalDir = conf.get(config.DISKSTORE_SUB_DIRECTORIES)
 
-  /* Create one local directory for each path mentioned in spark.local.dir; then, inside this
-   * directory, create multiple subdirectories that we will hash files into, in order to avoid
-   * having really large inodes at the top level. */
-  private[spark] val localDirs: Array[File] = createLocalDirs(conf)
-  if (localDirs.isEmpty) {
-    logError("Failed to create any local dir.")
-    System.exit(ExecutorExitCode.DISK_STORE_FAILED_TO_CREATE_DIR)
-  }
-
-  private[spark] val localDirsString: Array[String] = localDirs.map(_.toString)
-
-  // The content of subDirs is immutable but the content of subDirs(i) is mutable. And the content
-  // of subDirs(i) is protected by the lock of subDirs(i)
-  private val subDirs = Array.fill(localDirs.length)(new Array[File](subDirsPerLocalDir))
-
-  private val shutdownHook = addShutdownHook()
-
-  /** Looks up a file by hashing it into one of our local subdirectories. */
-  // This method should be kept in sync with
-  // org.apache.spark.network.shuffle.ExecutorDiskUtils#getFile().
-  def getFile(filename: String): File = {
-    // Figure out which local directory it hashes to, and which subdirectory in that
-    val hash = Utils.nonNegativeHash(filename)
-    val dirId = hash % localDirs.length
-    val subDirId = (hash / localDirs.length) % subDirsPerLocalDir
-
-    // Create the subdirectory if it doesn't already exist
-    val subDir = subDirs(dirId).synchronized {
-      val old = subDirs(dirId)(subDirId)
-      if (old != null) {
-        old
-      } else {
-        val newDir = new File(localDirs(dirId), "%02x".format(subDirId))
-        if (!newDir.exists()) {
-          Files.createDirectory(newDir.toPath)
-        }
-        subDirs(dirId)(subDirId) = newDir
-        newDir
-      }
+    /* Create one local directory for each path mentioned in spark.local.dir; then, inside this
+     * directory, create multiple subdirectories that we will hash files into, in order to avoid
+     * having really large inodes at the top level. */
+    private[spark] val localDirs: Array[File] = createLocalDirs(conf)
+    if (localDirs.isEmpty) {
+        logError("Failed to create any local dir.")
+        System.exit(ExecutorExitCode.DISK_STORE_FAILED_TO_CREATE_DIR)
     }
 
-    new File(subDir, filename)
-  }
+    private[spark] val localDirsString: Array[String] = localDirs.map(_.toString)
 
-  def getFile(blockId: BlockId): File = getFile(blockId.name)
+    // The content of subDirs is immutable but the content of subDirs(i) is mutable. And the content
+    // of subDirs(i) is protected by the lock of subDirs(i)
+    private val subDirs = Array.fill(localDirs.length)(new Array[File](subDirsPerLocalDir))
 
-  /** Check if disk block manager has a block. */
-  def containsBlock(blockId: BlockId): Boolean = {
-    getFile(blockId.name).exists()
-  }
+    private val shutdownHook = addShutdownHook()
 
-  /** List all the files currently stored on disk by the disk manager. */
-  def getAllFiles(): Seq[File] = {
-    // Get all the files inside the array of array of directories
-    subDirs.flatMap { dir =>
-      dir.synchronized {
-        // Copy the content of dir because it may be modified in other threads
-        dir.clone()
-      }
-    }.filter(_ != null).flatMap { dir =>
-      val files = dir.listFiles()
-      if (files != null) files.toSeq else Seq.empty
-    }
-  }
+    /** Looks up a file by hashing it into one of our local subdirectories. */
+    // This method should be kept in sync with
+    // org.apache.spark.network.shuffle.ExecutorDiskUtils#getFile().
+    def getFile(filename: String): File = {
+        // Figure out which local directory it hashes to, and which subdirectory in that
+        val hash = Utils.nonNegativeHash(filename)
+        val dirId = hash % localDirs.length
+        val subDirId = (hash / localDirs.length) % subDirsPerLocalDir
 
-  /** List all the blocks currently stored on disk by the disk manager. */
-  def getAllBlocks(): Seq[BlockId] = {
-    getAllFiles().flatMap { f =>
-      try {
-        Some(BlockId(f.getName))
-      } catch {
-        case _: UnrecognizedBlockId =>
-          // Skip files which do not correspond to blocks, for example temporary
-          // files created by [[SortShuffleWriter]].
-          None
-      }
-    }
-  }
-
-  /** Produces a unique block id and File suitable for storing local intermediate results. */
-  def createTempLocalBlock(): (TempLocalBlockId, File) = {
-    var blockId = new TempLocalBlockId(UUID.randomUUID())
-    while (getFile(blockId).exists()) {
-      blockId = new TempLocalBlockId(UUID.randomUUID())
-    }
-    (blockId, getFile(blockId))
-  }
-
-  /** Produces a unique block id and File suitable for storing shuffled intermediate results. */
-  def createTempShuffleBlock(): (TempShuffleBlockId, File) = {
-    var blockId = new TempShuffleBlockId(UUID.randomUUID())
-    while (getFile(blockId).exists()) {
-      blockId = new TempShuffleBlockId(UUID.randomUUID())
-    }
-    (blockId, getFile(blockId))
-  }
-
-  /**
-   * Create local directories for storing block data. These directories are
-   * located inside configured local directories and won't
-   * be deleted on JVM exit when using the external shuffle service.
-   */
-  private def createLocalDirs(conf: SparkConf): Array[File] = {
-    Utils.getConfiguredLocalDirs(conf).flatMap { rootDir =>
-      try {
-        val localDir = Utils.createDirectory(rootDir, "blockmgr")
-        logInfo(s"Created local directory at $localDir")
-        Some(localDir)
-      } catch {
-        case e: IOException =>
-          logError(s"Failed to create local dir in $rootDir. Ignoring this directory.", e)
-          None
-      }
-    }
-  }
-
-  private def addShutdownHook(): AnyRef = {
-    logDebug("Adding shutdown hook") // force eager creation of logger
-    ShutdownHookManager.addShutdownHook(ShutdownHookManager.TEMP_DIR_SHUTDOWN_PRIORITY + 1) { () =>
-      logInfo("Shutdown hook called")
-      DiskBlockManager.this.doStop()
-    }
-  }
-
-  /** Cleanup local dirs and stop shuffle sender. */
-  private[spark] def stop(): Unit = {
-    // Remove the shutdown hook.  It causes memory leaks if we leave it around.
-    try {
-      ShutdownHookManager.removeShutdownHook(shutdownHook)
-    } catch {
-      case e: Exception =>
-        logError(s"Exception while removing shutdown hook.", e)
-    }
-    doStop()
-  }
-
-  private def doStop(): Unit = {
-    if (deleteFilesOnStop) {
-      localDirs.foreach { localDir =>
-        if (localDir.isDirectory() && localDir.exists()) {
-          try {
-            if (!ShutdownHookManager.hasRootAsShutdownDeleteDir(localDir)) {
-              Utils.deleteRecursively(localDir)
+        // Create the subdirectory if it doesn't already exist
+        val subDir = subDirs(dirId).synchronized {
+            val old = subDirs(dirId)(subDirId)
+            if (old != null) {
+                old
+            } else {
+                val newDir = new File(localDirs(dirId), "%02x".format(subDirId))
+                if (!newDir.exists()) {
+                    Files.createDirectory(newDir.toPath)
+                }
+                subDirs(dirId)(subDirId) = newDir
+                newDir
             }
-          } catch {
-            case e: Exception =>
-              logError(s"Exception while deleting local spark dir: $localDir", e)
-          }
         }
-      }
+
+        new File(subDir, filename)
     }
-  }
+
+    def getFile(blockId: BlockId): File = getFile(blockId.name)
+
+    /** Check if disk block manager has a block. */
+    def containsBlock(blockId: BlockId): Boolean = {
+        getFile(blockId.name).exists()
+    }
+
+    /** List all the files currently stored on disk by the disk manager. */
+    def getAllFiles(): Seq[File] = {
+        // Get all the files inside the array of array of directories
+        subDirs.flatMap { dir =>
+            dir.synchronized {
+                // Copy the content of dir because it may be modified in other threads
+                dir.clone()
+            }
+        }.filter(_ != null).flatMap { dir =>
+            val files = dir.listFiles()
+            if (files != null) files.toSeq else Seq.empty
+        }
+    }
+
+    /** List all the blocks currently stored on disk by the disk manager. */
+    def getAllBlocks(): Seq[BlockId] = {
+        getAllFiles().flatMap { f =>
+            try {
+                Some(BlockId(f.getName))
+            } catch {
+                case _: UnrecognizedBlockId =>
+                    // Skip files which do not correspond to blocks, for example temporary
+                    // files created by [[SortShuffleWriter]].
+                    None
+            }
+        }
+    }
+
+    /** Produces a unique block id and File suitable for storing local intermediate results. */
+    def createTempLocalBlock(): (TempLocalBlockId, File) = {
+        var blockId = new TempLocalBlockId(UUID.randomUUID())
+        while (getFile(blockId).exists()) {
+            blockId = new TempLocalBlockId(UUID.randomUUID())
+        }
+        (blockId, getFile(blockId))
+    }
+
+    /** Produces a unique block id and File suitable for storing shuffled intermediate results. */
+    def createTempShuffleBlock(): (TempShuffleBlockId, File) = {
+        var blockId = new TempShuffleBlockId(UUID.randomUUID())
+        while (getFile(blockId).exists()) {
+            blockId = new TempShuffleBlockId(UUID.randomUUID())
+        }
+        (blockId, getFile(blockId))
+    }
+
+    /**
+      * Create local directories for storing block data. These directories are
+      * located inside configured local directories and won't
+      * be deleted on JVM exit when using the external shuffle service.
+      */
+    private def createLocalDirs(conf: SparkConf): Array[File] = {
+        Utils.getConfiguredLocalDirs(conf).flatMap { rootDir =>
+            try {
+                val localDir = Utils.createDirectory(rootDir, "blockmgr")
+                logInfo(s"Created local directory at $localDir")
+                Some(localDir)
+            } catch {
+                case e: IOException =>
+                    logError(s"Failed to create local dir in $rootDir. Ignoring this directory.", e)
+                    None
+            }
+        }
+    }
+
+    private def addShutdownHook(): AnyRef = {
+        logDebug("Adding shutdown hook") // force eager creation of logger
+        ShutdownHookManager.addShutdownHook(ShutdownHookManager.TEMP_DIR_SHUTDOWN_PRIORITY + 1) { () =>
+            logInfo("Shutdown hook called")
+            DiskBlockManager.this.doStop()
+        }
+    }
+
+    /** Cleanup local dirs and stop shuffle sender. */
+    private[spark] def stop(): Unit = {
+        // Remove the shutdown hook.  It causes memory leaks if we leave it around.
+        try {
+            ShutdownHookManager.removeShutdownHook(shutdownHook)
+        } catch {
+            case e: Exception =>
+                logError(s"Exception while removing shutdown hook.", e)
+        }
+        doStop()
+    }
+
+    private def doStop(): Unit = {
+        if (deleteFilesOnStop) {
+            localDirs.foreach { localDir =>
+                if (localDir.isDirectory() && localDir.exists()) {
+                    try {
+                        if (!ShutdownHookManager.hasRootAsShutdownDeleteDir(localDir)) {
+                            Utils.deleteRecursively(localDir)
+                        }
+                    } catch {
+                        case e: Exception =>
+                            logError(s"Exception while deleting local spark dir: $localDir", e)
+                    }
+                }
+            }
+        }
+    }
 }
