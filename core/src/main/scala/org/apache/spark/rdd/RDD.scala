@@ -341,9 +341,17 @@ abstract class RDD[T: ClassTag](
       * subclasses of RDD.
       */
     final def iterator(split: Partition, context: TaskContext): Iterator[T] = {
+        // cacheManager 源码入口从这里开始
+        // 先根据存储级别看看有没有持久化过，有地话就找block Manager要，要不到怎么办呢？
+        // 再去找checkpoint()，要是还是找不到呢？
+        // 重新计算一遍，然后再根据设置了的storageLevel重新持久化一遍，相当于是查漏补缺
+
+        // 上边都是放屁，spark core 3.0版本已经没有cachemanager这玩意了
         if (storageLevel != StorageLevel.NONE) {
+            // 持久化过的
             getOrCompute(split, context)
         } else {
+            // 没有持久化过的才去找checkpoint
             computeOrReadCheckpoint(split, context)
         }
     }
@@ -377,6 +385,7 @@ abstract class RDD[T: ClassTag](
       */
     private[spark] def computeOrReadCheckpoint(split: Partition, context: TaskContext): Iterator[T] = {
         if (isCheckpointedAndMaterialized) {
+            // checkpoint过的找依赖的RDD
             firstParent[T].iterator(split, context)
         } else {
             compute(split, context)
@@ -391,6 +400,7 @@ abstract class RDD[T: ClassTag](
         val blockId = RDDBlockId(id, partition.index)
         var readCachedBlock = true
         // This method is called on executors, so we need call SparkEnv.get instead of sc.env.
+        // 通过blockManager获取数据
         SparkEnv.get.blockManager.getOrElseUpdate(blockId, storageLevel, elementClassTag, () => {
             readCachedBlock = false
             computeOrReadCheckpoint(partition, context)

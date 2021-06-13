@@ -1172,6 +1172,7 @@ private[spark] class BlockManager(
       * This acquires a read lock on the block if the block was stored locally and does not acquire
       * any locks if the block was fetched from a remote block manager. The read lock will
       * automatically be freed once the result's `data` iterator is fully consumed.
+      * 这里就是查了，本地优先
       */
     def get[T: ClassTag](blockId: BlockId): Option[BlockResult] = {
         val local = getLocalValues(blockId)
@@ -1230,7 +1231,7 @@ private[spark] class BlockManager(
     /**
       * Retrieve the given block if it exists, otherwise call the provided `makeIterator` method
       * to compute the block, persist it, and return its values.
-      *
+      * 贼尴尬，没有checkpoint
       * @return either a BlockResult if the block was successfully cached, or an iterator if the block
       *         could not be cached.
       */
@@ -1246,6 +1247,7 @@ private[spark] class BlockManager(
                 return Left(block)
             case _ =>
             // Need to compute the block.
+                // 就需要计算了
         }
         // Initially we hold no locks on this block.
         doPutIterator(blockId, makeIterator, level, classTag, keepReadLock = true) match {
