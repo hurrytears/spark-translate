@@ -86,12 +86,13 @@ import org.apache.spark.util.logging.DriverLogger
 class SparkContext(config: SparkConf) extends Logging {
 
     // The call site where this SparkContext was constructed.
-    // 暂时理解为记录SparkContext的构造信息
+    // 这里计算除了调用sparkContext的代码是哪个
     private val creationSite: CallSite = Utils.getCallSite()
 
     if (!config.get(EXECUTOR_ALLOW_SPARK_CONTEXT)) {
         // In order to prevent SparkContext from being created in executors.
-        // 防止sparkcontext被二次创建
+        // 防止sparkcontext由driver创建，而不是在executor上创建，如果设置了EXECUTOR_ALLOW_SPARK_CONTEXT
+        // 参数为True，则允许executor创建
         SparkContext.assertOnDriver()
     }
 
@@ -275,6 +276,8 @@ class SparkContext(config: SparkConf) extends Logging {
       */
     def getConf: SparkConf = conf.clone()
 
+    // [String, [name: String, addresses: Array[String]]]
+    // 一个resouce可以是一个GPU，或者FPGA等等
     def resources: Map[String, ResourceInformation] = _resources
 
     def jars: Seq[String] = _jars
@@ -283,8 +286,10 @@ class SparkContext(config: SparkConf) extends Logging {
 
     def archives: Seq[String] = _archives
 
+    // 应该是spark-submit 的--master参数的值
     def master: String = _conf.get("spark.master")
 
+    // 应该是spark-submit 的--deployMode参数的值
     def deployMode: String = _conf.get(SUBMIT_DEPLOY_MODE)
 
     def appName: String = _conf.get("spark.app.name")
@@ -295,11 +300,11 @@ class SparkContext(config: SparkConf) extends Logging {
 
     private[spark] def eventLogCodec: Option[String] = _eventLogCodec
 
+    // 这个就贼简单啦
     def isLocal: Boolean = Utils.isLocalMaster(_conf)
 
     /**
       * 如果context已经停了或者正在停止，则返回 true
-      *
       * @return true if context is stopped or in the midst of stopping.
       */
     def isStopped: Boolean = stopped.get()
@@ -311,11 +316,12 @@ class SparkContext(config: SparkConf) extends Logging {
     private[spark] def listenerBus: LiveListenerBus = _listenerBus
 
     // This function allows components created by SparkEnv to be mocked in unit tests:
-    // 这个方法允许由SparkEnv创建的组件在单元测试中被复制执行
+    // 这个方法允许由SparkEnv创建的组件在单元测试中使用
     private[spark] def createSparkEnv(
                                              conf: SparkConf,
                                              isLocal: Boolean,
                                              listenerBus: LiveListenerBus): SparkEnv = {
+        // 暂时先看到是尽可能地封装了spark的用户环境和配置参数，具体在哪用了再详细看
         SparkEnv.createDriverEnv(conf, isLocal, listenerBus, SparkContext.numDriverCores(master, conf))
     }
 
@@ -324,6 +330,7 @@ class SparkContext(config: SparkConf) extends Logging {
     // Used to store a URL for each static file/jar together with the file's local timestamp
     // 用来为每一个静态file或者jar创建URL并且附加一个时间戳
     private[spark] val addedFiles = new ConcurrentHashMap[String, Long]().asScala
+    // ConcurrentHashMap java多线程的重要技术，后边好好看一下
     private[spark] val addedArchives = new ConcurrentHashMap[String, Long]().asScala
     private[spark] val addedJars = new ConcurrentHashMap[String, Long]().asScala
 
@@ -335,6 +342,7 @@ class SparkContext(config: SparkConf) extends Logging {
         map.asScala
     }
 
+    // 通过这玩意实现的AppStatusStore
     def statusTracker: SparkStatusTracker = _statusTracker
 
     // 进度条
@@ -363,7 +371,7 @@ class SparkContext(config: SparkConf) extends Logging {
     // 获取当前用户作为spark全局用户
     val sparkUser = Utils.getCurrentUserName()
 
-    // 调度后台
+    // 调度后台,这里只是个接口，但是具体是接口的哪个实现类？应该是CoarseGraniedSchedulerBackend
     private[spark] def schedulerBackend: SchedulerBackend = _schedulerBackend
 
     // 任务调度器 get方法
@@ -401,13 +409,16 @@ class SparkContext(config: SparkConf) extends Logging {
 
     private[spark] def eventLogger: Option[EventLoggingListener] = _eventLogger
 
+    // executor分配管理器
     private[spark] def executorAllocationManager: Option[ExecutorAllocationManager] =
         _executorAllocationManager
 
+    // 是不是gpu环境管理器？
     private[spark] def resourceProfileManager: ResourceProfileManager = _resourceProfileManager
 
     private[spark] def cleaner: Option[ContextCleaner] = _cleaner
 
+    // 持久化缓存目录，默认是空
     private[spark] var checkpointDir: Option[String] = None
 
     // Thread Local variable that can be used by users to pass information down the stack
@@ -3040,13 +3051,17 @@ object SparkContext extends Logging {
       */
     private[spark] def numDriverCores(master: String, conf: SparkConf): Int = {
         def convertToInt(threads: String): Int = {
+            // 也就是说，spark这里是通过java自带的API实现CPU核数的获取
+            // local[*] 就是会把所有的的可用的core都占用了
             if (threads == "*") Runtime.getRuntime.availableProcessors() else threads.toInt
         }
 
         master match {
+            // 这里很值得注意呀，这里local默认就是一个core
             case "local" => 1
             case SparkMasterRegex.LOCAL_N_REGEX(threads) => convertToInt(threads)
             case SparkMasterRegex.LOCAL_N_FAILURES_REGEX(threads, _) => convertToInt(threads)
+            // yarn或者k8s方式，这里就是看配置的DRIVER_CORES参数
             case "yarn" | SparkMasterRegex.KUBERNETES_REGEX(_) =>
                 if (conf != null && conf.get(SUBMIT_DEPLOY_MODE) == "cluster") {
                     conf.getInt(DRIVER_CORES.key, 0)
