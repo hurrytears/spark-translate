@@ -103,10 +103,10 @@ private[deploy] class Master(
 
     Utils.checkHost(address.host)
 
-    // master指标系统
+    // master监控系统
     private val masterMetricsSystem =
         MetricsSystem.createMetricsSystem(MetricsSystemInstances.MASTER, conf)
-    // 应用指标系统
+    // 应用监测系统
     private val applicationMetricsSystem =
         MetricsSystem.createMetricsSystem(MetricsSystemInstances.APPLICATIONS, conf)
     private val masterSource = new MasterSource(this)
