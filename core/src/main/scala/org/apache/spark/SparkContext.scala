@@ -775,6 +775,7 @@ class SparkContext(config: SparkConf) extends Logging {
       * Logs an error and returns None if we failed to obtain a thread dump, which could occur due
       * to an executor being dead or unresponsive or due to network issues while sending the thread
       * dump message back to the driver.
+      * 测试
       * 为web UI 提供excutor的线程状态快照，这个方法很耗费资源
       * 如果executor宕掉或者失去响应或者网络故障，会返回报错或者空
       */
