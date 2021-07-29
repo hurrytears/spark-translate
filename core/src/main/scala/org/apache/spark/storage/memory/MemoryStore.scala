@@ -83,6 +83,8 @@ private[storage] trait BlockEvictionHandler {
 /**
   * Stores blocks in memory, either as Arrays of deserialized Java objects or as
   * serialized ByteBuffers.
+  * 两种存储形式，序列化的java对象数组，或者序列化的字节
+  * 说白了就是个内存数据的增删改查，HDFS的那一套
   */
 private[spark] class MemoryStore(
                                         conf: SparkConf,
@@ -94,7 +96,9 @@ private[spark] class MemoryStore(
 
     // Note: all changes to memory allocations, notably putting blocks, evicting blocks, and
     // acquiring or releasing unroll memory, must be synchronized on `memoryManager`!
+    // 所有的操作必须同步锁
 
+    // 实际数据就存在这
     private val entries = new LinkedHashMap[BlockId, MemoryEntry[_]](32, 0.75f, true)
 
     // A mapping from taskAttemptId to amount of memory used for unrolling a block (in bytes)
@@ -158,6 +162,7 @@ private[spark] class MemoryStore(
             assert(bytes.size == size)
             val entry = new SerializedMemoryEntry[T](bytes, memoryMode, implicitly[ClassTag[T]])
             entries.synchronized {
+                // 这就存进去了
                 entries.put(blockId, entry)
             }
             logInfo("Block %s stored as bytes in memory (estimated size %s, free %s)".format(
@@ -170,12 +175,15 @@ private[spark] class MemoryStore(
 
     /**
       * Attempt to put the given block in memory store as values or bytes.
+      * 尝试把指定的block在内存中存储
       *
       * It's possible that the iterator is too large to materialize and store in memory. To avoid
       * OOM exceptions, this method will gradually unroll the iterator while periodically checking
       * whether there is enough free memory. If the block is successfully materialized, then the
       * temporary unroll memory used during the materialization is "transferred" to storage memory,
       * so we won't acquire more memory than is actually needed to store the block.
+      * 可能说迭代器太大了内存中放不下，为了避免OOM，这个方法会一边检查，一边迭代。如果block成功地
+      * 存储了，也没有占用超出实际所需的空间。
       *
       * @param blockId      The block id.
       * @param values       The values which need be stored.
@@ -267,6 +275,7 @@ private[spark] class MemoryStore(
                 }
 
                 entries.synchronized {
+                    // 这个方法就不仔细看了，反正归根结底还是这
                     entries.put(blockId, entry)
                 }
 
