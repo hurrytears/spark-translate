@@ -508,7 +508,7 @@ class SparkContext(config: SparkConf) extends Logging {
 
         _conf.set(EXECUTOR_ID, SparkContext.DRIVER_IDENTIFIER)
 
-        // 读取用户代码
+        // 读取用户代码，不对，应该是--jar所带的参数
         _jars = Utils.getUserJars(_conf)
         _files = _conf.getOption(FILES.key).map(_.split(",")).map(_.filter(_.nonEmpty))
                 .toSeq.flatten
@@ -522,6 +522,7 @@ class SparkContext(config: SparkConf) extends Logging {
                     None
                 }
 
+        // 压缩
         _eventLogCodec = {
             val compress = _conf.get(EVENT_LOG_COMPRESS)
             if (compress && isEventLogEnabled) {
@@ -637,6 +638,7 @@ class SparkContext(config: SparkConf) extends Logging {
         executorEnvs ++= _conf.getExecutorEnv
         executorEnvs("SPARK_USER") = sparkUser
 
+        // 啊，这里到底分了集中driver
         _shuffleDriverComponents = ShuffleDataIOUtils.loadShuffleDataIO(config).driver()
         _shuffleDriverComponents.initializeApplication().asScala.foreach { case (k, v) =>
             _conf.set(ShuffleDataIOUtils.SHUFFLE_SPARK_CONF_PREFIX + k, v)
@@ -683,6 +685,7 @@ class SparkContext(config: SparkConf) extends Logging {
         _applicationId = _taskScheduler.applicationId()
         _applicationAttemptId = _taskScheduler.applicationAttemptId()
         _conf.set("spark.app.id", _applicationId)
+        // UI的反向代理，跳过
         if (_conf.get(UI_REVERSE_PROXY)) {
             val proxyUrl = _conf.get(UI_REVERSE_PROXY_URL.key, "").stripSuffix("/") +
                     "/proxy/" + _applicationId
@@ -852,7 +855,7 @@ class SparkContext(config: SparkConf) extends Logging {
     /**
       * Assigns a group ID to all the jobs started by this thread until the group ID is set to a
       * different value or cleared.
-      * 为所有由当前线程触发的job分配一个ID，知道ID被重新赋值
+      * 为所有由当前线程触发的job分配一个ID，直到ID被重新赋值
       *
       * Often, a unit of execution in an application consists of multiple Spark actions or jobs.
       * Application programmers can use this method to group all those jobs together and give a
@@ -3135,6 +3138,7 @@ object SparkContext extends Logging {
             case SPARK_REGEX(sparkUrl) =>
                 val scheduler = new TaskSchedulerImpl(sc)
                 val masterUrls = sparkUrl.split(",").map("spark://" + _)
+                // 猜错了，这里其实是standaloneSchedulerBackend
                 val backend = new StandaloneSchedulerBackend(scheduler, sc, masterUrls)
                 scheduler.initialize(backend)
                 (backend, scheduler)

@@ -32,102 +32,108 @@ import org.apache.spark.util.NextIterator
 
 private[streaming]
 class SocketInputDStream[T: ClassTag](
-    _ssc: StreamingContext,
-    host: String,
-    port: Int,
-    bytesToObjects: InputStream => Iterator[T],
-    storageLevel: StorageLevel
-  ) extends ReceiverInputDStream[T](_ssc) {
+                                         _ssc: StreamingContext,
+                                         host: String,
+                                         port: Int,
+                                         bytesToObjects: InputStream => Iterator[T],
+                                         storageLevel: StorageLevel
+                                     ) extends ReceiverInputDStream[T](_ssc) {
 
-  def getReceiver(): Receiver[T] = {
-    new SocketReceiver(host, port, bytesToObjects, storageLevel)
-  }
+    // 这个方法负责返回DStream的receiver
+    def getReceiver(): Receiver[T] = {
+        new SocketReceiver(host, port, bytesToObjects, storageLevel)
+    }
 }
 
 private[streaming]
 class SocketReceiver[T: ClassTag](
-    host: String,
-    port: Int,
-    bytesToObjects: InputStream => Iterator[T],
-    storageLevel: StorageLevel
-  ) extends Receiver[T](storageLevel) with Logging {
+                                     host: String,
+                                     port: Int,
+                                     bytesToObjects: InputStream => Iterator[T],
+                                     storageLevel: StorageLevel
+                                 ) extends Receiver[T](storageLevel) with Logging {
 
-  private var socket: Socket = _
+    private var socket: Socket = _
 
-  def onStart(): Unit = {
+    def onStart(): Unit = {
 
-    logInfo(s"Connecting to $host:$port")
-    try {
-      socket = new Socket(host, port)
-    } catch {
-      case e: ConnectException =>
-        restart(s"Error connecting to $host:$port", e)
-        return
+        logInfo(s"Connecting to $host:$port")
+        try {
+            socket = new Socket(host, port)
+        } catch {
+            case e: ConnectException =>
+                restart(s"Error connecting to $host:$port", e)
+                return
+        }
+        logInfo(s"Connected to $host:$port")
+
+        // Start the thread that receives data over a connection
+        // 又一个线程
+        new Thread("Socket Receiver") {
+            setDaemon(true)
+
+            override def run(): Unit = {
+                receive()
+            }
+        }.start()
     }
-    logInfo(s"Connected to $host:$port")
 
-    // Start the thread that receives data over a connection
-    new Thread("Socket Receiver") {
-      setDaemon(true)
-      override def run(): Unit = { receive() }
-    }.start()
-  }
-
-  def onStop(): Unit = {
-    // in case restart thread close it twice
-    synchronized {
-      if (socket != null) {
-        socket.close()
-        socket = null
-        logInfo(s"Closed socket to $host:$port")
-      }
+    def onStop(): Unit = {
+        // in case restart thread close it twice
+        synchronized {
+            if (socket != null) {
+                socket.close()
+                socket = null
+                logInfo(s"Closed socket to $host:$port")
+            }
+        }
     }
-  }
 
-  /** Create a socket connection and receive data until receiver is stopped */
-  def receive(): Unit = {
-    try {
-      val iterator = bytesToObjects(socket.getInputStream())
-      while(!isStopped && iterator.hasNext) {
-        store(iterator.next())
-      }
-      if (!isStopped()) {
-        restart("Socket data stream had no more data")
-      } else {
-        logInfo("Stopped receiving")
-      }
-    } catch {
-      case NonFatal(e) =>
-        logWarning("Error receiving data", e)
-        restart("Error receiving data", e)
-    } finally {
-      onStop()
+    /** Create a socket connection and receive data until receiver is stopped */
+    // 数据接收
+    def receive(): Unit = {
+        try {
+            val iterator = bytesToObjects(socket.getInputStream())
+            while (!isStopped && iterator.hasNext) {
+                store(iterator.next())
+            }
+            if (!isStopped()) {
+                restart("Socket data stream had no more data")
+            } else {
+                logInfo("Stopped receiving")
+            }
+        } catch {
+            case NonFatal(e) =>
+                logWarning("Error receiving data", e)
+                restart("Error receiving data", e)
+        } finally {
+            onStop()
+        }
     }
-  }
 }
 
 private[streaming]
-object SocketReceiver  {
+object SocketReceiver {
 
-  /**
-   * This methods translates the data from an inputstream (say, from a socket)
-   * to '\n' delimited strings and returns an iterator to access the strings.
-   */
-  def bytesToLines(inputStream: InputStream): Iterator[String] = {
-    val dataInputStream = new BufferedReader(
-      new InputStreamReader(inputStream, StandardCharsets.UTF_8))
-    new NextIterator[String] {
-      protected override def getNext() = {
-        val nextValue = dataInputStream.readLine()
-        if (nextValue == null) {
-          finished = true
+    /**
+      * This methods translates the data from an inputstream (say, from a socket)
+      * to '\n' delimited strings and returns an iterator to access the strings.
+      */
+    def bytesToLines(inputStream: InputStream): Iterator[String] = {
+        val dataInputStream = new BufferedReader(
+            new InputStreamReader(inputStream, StandardCharsets.UTF_8))
+        new NextIterator[String] {
+            protected override def getNext() = {
+                val nextValue = dataInputStream.readLine()
+                if (nextValue == null) {
+                    finished = true
+                }
+                nextValue
+            }
+
+            protected override def close(): Unit = {
+                dataInputStream.close()
+            }
         }
-        nextValue
-      }
-
-      protected override def close(): Unit = {
-        dataInputStream.close()
-      }
     }
-  }
 }
