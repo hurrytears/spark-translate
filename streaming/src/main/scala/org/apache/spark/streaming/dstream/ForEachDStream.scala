@@ -45,7 +45,7 @@ class ForEachDStream[T: ClassTag](
 
     override def compute(validTime: Time): Option[RDD[Unit]] = None
 
-    // 这里的任务执行
+    //所有的output操作，其实都会来调用ForEachDStream的generatorJob
     override def generateJob(time: Time): Option[Job] = {
         parent.getOrCompute(time) match {
             case Some(rdd) =>

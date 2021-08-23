@@ -476,6 +476,7 @@ class ReceiverTracker(ssc: StreamingContext, skipReceiverLaunch: Boolean = false
             // Local messages
             // 自己发给自己，netty躲不开了
             case StartAllReceivers(receivers) =>
+                // 最佳位置
                 val scheduledLocations = schedulingPolicy.scheduleReceivers(receivers, getExecutors)
                 for (receiver <- receivers) {
                     val executors = scheduledLocations(receiver.streamId)
@@ -603,6 +604,7 @@ class ReceiverTracker(ssc: StreamingContext, skipReceiverLaunch: Boolean = false
                         assert(iterator.hasNext == false)
                         val supervisor = new ReceiverSupervisorImpl(
                             receiver, SparkEnv.get, serializableHadoopConf.value, checkpointDirOption)
+                        // 这里是调用的父类的start方法
                         supervisor.start()
                         supervisor.awaitTermination()
                     } else {

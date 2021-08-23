@@ -41,6 +41,7 @@ import org.apache.spark.util.RpcUtils
   * which provides all the necessary functionality for handling the data received by
   * the receiver. Specifically, it creates a [[org.apache.spark.streaming.receiver.BlockGenerator]]
   * object that is used to divide the received data stream into blocks of data.
+  * 调用父类的start(）方法
   */
 private[streaming] class ReceiverSupervisorImpl(
                                                    receiver: Receiver[_],
@@ -173,7 +174,7 @@ private[streaming] class ReceiverSupervisorImpl(
     }
 
     override protected def onStart(): Unit = {
-        // 这里有变动
+        // 这里非常非常重要，数据接受主要就靠这个
         registeredBlockGenerators.asScala.foreach {
             _.start()
         }

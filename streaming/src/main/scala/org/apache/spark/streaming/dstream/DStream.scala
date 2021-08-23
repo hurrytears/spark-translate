@@ -651,6 +651,7 @@ abstract class DStream[T: ClassTag](
       *                           in the `foreachFunc` to be displayed in the UI. If `false`, then
       *                           only the scopes and callsites of `foreachRDD` will override those
       *                           of the RDDs on the display.
+      *
       */
     private def foreachRDD(
                               foreachFunc: (RDD[T], Time) => Unit,

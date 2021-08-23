@@ -39,7 +39,7 @@ class SocketInputDStream[T: ClassTag](
                                          storageLevel: StorageLevel
                                      ) extends ReceiverInputDStream[T](_ssc) {
 
-    // 这个方法负责返回DStream的receiver
+    // 输入的DStream一定都有这个方法，负责返回Reciever
     def getReceiver(): Receiver[T] = {
         new SocketReceiver(host, port, bytesToObjects, storageLevel)
     }

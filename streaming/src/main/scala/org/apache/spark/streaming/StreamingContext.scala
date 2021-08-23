@@ -61,6 +61,10 @@ import org.apache.spark.util.{CallSite, ShutdownHookManager, ThreadUtils, Utils}
   * `context.awaitTermination()` allows the current thread to wait for the termination
   * of the context by `stop()` or by an exception.
   *
+  * 初始化完成后，创建了DSgraph，JobScheduler之后，
+  * 就会调用socketTextDStream来创建输入DStream
+  * 然后执行一系列的转换操作
+  * 最后，会执行一个output输出操作，来触发针对一个一个的batch的job执行
   *
   */
 class StreamingContext private[streaming](
@@ -190,8 +194,9 @@ class StreamingContext private[streaming](
         if (isCheckpointPresent) _cp.checkpointDuration else graph.batchDuration
     }
 
-    // job的调度，会负责每隔batch interval,生成一个job,然后通过jobscheduler 调度执行job
-    // 底层还是spark co
+    // jobScheduler涉及到job的调度
+    // JobGenerator 会负责每隔batch interval，生成一个job, 然后通过JobScheduler调度执行job
+    // 底层其实还是基于spark的核心计算引擎
     private[streaming] val scheduler = new JobScheduler(this)
 
     private[streaming] val waiter = new ContextWaiter
@@ -584,6 +589,8 @@ class StreamingContext private[streaming](
       * Start the execution of the streams.
       *
       * @throws IllegalStateException if the StreamingContext is already stopped.
+      * 创建最重要的组件，RecieverTracker, JobGenerator
+      * 启动Reciever,是在某个worker上的executor上启动的
       */
     def start(): Unit = synchronized {
         state match {
@@ -604,7 +611,7 @@ class StreamingContext private[streaming](
                             sparkContext.clearJobGroup()
                             sparkContext.setLocalProperty(SparkContext.SPARK_JOB_INTERRUPT_ON_CANCEL, "false")
                             savedProperties.set(Utils.cloneProperties(sparkContext.localProperties.get()))
-                            // 这里
+                            // JobScheduler的start()方法
                             scheduler.start()
                         }
                         state = StreamingContextState.ACTIVE
