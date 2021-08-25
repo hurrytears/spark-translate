@@ -176,6 +176,7 @@ private[streaming] class ReceiverSupervisorImpl(
     override protected def onStart(): Unit = {
         // 这里非常非常重要，数据接受主要就靠这个
         // b
+        // b
         registeredBlockGenerators.asScala.foreach {
             _.start()
         }
