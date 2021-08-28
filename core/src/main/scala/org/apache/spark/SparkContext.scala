@@ -543,7 +543,7 @@ class SparkContext(config: SparkConf) extends Logging {
         listenerBus.addToStatusQueue(_statusStore.listener.get)
 
         // Create the Spark execution environment (cache, map output tracker, etc)
-        // 创建sparkEvn
+        // 创建sparkEnv,这里其实创建的是driverEnv，但两者是同一个概念
         _env = createSparkEnv(_conf, isLocal, listenerBus)
         SparkEnv.set(_env)
 
