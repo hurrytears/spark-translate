@@ -1829,8 +1829,10 @@ private[spark] object Utils extends Logging {
       * Returns the system properties map that is thread-safe to iterator over. It gets the
       * properties which have been set explicitly, as well as those for which only a default value
       * has been defined.
+      *
       */
     def getSystemProperties: Map[String, String] = {
+        // 骚包的写法
         System.getProperties.stringPropertyNames().asScala
             .map(key => (key, System.getProperty(key))).toMap
     }
