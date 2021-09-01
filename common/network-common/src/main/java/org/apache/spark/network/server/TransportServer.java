@@ -67,7 +67,6 @@ public class TransportServer implements Closeable {
             int portToBind,
             RpcHandler appRpcHandler,
             List<TransportServerBootstrap> bootstraps) {
-        // abc
         this.context = context;
         this.conf = context.getConf();
         this.appRpcHandler = appRpcHandler;
